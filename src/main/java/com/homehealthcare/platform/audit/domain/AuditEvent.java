@@ -2,6 +2,8 @@ package com.homehealthcare.platform.audit.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -44,6 +46,13 @@ public class AuditEvent {
     @Column(name = "agency_id")
     private UUID agencyId;
 
+    @Column(name = "branch_id")
+    private UUID branchId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "outcome", nullable = false, length = 32)
+    private AuditEventOutcome outcome;
+
     @Column(name = "metadata_json", nullable = false, columnDefinition = "clob")
     private String metadataJson;
 
@@ -60,6 +69,8 @@ public class AuditEvent {
             String targetType,
             UUID targetId,
             UUID agencyId,
+            UUID branchId,
+            AuditEventOutcome outcome,
             String metadataJson,
             Instant occurredAt) {
         this.id = id;
@@ -70,6 +81,8 @@ public class AuditEvent {
         this.targetType = targetType;
         this.targetId = targetId;
         this.agencyId = agencyId;
+        this.branchId = branchId;
+        this.outcome = outcome;
         this.metadataJson = metadataJson;
         this.occurredAt = occurredAt;
     }
@@ -83,6 +96,76 @@ public class AuditEvent {
             UUID targetId,
             UUID agencyId,
             String metadataJson) {
+        return create(
+                actorType,
+                actorId,
+                actorEmail,
+                actionType,
+                targetType,
+                targetId,
+                agencyId,
+                null,
+                AuditEventOutcome.SUCCESS,
+                metadataJson);
+    }
+
+    public static AuditEvent createSuccess(
+            String actorType,
+            UUID actorId,
+            String actorEmail,
+            String actionType,
+            String targetType,
+            UUID targetId,
+            UUID agencyId,
+            UUID branchId,
+            String metadataJson) {
+        return create(
+                actorType,
+                actorId,
+                actorEmail,
+                actionType,
+                targetType,
+                targetId,
+                agencyId,
+                branchId,
+                AuditEventOutcome.SUCCESS,
+                metadataJson);
+    }
+
+    public static AuditEvent createFailure(
+            String actorType,
+            UUID actorId,
+            String actorEmail,
+            String actionType,
+            String targetType,
+            UUID targetId,
+            UUID agencyId,
+            UUID branchId,
+            String metadataJson) {
+        return create(
+                actorType,
+                actorId,
+                actorEmail,
+                actionType,
+                targetType,
+                targetId,
+                agencyId,
+                branchId,
+                AuditEventOutcome.FAILURE,
+                metadataJson);
+    }
+
+    private static AuditEvent create(
+            String actorType,
+            UUID actorId,
+            String actorEmail,
+            String actionType,
+            String targetType,
+            UUID targetId,
+            UUID agencyId,
+            UUID branchId,
+            AuditEventOutcome outcome,
+            String metadataJson) {
         return AuditEvent.builder()
                 .id(UUID.randomUUID())
                 .actorType(actorType)
@@ -92,6 +175,8 @@ public class AuditEvent {
                 .targetType(targetType)
                 .targetId(targetId)
                 .agencyId(agencyId)
+                .branchId(branchId)
+                .outcome(outcome)
                 .metadataJson(metadataJson)
                 .occurredAt(Instant.now())
                 .build();
@@ -104,6 +189,9 @@ public class AuditEvent {
         }
         if (occurredAt == null) {
             occurredAt = Instant.now();
+        }
+        if (outcome == null) {
+            outcome = AuditEventOutcome.SUCCESS;
         }
     }
 

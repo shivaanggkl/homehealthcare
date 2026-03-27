@@ -83,7 +83,20 @@ class UserProfileAssignmentServiceTest {
                 .containsExactly("South Branch");
 
         List<AuditEvent> auditEvents = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(fixture.actorMembership().getId());
-        assertThat(auditEvents).extracting(AuditEvent::getActionType).contains("USER_PROFILE_ASSIGNMENTS_UPDATED");
+        assertThat(auditEvents).extracting(AuditEvent::getActionType)
+                .contains("USER_PROFILE_ASSIGNMENTS_UPDATED", "USER_ROLE_CHANGED", "USER_BRANCH_ASSIGNMENTS_CHANGED");
+        assertThat(auditEvents)
+                .filteredOn(event -> event.getActionType().equals("USER_ROLE_CHANGED"))
+                .singleElement()
+                .satisfies(event -> {
+                    assertThat(event.getTargetId()).isEqualTo(fixture.targetUser().getId());
+                    assertThat(event.getMetadataJson()).contains("\"previousRole\":\"CAREGIVER\"");
+                    assertThat(event.getMetadataJson()).contains("\"newRole\":\"SCHEDULER_COORDINATOR\"");
+                });
+        assertThat(auditEvents)
+                .filteredOn(event -> event.getActionType().equals("USER_BRANCH_ASSIGNMENTS_CHANGED"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains(secondBranch.getId().toString()));
     }
 
     @Test

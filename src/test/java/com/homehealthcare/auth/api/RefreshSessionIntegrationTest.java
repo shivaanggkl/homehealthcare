@@ -2,6 +2,7 @@ package com.homehealthcare.auth.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +60,7 @@ class RefreshSessionIntegrationTest {
         SessionFixture session = login(user.getEmail(), "StartPassword1!");
 
         MvcResult refreshResult = mockMvc.perform(post("/api/auth/refresh")
+                        .with(csrf().asHeader())
                         .cookie(
                                 new MockCookie(AuthCookieSupport.REFRESH_TOKEN_COOKIE, session.refreshToken()),
                                 new MockCookie(AuthCookieSupport.SESSION_ID_COOKIE, session.sessionId().toString())))
@@ -108,6 +110,7 @@ class RefreshSessionIntegrationTest {
         field.set(authSession, java.time.OffsetDateTime.now().minusMinutes(1));
 
         mockMvc.perform(post("/api/auth/refresh")
+                        .with(csrf().asHeader())
                         .cookie(
                                 new MockCookie(AuthCookieSupport.REFRESH_TOKEN_COOKIE, session.refreshToken()),
                                 new MockCookie(AuthCookieSupport.SESSION_ID_COOKIE, session.sessionId().toString())))
@@ -129,6 +132,7 @@ class RefreshSessionIntegrationTest {
         setField(authSession, "absoluteExpiresAt", java.time.OffsetDateTime.now().minusMinutes(1));
 
         mockMvc.perform(post("/api/auth/refresh")
+                        .with(csrf().asHeader())
                         .cookie(
                                 new MockCookie(AuthCookieSupport.REFRESH_TOKEN_COOKIE, session.refreshToken()),
                                 new MockCookie(AuthCookieSupport.SESSION_ID_COOKIE, session.sessionId().toString())))

@@ -25,6 +25,7 @@ public class ChangePasswordService {
     private final AuthSessionRepository authSessionRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordPolicy passwordPolicy;
+    private final PasswordHistoryService passwordHistoryService;
     private final AuditEventRepository auditEventRepository;
 
     @Transactional
@@ -38,8 +39,10 @@ public class ChangePasswordService {
             throw new CurrentPasswordMismatchException();
         }
 
-        passwordPolicy.validate(command.newPassword());
-        user.updatePassword(passwordEncoder.encode(command.newPassword()));
+        passwordPolicy.validate(command.newPassword(), passwordHistoryService.recentPasswordHashes(user), passwordEncoder);
+        String encodedPassword = passwordEncoder.encode(command.newPassword());
+        user.updatePassword(encodedPassword);
+        passwordHistoryService.recordPassword(user, encodedPassword);
 
         if (command.invalidateOtherSessions()) {
             revokeOtherSessions(user.getId(), currentSession.getId());

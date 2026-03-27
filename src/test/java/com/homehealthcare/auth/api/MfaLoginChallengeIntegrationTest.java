@@ -101,6 +101,13 @@ class MfaLoginChallengeIntegrationTest {
 
         List<AuditEvent> events = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId());
         assertThat(events)
+                .filteredOn(event -> event.getActionType().equals("MFA_LOGIN_CHALLENGE_ISSUED"))
+                .singleElement();
+        assertThat(events)
+                .filteredOn(event -> event.getActionType().equals("MFA_LOGIN_CHALLENGE_COMPLETED"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains("\"recoveryCodeUsed\":false"));
+        assertThat(events)
                 .filteredOn(event -> event.getActionType().equals("USER_LOGGED_IN"))
                 .anySatisfy(event -> assertThat(event.getMetadataJson()).contains("EMAIL_PASSWORD_MFA"));
     }
@@ -159,6 +166,54 @@ class MfaLoginChallengeIntegrationTest {
 
         UserMfaRecoveryCode consumedCode = userMfaRecoveryCodeRepository.findAllByUser_IdOrderByOrdinalAsc(caregiver.getId()).getFirst();
         assertThat(consumedCode.getConsumedAt()).isNotNull();
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(caregiver.getId()))
+                .filteredOn(event -> event.getActionType().equals("MFA_LOGIN_CHALLENGE_COMPLETED"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains("\"recoveryCodeUsed\":true"));
+    }
+
+    @Test
+    void invalidMfaChallengeAttemptIsAudited() throws Exception {
+        User user = enrolledMfaUser("jamie.failedmfa@example.com");
+        Agency agency = agencyRepository.saveAndFlush(Agency.create("North Ridge", "north-ridge-" + user.getId(), "America/Chicago", "ops@northridge.example"));
+        agency.requireMfaForAllUsers();
+        agencyRepository.saveAndFlush(agency);
+        agencyMembershipRepository.saveAndFlush(AgencyMembership.grant(user, agency, AgencyRole.CAREGIVER));
+
+        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "%s",
+                                  "password": "StartPassword1!"
+                                }
+                                """.formatted(user.getEmail())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.mfaRequired").value(true))
+                .andReturn();
+
+        JsonNode payload = new ObjectMapper().readTree(loginResult.getResponse().getContentAsByteArray());
+        String challengeToken = payload.get("loginChallengeToken").asText();
+
+        mockMvc.perform(post("/api/auth/login/mfa")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "challengeToken": "%s",
+                                  "totpCode": "000000"
+                                }
+                                """.formatted(challengeToken)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                          "message": "TOTP code is invalid"
+                        }
+                        """));
+
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId()))
+                .filteredOn(event -> event.getActionType().equals("MFA_LOGIN_CHALLENGE_FAILED"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains("\"reason\":\"INVALID_TOTP_CODE\""));
     }
 
     @Test

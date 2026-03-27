@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-27T23:27:51.039Z" hostname="Shivangs-MacBook-Pro.local" time="0.001">
+<testsuite name="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-27T23:49:59.695Z" hostname="Shivangs-MacBook-Pro.local" time="0.001">
   <properties/>
   <testcase name="disallowedRoleIsDeniedSensitivePermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.0"/>
   <testcase name="inactiveMembershipIsDeniedEvenWhenRoleWouldNormallyBeAllowed()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.0"/>
-  <testcase name="allowedRoleHasConfiguredPermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.0"/>
+  <testcase name="allowedRoleHasConfiguredPermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

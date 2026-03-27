@@ -2,6 +2,7 @@ package com.homehealthcare.auth.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -139,6 +140,40 @@ class ChangePasswordIntegrationTest {
                           "message": "Password must be at least 12 characters and include upper, lower, digit, and symbol characters"
                         }
                         """));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                        .contentType(APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + currentSession.accessToken())
+                        .content("""
+                                {
+                                  "currentPassword": "StartPassword1!",
+                                  "newPassword": "Password123!",
+                                  "invalidateOtherSessions": false
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                          "message": "Password is too common or compromised. Choose a less predictable password"
+                        }
+                        """));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                        .contentType(APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + currentSession.accessToken())
+                        .content("""
+                                {
+                                  "currentPassword": "StartPassword1!",
+                                  "newPassword": "StartPassword1!",
+                                  "invalidateOtherSessions": false
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                          "message": "Password cannot match any of your last 5 passwords"
+                        }
+                        """));
     }
 
     @Test
@@ -174,6 +209,7 @@ class ChangePasswordIntegrationTest {
                         .cookie(
                                 new org.springframework.mock.web.MockCookie(AuthCookieSupport.ACCESS_TOKEN_COOKIE, currentSession.accessToken()),
                                 new org.springframework.mock.web.MockCookie(AuthCookieSupport.SESSION_ID_COOKIE, currentSession.sessionId().toString()))
+                        .with(csrf().asHeader())
                         .content("""
                                 {
                                   "currentPassword": "StartPassword1!",

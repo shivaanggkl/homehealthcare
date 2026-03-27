@@ -116,7 +116,8 @@ class MfaEnrollmentIntegrationTest {
                 .andExpect(jsonPath("$.enrolledAt").exists());
 
         List<AuditEvent> events = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId());
-        assertThat(events).extracting(AuditEvent::getActionType).contains("MFA_ENROLLED");
+        assertThat(events).extracting(AuditEvent::getActionType)
+                .contains("MFA_ENROLLMENT_STARTED", "MFA_ENROLLED");
     }
 
     @Test
@@ -167,6 +168,11 @@ class MfaEnrollmentIntegrationTest {
                           "message": "TOTP code is invalid"
                         }
                         """));
+
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId()))
+                .filteredOn(event -> event.getActionType().equals("MFA_ENROLLMENT_FAILED"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains("\"reason\":\"INVALID_TOTP_CODE\""));
 
         MfaEnrollmentChallenge challenge = mfaEnrollmentChallengeRepository.findByToken(enrollmentToken).orElseThrow();
         challenge.rescheduleExpiration(OffsetDateTime.now().minusMinutes(1));

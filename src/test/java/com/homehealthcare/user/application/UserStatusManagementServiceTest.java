@@ -92,6 +92,11 @@ class UserStatusManagementServiceTest {
 
         List<AuditEvent> events = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(fixture.actorMembership().getId());
         assertThat(events).filteredOn(event -> event.getActionType().equals("USER_STATUS_CHANGED")).hasSize(4);
+        assertThat(events)
+                .filteredOn(event -> event.getActionType().equals("USER_STATUS_CHANGED"))
+                .extracting(AuditEvent::getMetadataJson)
+                .anyMatch(metadata -> metadata.contains("\"newStatus\":\"ACTIVE\""))
+                .anyMatch(metadata -> metadata.contains("\"newStatus\":\"DEACTIVATED\""));
     }
 
     @Test

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.homehealthcare.auth.application.SessionTokenService;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventOutcome;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
@@ -101,6 +102,7 @@ class LoginIntegrationTest {
                 .satisfies(event -> {
                     assertThat(event.getTargetId()).isEqualTo(user.getId());
                     assertThat(event.getActorEmail()).isEqualTo("alicia@example.com");
+                    assertThat(event.getOutcome()).isEqualTo(AuditEventOutcome.SUCCESS);
                     assertThat(event.getMetadataJson()).contains(DeterministicSessionTokenService.SESSION_ID.toString());
                 });
 
@@ -128,6 +130,14 @@ class LoginIntegrationTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid email or password"));
 
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId()))
+                .filteredOn(event -> event.getActionType().equals("USER_LOGIN_FAILED"))
+                .singleElement()
+                .satisfies(event -> {
+                    assertThat(event.getOutcome()).isEqualTo(AuditEventOutcome.FAILURE);
+                    assertThat(event.getMetadataJson()).contains("\"reason\":\"INVALID_CREDENTIALS\"");
+                });
+
         mockMvc.perform(post("/api/auth/login")
                         .contentType(APPLICATION_JSON)
                         .content("""
@@ -138,6 +148,16 @@ class LoginIntegrationTest {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid email or password"));
+
+        assertThat(auditEventRepository.findAll())
+                .filteredOn(event -> event.getActionType().equals("USER_LOGIN_FAILED"))
+                .filteredOn(event -> event.getActorEmail().equals("missing@example.com"))
+                .singleElement()
+                .satisfies(event -> {
+                    assertThat(event.getActorType()).isEqualTo("ANONYMOUS");
+                    assertThat(event.getTargetType()).isEqualTo("LOGIN_IDENTIFIER");
+                    assertThat(event.getMetadataJson()).contains("\"knownUser\":false");
+                });
     }
 
     @Test
@@ -172,6 +192,14 @@ class LoginIntegrationTest {
                                 """.formatted(email)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid email or password"));
+
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId()))
+                .filteredOn(event -> event.getActionType().equals("USER_LOGIN_FAILED"))
+                .singleElement()
+                .satisfies(event -> {
+                    assertThat(event.getOutcome()).isEqualTo(AuditEventOutcome.FAILURE);
+                    assertThat(event.getMetadataJson()).contains("\"reason\":\"BLOCKED_STATUS\"");
+                });
     }
 
     static class DeterministicSessionTokenService implements SessionTokenService {

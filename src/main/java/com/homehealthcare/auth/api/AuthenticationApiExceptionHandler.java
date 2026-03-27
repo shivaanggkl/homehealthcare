@@ -7,6 +7,7 @@ import com.homehealthcare.auth.application.CurrentSessionRevocationNotAllowedExc
 import com.homehealthcare.auth.application.PasswordResetTokenAlreadyUsedException;
 import com.homehealthcare.auth.application.PasswordResetTokenExpiredException;
 import com.homehealthcare.auth.application.PasswordResetTokenNotFoundException;
+import com.homehealthcare.auth.application.PasswordReuseNotAllowedException;
 import com.homehealthcare.auth.application.WeakPasswordException;
 import com.homehealthcare.auth.application.TooManyLoginAttemptsException;
 import com.homehealthcare.auth.application.InvalidTotpCodeException;
@@ -54,6 +55,7 @@ class AuthenticationApiExceptionHandler {
             PasswordResetTokenNotFoundException.class,
             PasswordResetTokenAlreadyUsedException.class,
             WeakPasswordException.class,
+            PasswordReuseNotAllowedException.class,
             CurrentPasswordMismatchException.class,
             MfaEnrollmentChallengeNotFoundException.class,
             MfaEnrollmentChallengeAlreadyUsedException.class,

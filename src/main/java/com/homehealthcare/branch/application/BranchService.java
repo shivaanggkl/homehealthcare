@@ -4,6 +4,10 @@ import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
 import com.homehealthcare.branch.domain.Branch;
 import com.homehealthcare.branch.domain.BranchRepository;
+import com.homehealthcare.membership.domain.AgencyMembership;
+import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.BranchAccessContext;
 import com.homehealthcare.security.branch.CurrentBranchAccess;
@@ -25,8 +29,14 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class BranchService {
 
+    private static final String ACTOR_TYPE_AGENCY_MEMBERSHIP = "AGENCY_MEMBERSHIP";
+    private static final String ACTION_BRANCH_CREATED = "BRANCH_CREATED";
+    private static final String ACTION_BRANCH_DEACTIVATED = "BRANCH_DEACTIVATED";
+
     private final AgencyRepository agencyRepository;
     private final BranchRepository branchRepository;
+    private final AgencyMembershipRepository agencyMembershipRepository;
+    private final AuditEventRepository auditEventRepository;
     private final CurrentTenant currentTenant;
     private final CurrentBranchAccess currentBranchAccess;
 
@@ -53,8 +63,22 @@ public class BranchService {
                 normalizedCode,
                 command.address(),
                 command.timezone());
+        Branch savedBranch = branchRepository.save(branch);
+        currentTenant.get()
+                .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
+                .ifPresent(actorMembership -> auditEventRepository.save(AuditEvent.createSuccess(
+                        ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                        actorMembership.getId(),
+                        actorMembership.getUser().getEmail(),
+                        ACTION_BRANCH_CREATED,
+                        "BRANCH",
+                        savedBranch.getId(),
+                        agency.getId(),
+                        savedBranch.getId(),
+                        "{\"name\":\"" + savedBranch.getName()
+                                + "\",\"code\":\"" + savedBranch.getCode() + "\"}")));
 
-        return branchRepository.save(branch);
+        return savedBranch;
     }
 
     @Transactional(readOnly = true)
@@ -83,7 +107,20 @@ public class BranchService {
                 .orElseThrow(() -> new BranchNotFoundException(branchId));
         requireBranchEditAccess(branch.getId());
         branch.deactivate();
-        return branchRepository.save(branch);
+        Branch savedBranch = branchRepository.save(branch);
+        currentTenant.get()
+                .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
+                .ifPresent(actorMembership -> auditEventRepository.save(AuditEvent.createSuccess(
+                        ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                        actorMembership.getId(),
+                        actorMembership.getUser().getEmail(),
+                        ACTION_BRANCH_DEACTIVATED,
+                        "BRANCH",
+                        savedBranch.getId(),
+                        savedBranch.getAgencyId(),
+                        savedBranch.getId(),
+                        "{\"status\":\"" + savedBranch.getStatus().name() + "\"}")));
+        return savedBranch;
     }
 
     private UUID requireAllowedAgency(UUID requestedAgencyId) {

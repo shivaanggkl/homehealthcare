@@ -2,6 +2,7 @@ package com.homehealthcare.auth.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,6 +78,7 @@ class LogoutIntegrationTest {
         MockCookie sessionCookie = responseCookie(loginResult, AuthCookieSupport.SESSION_ID_COOKIE);
 
         MvcResult logoutResult = mockMvc.perform(post("/api/auth/logout")
+                        .with(csrf().asHeader())
                         .cookie(accessCookie, refreshCookie, sessionCookie)
                         .param("redirectTo", "/signed-out"))
                 .andExpect(status().isFound())

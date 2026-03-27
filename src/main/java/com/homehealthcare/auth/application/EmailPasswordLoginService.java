@@ -9,8 +9,10 @@ import com.homehealthcare.user.domain.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Locale;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class EmailPasswordLoginService {
 
     private static final String ACTOR_TYPE_USER = "USER";
     private static final String ACTION_USER_LOGGED_IN = "USER_LOGGED_IN";
+    private static final String ACTION_USER_LOGIN_FAILED = "USER_LOGIN_FAILED";
     private static final String TARGET_TYPE_USER = "USER";
 
     private final UserRepository userRepository;
@@ -47,11 +50,13 @@ public class EmailPasswordLoginService {
 
         if (user == null) {
             loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, null, "INVALID_CREDENTIALS");
+            auditFailedLogin(normalizedEmail, null, "INVALID_CREDENTIALS", clientIpAddress);
             throw new InvalidLoginCredentialsException();
         }
 
         if (!user.hasPasswordHash() || !passwordEncoder.matches(command.password(), user.getPasswordHash())) {
             loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, user, "INVALID_CREDENTIALS");
+            auditFailedLogin(normalizedEmail, user, "INVALID_CREDENTIALS", clientIpAddress);
             throw new InvalidLoginCredentialsException();
         }
 
@@ -59,6 +64,7 @@ public class EmailPasswordLoginService {
             userAuthenticationPolicy.requireCanSignIn(user);
         } catch (UserSignInBlockedException exception) {
             loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, user, "BLOCKED_STATUS");
+            auditFailedLogin(normalizedEmail, user, "BLOCKED_STATUS", clientIpAddress);
             throw new InvalidLoginCredentialsException();
         }
 
@@ -95,6 +101,30 @@ public class EmailPasswordLoginService {
                 issuedSession.accessTokenExpiresAt(),
                 issuedSession.refreshToken(),
                 issuedSession.refreshTokenExpiresAt());
+    }
+
+    private void auditFailedLogin(String normalizedEmail, User user, String reason, String clientIpAddress) {
+        UUID auditSubjectId = user != null
+                ? user.getId()
+                : UUID.nameUUIDFromBytes(normalizedEmail.getBytes(StandardCharsets.UTF_8));
+        String actorType = user != null ? ACTOR_TYPE_USER : "ANONYMOUS";
+        String targetType = user != null ? TARGET_TYPE_USER : "LOGIN_IDENTIFIER";
+        String actorEmail = user != null ? user.getEmail() : normalizedEmail;
+        boolean knownUser = user != null;
+
+        auditEventRepository.save(AuditEvent.createFailure(
+                actorType,
+                auditSubjectId,
+                actorEmail,
+                ACTION_USER_LOGIN_FAILED,
+                targetType,
+                auditSubjectId,
+                null,
+                null,
+                "{\"reason\":\"" + reason
+                        + "\",\"authenticationMethod\":\"EMAIL_PASSWORD"
+                        + "\",\"knownUser\":" + knownUser
+                        + ",\"clientIpAddress\":\"" + (clientIpAddress == null ? "" : clientIpAddress) + "\"}"));
     }
 
     private static String normalizeEmail(String email) {

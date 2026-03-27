@@ -26,16 +26,19 @@ public class ResetPasswordService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordPolicy passwordPolicy;
+    private final PasswordHistoryService passwordHistoryService;
     private final UserSessionService userSessionService;
     private final AuditEventRepository auditEventRepository;
 
     @Transactional
     public ResetPasswordResult resetPassword(@Valid ResetPasswordCommand command) {
         PasswordResetToken resetToken = loadPendingResetToken(command.token());
-        passwordPolicy.validate(command.newPassword());
+        passwordPolicy.validate(command.newPassword(), passwordHistoryService.recentPasswordHashes(resetToken.getUser()), passwordEncoder);
 
         User user = resetToken.getUser();
-        user.updatePassword(passwordEncoder.encode(command.newPassword()));
+        String encodedPassword = passwordEncoder.encode(command.newPassword());
+        user.updatePassword(encodedPassword);
+        passwordHistoryService.recordPassword(user, encodedPassword);
         resetToken.consume();
 
         if (command.revokeExistingSessions()) {

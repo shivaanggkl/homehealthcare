@@ -12,6 +12,9 @@
 - `docs/architecture/standards/branch-scoping-guardrails.md` defines branch visibility rules for `E1-S08`.
 - `docs/architecture/standards/role-permission-matrix.md` defines CRUD permissions and scope rules for tenant roles.
 - `docs/architecture/standards/session-security-standard.md` defines cookie, refresh, and expiration rules for authenticated web sessions.
+- `docs/architecture/standards/password-policy-standard.md` defines setup, reset, and change-password rules, including common-password blocking and reuse prevention.
+- `docs/architecture/standards/audit-event-standard.md` defines the unified audit-event schema, success/failure outcomes, and retention rules.
+- `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.
 

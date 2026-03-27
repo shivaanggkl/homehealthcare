@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.homehealthcare.auth.domain.AuthLoginAttempt;
 import com.homehealthcare.auth.domain.AuthLoginAttemptOutcome;
 import com.homehealthcare.auth.domain.AuthLoginAttemptRepository;
+import com.homehealthcare.platform.audit.domain.AuditEventOutcome;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
@@ -102,6 +103,9 @@ class FailedLoginProtectionLockoutIntegrationTest {
                 .extracting(AuthLoginAttempt::getOutcome)
                 .contains(AuthLoginAttemptOutcome.LOCKED_OUT);
 
-        assertThat(auditEventRepository.findAll()).isEmpty();
+        assertThat(auditEventRepository.findAll())
+                .filteredOn(event -> event.getActionType().equals("USER_LOGIN_FAILED"))
+                .hasSize(3)
+                .allSatisfy(event -> assertThat(event.getOutcome()).isEqualTo(AuditEventOutcome.FAILURE));
     }
 }

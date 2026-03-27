@@ -1,5 +1,7 @@
 package com.homehealthcare.invitation.application;
 
+import com.homehealthcare.auth.application.PasswordHistoryService;
+import com.homehealthcare.auth.application.PasswordPolicy;
 import com.homehealthcare.invitation.domain.UserInvitation;
 import com.homehealthcare.invitation.domain.UserInvitationRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
@@ -26,6 +28,8 @@ public class AcceptInvitationService {
     private final UserInvitationRepository userInvitationRepository;
     private final AuditEventRepository auditEventRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordPolicy passwordPolicy;
+    private final PasswordHistoryService passwordHistoryService;
 
     @Transactional(readOnly = true)
     public InvitationDetails getInvitationDetails(@NotBlank String token) {
@@ -47,7 +51,10 @@ public class AcceptInvitationService {
         User user = invitation.getUser();
 
         user.updateProfile(command.firstName(), command.lastName(), command.phone());
-        user.activateWithCredentials(passwordEncoder.encode(command.password()));
+        passwordPolicy.validate(command.password(), passwordHistoryService.recentPasswordHashes(user), passwordEncoder);
+        String encodedPassword = passwordEncoder.encode(command.password());
+        user.activateWithCredentials(encodedPassword);
+        passwordHistoryService.recordPassword(user, encodedPassword);
         invitation.accept();
 
         auditEventRepository.save(AuditEvent.create(

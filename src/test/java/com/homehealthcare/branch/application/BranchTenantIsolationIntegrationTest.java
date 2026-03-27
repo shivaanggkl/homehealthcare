@@ -16,6 +16,8 @@ import com.homehealthcare.branchassignment.domain.BranchAssignment;
 import com.homehealthcare.branchassignment.domain.BranchAssignmentRepository;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.security.branch.BranchAccessPrincipal;
 import com.homehealthcare.security.tenant.TenantAccessPrincipal;
@@ -65,6 +67,9 @@ class BranchTenantIsolationIntegrationTest {
     @Autowired
     private BranchAssignmentRepository branchAssignmentRepository;
 
+    @Autowired
+    private AuditEventRepository auditEventRepository;
+
     @Test
     void authenticatedTenantCannotEnumerateBranchIdsFromAnotherAgency() throws Exception {
         Agency agencyOne = agencyRepository.saveAndFlush(
@@ -85,6 +90,46 @@ class BranchTenantIsolationIntegrationTest {
         mockMvc.perform(get("/test/branches/{branchId}", agencyTwoBranch.getId())
                         .with(authentication(authenticationFor(agencyOne.getId()))))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void branchCreateAndDeactivateAreAuditedForAuthorizedAgencyActor() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care-audit-branch", "America/Chicago", "ops@northstar.example"));
+        User actorUser = userRepository.saveAndFlush(
+                User.invite("Alicia", "Owner", "alicia.branch.audit@northstar.example", null));
+        AgencyMembership actorMembership = agencyMembershipRepository.saveAndFlush(
+                AgencyMembership.grant(actorUser, agency, AgencyRole.AGENCY_OWNER));
+
+        mockMvc.perform(post("/test/branches/create")
+                        .with(authentication(tenantOnlyAuthenticationFor(actorMembership)))
+                        .param("agencyId", agency.getId().toString())
+                        .param("name", "Audit Branch")
+                        .param("code", "AUD-01")
+                        .param("address", "500 Audit St")
+                        .param("timezone", "America/Chicago"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+                .andExpect(content().string("Audit Branch"));
+
+        Branch createdBranch = branchRepository.findByAgency_IdAndCode(agency.getId(), "AUD-01").orElseThrow();
+
+        mockMvc.perform(post("/test/branches/{branchId}/deactivate", createdBranch.getId())
+                        .with(authentication(tenantOnlyAuthenticationFor(actorMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("INACTIVE"));
+
+        List<AuditEvent> auditEvents = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(actorMembership.getId());
+        assertThat(auditEvents)
+                .extracting(AuditEvent::getActionType)
+                .contains("BRANCH_CREATED", "BRANCH_DEACTIVATED");
+        assertThat(auditEvents)
+                .filteredOn(event -> event.getActionType().equals("BRANCH_CREATED"))
+                .singleElement()
+                .satisfies(event -> {
+                    assertThat(event.getAgencyId()).isEqualTo(agency.getId());
+                    assertThat(event.getBranchId()).isEqualTo(createdBranch.getId());
+                });
     }
 
     @Test
@@ -328,6 +373,21 @@ class BranchTenantIsolationIntegrationTest {
                     .map(Branch::getName)
                     .toList();
             return String.join("|", branchNames);
+        }
+
+        @PostMapping(path = "/test/branches/create", produces = MediaType.TEXT_PLAIN_VALUE)
+        String createBranch(
+                @RequestParam UUID agencyId,
+                @RequestParam String name,
+                @RequestParam String code,
+                @RequestParam String address,
+                @RequestParam String timezone) {
+            return branchService.createBranch(new BranchService.CreateBranchCommand(
+                    agencyId,
+                    name,
+                    code,
+                    address,
+                    timezone)).getName();
         }
 
         @PostMapping(path = "/test/branches/{branchId}/deactivate", produces = MediaType.TEXT_PLAIN_VALUE)

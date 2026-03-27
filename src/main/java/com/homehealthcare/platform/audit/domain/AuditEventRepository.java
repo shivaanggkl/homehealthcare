@@ -9,4 +9,6 @@ public interface AuditEventRepository extends JpaRepository<AuditEvent, UUID> {
     List<AuditEvent> findAllByActorIdOrderByOccurredAtAsc(UUID actorId);
 
     List<AuditEvent> findAllByAgencyIdOrderByOccurredAtAsc(UUID agencyId);
+
+    List<AuditEvent> findAllByOutcomeOrderByOccurredAtAsc(AuditEventOutcome outcome);
 }

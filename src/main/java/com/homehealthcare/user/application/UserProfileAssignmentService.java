@@ -32,6 +32,8 @@ public class UserProfileAssignmentService {
 
     private static final String ACTOR_TYPE_AGENCY_MEMBERSHIP = "AGENCY_MEMBERSHIP";
     private static final String ACTION_USER_PROFILE_ASSIGNMENTS_UPDATED = "USER_PROFILE_ASSIGNMENTS_UPDATED";
+    private static final String ACTION_USER_ROLE_CHANGED = "USER_ROLE_CHANGED";
+    private static final String ACTION_USER_BRANCH_ASSIGNMENTS_CHANGED = "USER_BRANCH_ASSIGNMENTS_CHANGED";
     private static final String TARGET_TYPE_USER = "USER";
 
     private final AgencyMembershipRepository agencyMembershipRepository;
@@ -57,12 +59,16 @@ public class UserProfileAssignmentService {
 
         enforceProtectedRoleRules(actorMembership, targetMembership, command.role());
 
+        AgencyRole previousRole = targetMembership.getRole();
+        Set<UUID> previousBranchIds = activeBranchIds(targetMembership.getId());
+
         User targetUser = targetMembership.getUser();
         targetUser.updateProfile(command.firstName(), command.lastName(), command.phone());
         targetMembership.changeRole(command.role());
         agencyMembershipRepository.save(targetMembership);
 
         synchronizeBranchAssignments(targetMembership, actorMembership.getAgencyId(), command.branchIds());
+        Set<UUID> updatedBranchIds = activeBranchIds(targetMembership.getId());
 
         auditEventRepository.save(AuditEvent.create(
                 ACTOR_TYPE_AGENCY_MEMBERSHIP,
@@ -75,6 +81,34 @@ public class UserProfileAssignmentService {
                 "{\"role\":\"" + command.role().name()
                         + "\",\"branchCount\":" + command.branchIds().size()
                         + ",\"phoneUpdated\":" + (command.phone() != null) + "}"));
+
+        if (previousRole != command.role()) {
+            auditEventRepository.save(AuditEvent.createSuccess(
+                    ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                    actorMembership.getId(),
+                    actorMembership.getUser().getEmail(),
+                    ACTION_USER_ROLE_CHANGED,
+                    TARGET_TYPE_USER,
+                    targetUser.getId(),
+                    actorMembership.getAgencyId(),
+                    null,
+                    "{\"previousRole\":\"" + previousRole.name()
+                            + "\",\"newRole\":\"" + command.role().name() + "\"}"));
+        }
+
+        if (!previousBranchIds.equals(updatedBranchIds)) {
+            auditEventRepository.save(AuditEvent.createSuccess(
+                    ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                    actorMembership.getId(),
+                    actorMembership.getUser().getEmail(),
+                    ACTION_USER_BRANCH_ASSIGNMENTS_CHANGED,
+                    TARGET_TYPE_USER,
+                    targetUser.getId(),
+                    actorMembership.getAgencyId(),
+                    null,
+                    "{\"previousBranchIds\":" + toMetadataJsonArray(previousBranchIds)
+                            + ",\"newBranchIds\":" + toMetadataJsonArray(updatedBranchIds) + "}"));
+        }
 
         List<String> branchNames = branchAssignmentRepository.findAllByAgencyMembership_IdAndStatusOrderByBranch_NameAsc(
                         targetMembership.getId(),
@@ -91,6 +125,21 @@ public class UserProfileAssignmentService {
                 targetUser.getPhone(),
                 targetMembership.getRole(),
                 branchNames);
+    }
+
+    private Set<UUID> activeBranchIds(UUID membershipId) {
+        return branchAssignmentRepository.findAllByAgencyMembership_IdAndStatusOrderByBranch_NameAsc(
+                        membershipId,
+                        BranchAssignmentStatus.ACTIVE)
+                .stream()
+                .map(BranchAssignment::getBranchId)
+                .collect(java.util.stream.Collectors.toCollection(java.util.LinkedHashSet::new));
+    }
+
+    private static String toMetadataJsonArray(Set<UUID> branchIds) {
+        return branchIds.stream()
+                .map(branchId -> "\"" + branchId + "\"")
+                .collect(java.util.stream.Collectors.joining(",", "[", "]"));
     }
 
     private static void enforceProtectedRoleRules(

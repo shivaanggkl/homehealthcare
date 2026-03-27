@@ -12,6 +12,8 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.auth.application.WeakPasswordException;
+import com.homehealthcare.auth.application.PasswordReuseNotAllowedException;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
@@ -132,6 +134,37 @@ class AcceptInvitationServiceTest {
                 .isInstanceOf(InvitationAlreadyUsedException.class);
     }
 
+    @Test
+    void rejectsCommonOrReusedInvitationPasswords() {
+        UserInvitation invitation = createPendingInvitation();
+
+        assertThatThrownBy(() -> acceptInvitationService.acceptInvitation(
+                invitation.getToken(),
+                new AcceptInvitationService.AcceptInvitationCommand(
+                        "Casey",
+                        "Scheduler",
+                        null,
+                        "Password123!")))
+                .isInstanceOf(WeakPasswordException.class)
+                .hasMessage("Password is too common or compromised. Choose a less predictable password");
+
+        User invitedUser = invitation.getUser();
+        invitedUser.activateWithCredentials(passwordEncoder.encode("S3cureInvitePassword!"));
+        userRepository.saveAndFlush(invitedUser);
+
+        UserInvitation secondInvitation = createPendingInvitationForUser(invitedUser, invitation.getAgencyMembership());
+
+        assertThatThrownBy(() -> acceptInvitationService.acceptInvitation(
+                secondInvitation.getToken(),
+                new AcceptInvitationService.AcceptInvitationCommand(
+                        "Casey",
+                        "Scheduler",
+                        null,
+                        "S3cureInvitePassword!")))
+                .isInstanceOf(PasswordReuseNotAllowedException.class)
+                .hasMessage("Password cannot match any of your last 5 passwords");
+    }
+
     private UserInvitation createPendingInvitation() {
         Agency agency = agencyRepository.saveAndFlush(
                 Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
@@ -143,6 +176,22 @@ class AcceptInvitationServiceTest {
                 User.invite("Casey", "Scheduler", "casey.scheduler." + UUID.randomUUID() + "@northstar.example", null));
         AgencyMembership invitedMembership = agencyMembershipRepository.saveAndFlush(
                 AgencyMembership.grant(invitedUser, agency, AgencyRole.SCHEDULER_COORDINATOR));
+
+        return userInvitationRepository.saveAndFlush(UserInvitation.issue(
+                inviterMembership,
+                invitedMembership,
+                invitedUser,
+                invitedUser.getEmail(),
+                UUID.randomUUID().toString(),
+                OffsetDateTime.now().plusDays(7)));
+    }
+
+    private UserInvitation createPendingInvitationForUser(User invitedUser, AgencyMembership invitedMembership) {
+        Agency agency = invitedMembership.getAgency();
+        User inviter = userRepository.saveAndFlush(
+                User.invite("Alicia", "Owner", "alicia.owner." + UUID.randomUUID() + "@northstar.example", null));
+        AgencyMembership inviterMembership = agencyMembershipRepository.saveAndFlush(
+                AgencyMembership.grant(inviter, agency, AgencyRole.AGENCY_OWNER));
 
         return userInvitationRepository.saveAndFlush(UserInvitation.issue(
                 inviterMembership,

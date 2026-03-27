@@ -29,6 +29,9 @@ import org.springframework.validation.annotation.Validated;
 public class MfaEnrollmentService {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static final String ACTION_MFA_ENROLLMENT_STARTED = "MFA_ENROLLMENT_STARTED";
+    private static final String ACTION_MFA_ENROLLMENT_FAILED = "MFA_ENROLLMENT_FAILED";
+    private static final String ACTION_MFA_ENROLLED = "MFA_ENROLLED";
 
     private final CurrentAuthSessionResolver currentAuthSessionResolver;
     private final PasswordEncoder passwordEncoder;
@@ -73,6 +76,18 @@ public class MfaEnrollmentService {
                 recoveryCodeHashes,
                 expiresAt));
 
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "USER",
+                user.getId(),
+                user.getEmail(),
+                ACTION_MFA_ENROLLMENT_STARTED,
+                "MFA_ENROLLMENT_CHALLENGE",
+                challenge.getId(),
+                null,
+                null,
+                "{\"expiresAt\":\"" + expiresAt
+                        + "\",\"recoveryCodeCount\":" + recoveryCodes.size() + "}"));
+
         return new EnrollmentStartResult(
                 challenge.getToken(),
                 secret,
@@ -85,6 +100,16 @@ public class MfaEnrollmentService {
     public EnrollmentConfirmResult confirmEnrollment(@Valid EnrollmentConfirmCommand command) {
         MfaEnrollmentChallenge challenge = loadPendingChallenge(command.enrollmentToken());
         if (!totpService.verifyCode(challenge.getTotpSecret(), command.totpCode(), Instant.now())) {
+            auditEventRepository.save(AuditEvent.createFailure(
+                    "USER",
+                    challenge.getUser().getId(),
+                    challenge.getUser().getEmail(),
+                    ACTION_MFA_ENROLLMENT_FAILED,
+                    "MFA_ENROLLMENT_CHALLENGE",
+                    challenge.getId(),
+                    null,
+                    null,
+                    "{\"reason\":\"INVALID_TOTP_CODE\"}"));
             throw new InvalidTotpCodeException();
         }
 
@@ -99,13 +124,14 @@ public class MfaEnrollmentService {
 
         challenge.complete();
 
-        auditEventRepository.save(AuditEvent.create(
+        auditEventRepository.save(AuditEvent.createSuccess(
                 "USER",
                 user.getId(),
                 user.getEmail(),
-                "MFA_ENROLLED",
+                ACTION_MFA_ENROLLED,
                 "USER",
                 user.getId(),
+                null,
                 null,
                 "{\"recoveryCodeCount\":" + recoveryCodeHashes.size() + "}"));
 

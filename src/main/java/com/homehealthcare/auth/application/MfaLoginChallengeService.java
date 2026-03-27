@@ -23,6 +23,10 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class MfaLoginChallengeService {
 
+    private static final String ACTION_MFA_LOGIN_CHALLENGE_ISSUED = "MFA_LOGIN_CHALLENGE_ISSUED";
+    private static final String ACTION_MFA_LOGIN_CHALLENGE_COMPLETED = "MFA_LOGIN_CHALLENGE_COMPLETED";
+    private static final String ACTION_MFA_LOGIN_CHALLENGE_FAILED = "MFA_LOGIN_CHALLENGE_FAILED";
+
     private final AuthMfaLoginChallengeRepository authMfaLoginChallengeRepository;
     private final UserMfaRecoveryCodeRepository userMfaRecoveryCodeRepository;
     private final TotpService totpService;
@@ -47,6 +51,17 @@ public class MfaLoginChallengeService {
                 UUID.randomUUID().toString(),
                 OffsetDateTime.now().plus(mfaProperties.getEnrollmentChallengeTtl())));
 
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "USER",
+                user.getId(),
+                user.getEmail(),
+                ACTION_MFA_LOGIN_CHALLENGE_ISSUED,
+                "AUTH_MFA_LOGIN_CHALLENGE",
+                challenge.getId(),
+                null,
+                null,
+                "{\"expiresAt\":\"" + challenge.getExpiresAt() + "\"}"));
+
         return new LoginChallengeResult(challenge.getToken(), challenge.getExpiresAt());
     }
 
@@ -58,21 +73,38 @@ public class MfaLoginChallengeService {
         boolean authenticatedWithRecoveryCode = false;
         if (command.totpCode() != null && !command.totpCode().isBlank()) {
             if (!totpService.verifyCode(user.getMfaSecret(), command.totpCode(), Instant.now())) {
+                auditFailedChallenge(challenge, "INVALID_TOTP_CODE");
                 throw new InvalidTotpCodeException();
             }
         } else if (command.recoveryCode() != null && !command.recoveryCode().isBlank()) {
             UserMfaRecoveryCode recoveryCode = userMfaRecoveryCodeRepository.findByUser_IdAndCodeHashAndConsumedAtIsNull(
                             user.getId(),
                             tokenHashingService.hash(command.recoveryCode().trim().toUpperCase()))
-                    .orElseThrow(InvalidTotpCodeException::new);
+                    .orElseThrow(() -> {
+                        auditFailedChallenge(challenge, "INVALID_RECOVERY_CODE");
+                        return new InvalidTotpCodeException();
+                    });
             recoveryCode.consume();
             authenticatedWithRecoveryCode = true;
         } else {
+            auditFailedChallenge(challenge, "MISSING_SECOND_FACTOR");
             throw new InvalidTotpCodeException();
         }
 
         challenge.complete();
         SessionTokenService.IssuedSession issuedSession = sessionTokenService.issueFor(user);
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "USER",
+                user.getId(),
+                user.getEmail(),
+                ACTION_MFA_LOGIN_CHALLENGE_COMPLETED,
+                "AUTH_MFA_LOGIN_CHALLENGE",
+                challenge.getId(),
+                null,
+                null,
+                "{\"sessionId\":\"" + issuedSession.sessionId()
+                        + "\",\"recoveryCodeUsed\":" + authenticatedWithRecoveryCode + "}"));
 
         auditEventRepository.save(AuditEvent.create(
                 "USER",
@@ -95,6 +127,19 @@ public class MfaLoginChallengeService {
                 issuedSession.refreshTokenExpiresAt(),
                 true,
                 authenticatedWithRecoveryCode);
+    }
+
+    private void auditFailedChallenge(AuthMfaLoginChallenge challenge, String reason) {
+        auditEventRepository.save(AuditEvent.createFailure(
+                "USER",
+                challenge.getUser().getId(),
+                challenge.getUser().getEmail(),
+                ACTION_MFA_LOGIN_CHALLENGE_FAILED,
+                "AUTH_MFA_LOGIN_CHALLENGE",
+                challenge.getId(),
+                null,
+                null,
+                "{\"reason\":\"" + reason + "\"}"));
     }
 
     private AuthMfaLoginChallenge loadPendingChallenge(String token) {

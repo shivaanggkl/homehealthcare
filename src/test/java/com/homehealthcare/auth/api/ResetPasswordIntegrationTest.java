@@ -11,6 +11,7 @@ import com.homehealthcare.auth.domain.AuthSessionRepository;
 import com.homehealthcare.auth.domain.PasswordResetToken;
 import com.homehealthcare.auth.domain.PasswordResetTokenRepository;
 import com.homehealthcare.auth.domain.PasswordResetTokenStatus;
+import com.homehealthcare.auth.domain.UserPasswordHistoryRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.user.domain.User;
@@ -48,6 +49,9 @@ class ResetPasswordIntegrationTest {
 
     @Autowired
     private AuditEventRepository auditEventRepository;
+
+    @Autowired
+    private UserPasswordHistoryRepository userPasswordHistoryRepository;
 
     @Test
     void validResetTokenResetsPasswordOptionallyRevokesSessionsAndAudits() throws Exception {
@@ -90,6 +94,9 @@ class ResetPasswordIntegrationTest {
         AuthSession revokedSession = authSessionRepository.findById(sessionId).orElseThrow();
         assertThat(revokedSession.isRevoked()).isTrue();
         assertThat(revokedSession.getRevocationReason()).isEqualTo("PASSWORD_RESET");
+        assertThat(userPasswordHistoryRepository.findByUser_IdOrderByRecordedAtDesc(
+                user.getId(),
+                org.springframework.data.domain.PageRequest.of(0, 5))).hasSize(1);
 
         List<AuditEvent> events = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId());
         assertThat(events)
@@ -129,6 +136,55 @@ class ResetPasswordIntegrationTest {
 
         PasswordResetToken pendingToken = passwordResetTokenRepository.findById(resetToken.getId()).orElseThrow();
         assertThat(pendingToken.getStatus()).isEqualTo(PasswordResetTokenStatus.PENDING);
+    }
+
+    @Test
+    void commonAndReusedPasswordsAreRejected() throws Exception {
+        User user = userRepository.saveAndFlush(User.invite(
+                "Robin",
+                "Caregiver",
+                "robin.reset.reuse@example.com",
+                null));
+        user.activateWithCredentials(passwordEncoder.encode("StartPassword1!"));
+        userRepository.saveAndFlush(user);
+
+        passwordResetTokenRepository.saveAndFlush(
+                PasswordResetToken.issue(user, user.getEmail(), "common-password-token", OffsetDateTime.now().plusHours(1)));
+
+        mockMvc.perform(post("/api/auth/reset-password")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "token": "common-password-token",
+                                  "newPassword": "Password123!",
+                                  "revokeExistingSessions": false
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                          "message": "Password is too common or compromised. Choose a less predictable password"
+                        }
+                        """));
+
+        passwordResetTokenRepository.saveAndFlush(
+                PasswordResetToken.issue(user, user.getEmail(), "reused-password-token", OffsetDateTime.now().plusHours(1)));
+
+        mockMvc.perform(post("/api/auth/reset-password")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "token": "reused-password-token",
+                                  "newPassword": "StartPassword1!",
+                                  "revokeExistingSessions": false
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                          "message": "Password cannot match any of your last 5 passwords"
+                        }
+                        """));
     }
 
     @Test
