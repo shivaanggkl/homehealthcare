@@ -1,0 +1,12 @@
+Hi {{recipientName}},
+
+{{alertTitle}}
+
+{{alertBody}}
+
+Review activity:
+{{actionUrl}}
+
+This link expires at {{expiresAt}}.
+
+If you need help, contact {{supportEmail}}.

@@ -11,7 +11,10 @@ public interface PasswordResetEmailSender {
             UUID passwordResetTokenId,
             UUID userId,
             String recipientEmail,
-            String token,
+            String subject,
+            String textBody,
+            String htmlBody,
+            String actionUrl,
             OffsetDateTime expiresAt) {
     }
 }

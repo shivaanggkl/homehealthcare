@@ -10,10 +10,11 @@ public class LoggingPasswordResetEmailSender implements PasswordResetEmailSender
     @Override
     public void send(PasswordResetEmail email) {
         log.info(
-                "Dispatched password reset email passwordResetTokenId={} userId={} recipient={} expiresAt={}",
+                "Dispatched password reset email passwordResetTokenId={} userId={} recipient={} subject={} expiresAt={}",
                 email.passwordResetTokenId(),
                 email.userId(),
                 email.recipientEmail(),
+                email.subject(),
                 email.expiresAt());
     }
 }

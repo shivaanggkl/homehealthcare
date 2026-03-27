@@ -11,7 +11,11 @@ public interface InvitationEmailSender {
             UUID invitationId,
             UUID agencyId,
             String recipientEmail,
-            String token,
-            OffsetDateTime expiresAt) {
+            String subject,
+            String textBody,
+            String htmlBody,
+            String actionUrl,
+            OffsetDateTime expiresAt,
+            String agencyName) {
     }
 }

@@ -10,10 +10,11 @@ public class LoggingInvitationEmailSender implements InvitationEmailSender {
     @Override
     public void send(InvitationEmail email) {
         log.info(
-                "Dispatched agency invite email invitationId={} agencyId={} recipient={} expiresAt={}",
+                "Dispatched agency invite email invitationId={} agencyId={} recipient={} subject={} expiresAt={}",
                 email.invitationId(),
                 email.agencyId(),
                 email.recipientEmail(),
+                email.subject(),
                 email.expiresAt());
     }
 }

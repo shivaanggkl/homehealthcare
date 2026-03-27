@@ -92,7 +92,12 @@ class ForgotPasswordIntegrationTest {
         assertThat(recordingPasswordResetEmailSender.sentEmails()).singleElement().satisfies(email -> {
             assertThat(email.userId()).isEqualTo(user.getId());
             assertThat(email.recipientEmail()).isEqualTo("alicia.reset@example.com");
-            assertThat(email.token()).isNotBlank();
+            assertThat(email.subject()).contains("Reset your HomeHealthCare password");
+            assertThat(email.textBody()).contains("Reset your password");
+            assertThat(email.htmlBody()).contains("Reset password");
+            assertThat(email.actionUrl()).contains("/reset-password");
+            assertThat(email.actionUrl()).contains("signature=");
+            assertThat(email.actionUrl()).contains("expiresAt=");
         });
 
         List<AuditEvent> auditEvents = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId());

@@ -5,6 +5,8 @@ import com.homehealthcare.auth.domain.PasswordResetTokenRepository;
 import com.homehealthcare.auth.domain.PasswordResetTokenStatus;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.platform.email.SystemEmailTemplateService;
+import com.homehealthcare.platform.email.TemplatedEmail;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
 import com.homehealthcare.user.domain.UserStatus;
@@ -33,6 +35,7 @@ public class ForgotPasswordService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordResetEmailSender passwordResetEmailSender;
     private final AuditEventRepository auditEventRepository;
+    private final SystemEmailTemplateService systemEmailTemplateService;
 
     @Transactional
     public ForgotPasswordResult requestReset(@Valid ForgotPasswordCommand command) {
@@ -54,11 +57,19 @@ public class ForgotPasswordService {
         PasswordResetToken resetToken = passwordResetTokenRepository.save(
                 PasswordResetToken.issue(user, user.getEmail(), token, expiresAt));
 
+        TemplatedEmail templatedEmail = systemEmailTemplateService.composePasswordResetEmail(
+                user.getFirstName(),
+                token,
+                expiresAt);
+
         passwordResetEmailSender.send(new PasswordResetEmailSender.PasswordResetEmail(
                 resetToken.getId(),
                 user.getId(),
                 user.getEmail(),
-                token,
+                templatedEmail.subject(),
+                templatedEmail.textBody(),
+                templatedEmail.htmlBody(),
+                templatedEmail.actionUrl(),
                 expiresAt));
 
         auditEventRepository.save(AuditEvent.create(

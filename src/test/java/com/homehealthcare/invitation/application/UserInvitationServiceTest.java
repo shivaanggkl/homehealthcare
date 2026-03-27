@@ -107,8 +107,16 @@ class UserInvitationServiceTest {
         assertThat(invitation.isPending()).isTrue();
         assertThat(invitation.getExpiresAt()).isAfter(OffsetDateTime.now().plusDays(6));
         assertThat(recordingInvitationEmailSender.sentEmails()).hasSize(1);
-        assertThat(recordingInvitationEmailSender.sentEmails().getFirst().recipientEmail())
-                .isEqualTo("casey.scheduler@northstar.example");
+        assertThat(recordingInvitationEmailSender.sentEmails().getFirst()).satisfies(email -> {
+            assertThat(email.recipientEmail()).isEqualTo("casey.scheduler@northstar.example");
+            assertThat(email.subject()).contains("North Star Home Care");
+            assertThat(email.textBody()).contains("SCHEDULER_COORDINATOR");
+            assertThat(email.htmlBody()).contains("Accept invitation");
+            assertThat(email.actionUrl()).contains("/accept-invite");
+            assertThat(email.actionUrl()).contains("signature=");
+            assertThat(email.actionUrl()).contains("expiresAt=");
+            assertThat(email.agencyName()).isEqualTo("North Star Home Care");
+        });
 
         List<AuditEvent> auditEvents = auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(actorMembership.getId());
         assertThat(auditEvents).extracting(AuditEvent::getActionType).contains("USER_INVITED");

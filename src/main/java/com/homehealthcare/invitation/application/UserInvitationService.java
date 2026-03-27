@@ -11,6 +11,8 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.platform.email.SystemEmailTemplateService;
+import com.homehealthcare.platform.email.TemplatedEmail;
 import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
 import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.AgencyRole;
@@ -50,6 +52,7 @@ public class UserInvitationService {
     private final UserInvitationRepository userInvitationRepository;
     private final AuditEventRepository auditEventRepository;
     private final InvitationEmailSender invitationEmailSender;
+    private final SystemEmailTemplateService systemEmailTemplateService;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
@@ -94,12 +97,23 @@ public class UserInvitationService {
                 token,
                 expiresAt));
 
+        TemplatedEmail templatedEmail = systemEmailTemplateService.composeInvitationEmail(
+                actorMembership.getAgency().getName(),
+                user.getFirstName(),
+                membership.getRole().name(),
+                token,
+                expiresAt);
+
         invitationEmailSender.send(new InvitationEmailSender.InvitationEmail(
                 invitation.getId(),
                 invitation.getAgencyId(),
                 normalizedEmail,
-                token,
-                expiresAt));
+                templatedEmail.subject(),
+                templatedEmail.textBody(),
+                templatedEmail.htmlBody(),
+                templatedEmail.actionUrl(),
+                expiresAt,
+                actorMembership.getAgency().getName()));
 
         auditEventRepository.save(AuditEvent.create(
                 ACTOR_TYPE_AGENCY_MEMBERSHIP,
