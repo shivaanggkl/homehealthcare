@@ -1,0 +1,1331 @@
+I’m turning this into a real product kickoff, not a generic idea dump. I’m pulling from your uploaded demo material first, then I’ll layer in current market reality and turn it into a clean product definition tech can actually build from.
+
+I’ve already pulled the transcript. Next I’m checking the screenshots directly so the product definition reflects the actual workflow and UI pain points you captured, not guesses.
+
+Thought for 5m 30s
+
+Yes. Here is the real Phase 0 / Phase 1 product package.
+
+I am not treating WellSky as something to clone. I’m using your uploaded screenshots and transcript to extract the operating model, identify where the current category is bloated and painful, and then define a cleaner product wedge that can actually sell. The market case is strong because U.S. demographics keep pushing demand upward: by 2030 all baby boomers will be 65+, one in five Americans is projected to be retirement age, and by 2034 older adults are projected to outnumber children. Separately, Americans 65+ were already 17.3% of the population in 2022 and are projected to reach 22% by 2040. CMS also continues to raise operational complexity through ongoing payment-rule changes and reporting requirements; for example, its current projections run through 2033, 2026 home health payment policy was updated again, and all-payer OASIS collection became mandatory effective 7/1/2025.
+
+What your WellSky material shows very clearly is that this category is not “just scheduling software.” It is really one operating system made up of a task inbox/hotbox, visit verification, patient charting, episode management, care planning, communication, QA review, orders management, compliance tracking, and billing dependencies. The transcript repeatedly shows Hotbox as the center of daily work, with task states, visit verification, sticky-note style coordination, missed-visit handling, electronic signatures, QA return loops, patient chart/episode manager, master calendar, communication notes, COP checklist, orders manager, and progress-to-goals workflows.
+
+Your screenshots reinforce the same thing visually: dense tables, multi-step modal workflows, separate worksheet screens, print-preview heavy pages, fragmented status management, and very little role-based simplicity. The product is powerful, but the experience is operationally expensive.
+
+So the right move is not “build a better WellSky UI.” The right move is:
+
+Build an agency operating system for home-based care, starting with daily operations and field execution, then layering compliance and revenue workflows in controlled phases.
+
+1) Thinking & Ideation
+Product thesis
+
+Home-based care agencies do not mainly suffer from lack of features. They suffer from:
+
+fragmented workflows
+poor field execution visibility
+slow documentation
+scheduling chaos
+weak communication
+compliance friction
+billing delays caused by upstream operational mistakes
+
+Your product should be positioned as:
+
+“The operating system for small and mid-size home-based care agencies.”
+
+Not EHR-first.
+Not billing-first.
+Not feature-bloat-first.
+
+It should win on:
+
+speed to onboard
+mobile-first field execution
+operational clarity
+workflow automation
+clean role-based UX
+Hard truth on market entry
+
+If you try to launch first as a full Medicare-heavy skilled home health platform, you will slow yourself down badly. The reason is obvious from both your WellSky research and current CMS reality: OASIS, physician orders, care plans, QA loops, billing dependencies, and yearly payment/policy changes make this a deep compliance product, not a simple SaaS.
+
+Recommended initial wedge
+
+Start with agencies that feel the pain most and can switch fastest:
+
+Beachhead ICP
+
+10–150 caregiver agencies
+private-duty home care, Medicaid waiver, light skilled, hybrid agencies
+owner-led or operations-led teams
+currently using spreadsheets, texting, phone calls, and fragmented tools
+underserved by enterprise-heavy software
+Jobs to be done
+
+For an agency owner:
+
+“Help me run daily operations without constant fires.”
+
+For a scheduler:
+
+“Help me fill every visit with the right caregiver fast.”
+
+For a caregiver:
+
+“Show me where to go, what to do, and let me finish documentation quickly.”
+
+For a clinical/QA lead:
+
+“Catch issues before they become compliance or billing problems.”
+
+For billing/admin:
+
+“Make sure visits, documentation, and signatures are complete so money is not delayed.”
+Product vision
+
+One system for staffing, visits, communication, documentation, compliance readiness, and revenue readiness across home-based care.
+
+Product principles
+Field-first, not office-first
+The caregiver app is not a side feature. It is the center of truth for actual care delivery.
+Workflow compression
+If WellSky needs five screens, your product should need one or two.
+Role-based clarity
+Owners, schedulers, caregivers, QA, and billing should not see the same clutter.
+Revenue begins upstream
+Billing problems usually start with scheduling, documentation, signatures, and missed visits.
+Configurability without chaos
+Agencies need flexibility, but not an admin nightmare.
+Compliance by design
+Auditability, task completion, exception handling, and traceability should be built in.
+2) Research & Analysis
+What the current category gets wrong
+
+From your WellSky material, the category is organized around system internals, not around user outcomes. Hotbox, episode manager, orders manager, COP checklist, and progress-to-goals all exist for valid reasons, but they are exposed to users in a way that feels like they are operating the software’s architecture instead of doing care operations.
+
+Category insight from the uploaded WellSky demo
+
+These are the actual workflow pillars visible in your materials:
+
+Daily task orchestration through Hotbox/task queues and statuses.
+Visit proof and signature capture through visit verification.
+Patient/episode-centric operations through chart, calendar, supplies, meds, and messages.
+Communication and coordination through structured notes and recipient groups.
+Compliance execution through COP checklist, OASIS, plan of care, and QA review.
+Revenue readiness through orders tracking and physician-signature dependencies that can block final billing.
+Clinical progression tracking through goals/interventions.
+
+That means your product has to cover six domains:
+
+Workforce ops
+Care delivery execution
+Clinical documentation
+Coordination
+Compliance
+Revenue readiness
+Strategic gap in the market
+
+The biggest gap is not lack of software. It is lack of a system that is:
+
+simple enough for smaller agencies
+mobile-first for field staff
+operational enough for schedulers
+structured enough for QA/compliance
+modular enough to grow into billing and skilled workflows later
+Key business decision
+
+Do not market this initially as “full enterprise home health platform.”
+
+Market it as:
+
+Agency Operations + Care Delivery Platform
+
+Then expand toward:
+
+compliance suite
+clinical workflows
+revenue cycle
+ecosystem integrations
+3) Documenting & Defining
+3A. Product scope definition
+Phase 1 product category
+
+Agency OS for Home-Based Care
+
+Core modules:
+
+scheduling
+caregiver mobile app
+visit tracking / EVV / proof of visit
+patient/client records
+care tasks and visit notes
+messaging and alerts
+QA / review queue
+compliance-ready audit trail
+basic invoicing / payroll support hooks
+Phase 2 modules
+skilled documentation
+care plans
+goals/interventions
+wound/infection tracking
+physician orders
+QA workflow enhancements
+branch management
+Phase 3 modules
+Medicare/Medicaid billing
+claim generation
+remittance/denials
+payer rules
+advanced reporting
+physician/family/referral portals
+integrations ecosystem
+3B. Who this is for
+Primary users
+Agency owner / operator
+Scheduler / coordinator
+Caregiver / nurse / aide / therapist
+QA / clinical reviewer
+Billing / back-office user
+Secondary users
+Family/contact
+Physician/referral partner
+Recruiter/admin
+External compliance reviewer
+3C. Core product workflows
+Workflow 1: Intake to first visit
+
+Referral or new client arrives → patient/client profile created → care needs entered → payer/service type selected → care team eligibility checked → first visit scheduled → caregiver notified.
+
+Workflow 2: Daily scheduling and fulfillment
+
+Scheduler views open demand → system suggests best caregiver → conflict and travel checks → visit assigned → caregiver confirms → reminders sent.
+
+Workflow 3: Field execution
+
+Caregiver opens mobile app → sees route and visit details → checks in with GPS/time proof → follows care task checklist → records notes/photos/signature → checks out → exceptions flagged instantly.
+
+Workflow 4: Exception handling
+
+Missed visit / late check-in / signature missing / task incomplete / incident / infection / escalation → routed to coordinator or QA with SLA.
+
+Workflow 5: Review and revenue readiness
+
+Visit completed → QA checks completeness → required signatures/orders/docs validated → ready for invoicing/claim workflow.
+
+3D. Domain objects for tech
+
+This is the initial domain model tech should build around:
+
+Agency
+Branch
+User
+Role
+Caregiver Profile
+Patient/Client
+Contact / Family
+Payer
+Service Line
+Visit
+Schedule Block
+Availability
+Shift / Route
+Task Template
+Care Plan
+Visit Note
+QA Review
+Signature / EVV Event
+Order
+Incident
+Infection Log
+Wound Record
+Attachment
+Alert / Notification
+Invoice / Claim
+Audit Event
+3E. Product architecture definition
+Surfaces
+Admin web app
+Caregiver mobile app
+Optional family/physician portal later
+API layer for integrations
+Platform capabilities
+RBAC
+event/audit tracking
+workflow engine
+notification engine
+document engine
+reporting layer
+integration layer
+4) Product strategy: what to build first
+The right first sellable package
+
+Version 1: Agency Operations Core
+
+scheduling
+caregiver mobile app
+visit verification
+notes/tasks
+messaging
+incident/missed visit handling
+basic QA review
+reporting dashboard
+
+That is sellable.
+
+What not to build in V1
+full Medicare claims engine
+complete OASIS replacement
+every clinical specialty workflow
+complex accounting
+every payer rule
+broad EHR interoperability
+
+Those come later.
+
+5) Feature definition to hand to tech
+
+Below is the feature structure engineering should receive.
+
+Epic 1: Identity, security, and tenancy
+
+Features:
+
+multi-tenant agency setup
+branch/location support
+role-based access
+MFA
+audit logs
+HIPAA-safe session controls
+user invite and deactivation
+
+Why it matters:
+This is foundational for a sellable healthcare SaaS.
+
+Epic 2: Agency setup and configuration
+
+Features:
+
+agency profile
+service lines
+visit types
+caregiver skills/certifications
+task templates
+documentation templates
+branch policies
+alert rules
+mileage/pay settings
+Epic 3: Patient / client management
+
+Features:
+
+patient demographics
+contacts and emergency contacts
+address and geo-location
+service eligibility
+diagnoses / conditions
+payer linkage
+allergies / medications later phase
+episode / service authorization tracking
+document attachments
+
+Derived from your source:
+WellSky organizes work around a patient chart / episode manager with demographics, episodes, messages, supplies, meds, and print-ready summaries.
+
+Epic 4: Caregiver workforce management
+
+Features:
+
+caregiver profile
+credentials/licensure
+availability
+preferred geography
+language
+skills
+shift preferences
+PTO/unavailability
+performance indicators
+Epic 5: Scheduling engine
+
+Features:
+
+day/week/month schedule views
+drag-and-drop assignment
+caregiver-patient matching
+conflict detection
+overtime and overlap checks
+travel-time awareness
+recurring visits
+open-shift pool
+rescheduling workflow
+cancellation workflow
+
+Derived from your source:
+Scheduling, master calendar, visit frequencies, and task-state visibility are central category workflows.
+
+Epic 6: Caregiver mobile app
+
+Features:
+
+secure login
+today’s visits
+route/order of visits
+patient summary
+care instructions
+start visit / end visit
+GPS proof
+offline-first support
+signature capture
+task checklist
+quick notes
+photo uploads
+incident flagging
+message center
+
+Derived from your source:
+Visit verification and field execution are explicit workflow anchors in the demo.
+
+Epic 7: Visit execution and EVV
+
+Features:
+
+clock-in / clock-out
+GPS + timestamp verification
+device metadata
+geofence tolerance rules
+patient/caregiver signature
+missed-visit workflow
+exception reason capture
+supervisor notification
+order/escalation creation on exceptions
+
+Derived from your source:
+The transcript shows patient signature capture, location/time verification, and missed-visit documentation tied to follow-up actions.
+
+Epic 8: Notes, forms, and task completion
+
+Features:
+
+visit note templates by visit type
+structured tasks and free text
+required-field enforcement
+quick save / draft handling
+attachments/photos
+reusable task libraries
+printable summaries
+role-based forms
+
+Derived from your source:
+WellSky relies heavily on note states, worksheet-style data entry, and template-driven forms.
+
+Epic 9: Messaging and coordination
+
+Features:
+
+in-app secure messaging
+patient-level communication threads
+staff groups
+branch broadcasts
+visit-specific notes
+escalation tags
+read receipts
+task-linked discussion threads
+
+Derived from your source:
+The transcript shows communication notes, care-team recipients, and patient-specific messaging as a built-in coordination model.
+
+Epic 10: QA / review workspace
+
+Features:
+
+review queue
+returned-for-fix workflow
+approve / reject / request-signoff
+completeness checks
+missing-field detection
+exception queue
+audit trail of edits
+role-based review assignment
+
+Derived from your source:
+Hotbox status transitions and QA review loops are a core part of how work becomes billable.
+
+Epic 11: Clinical compliance workspace
+
+Features:
+
+care-plan completeness checklist
+required documentation tracking
+consent/right-to-care acknowledgments
+certification period awareness
+patient risk reminders
+compliance status dashboard
+
+Derived from your source:
+COP checklist and OASIS-linked workflow are category-critical, even if you do not build full skilled-home-health compliance in V1.
+
+Epic 12: Incident, infection, and wound workflows
+
+Features:
+
+incident logging
+infection log
+wound record
+attachments/photos
+follow-up owner
+due dates
+escalation and alerts
+longitudinal history
+
+Derived from your screenshots and transcript:
+These are clearly part of real agency operations and should become structured workflows, not random notes.
+
+Epic 13: Goals, tasks, and care progression
+
+Features:
+
+goal templates
+interventions/tasks
+target dates
+completed / unmet / not attained states
+progress notes
+version history
+care-plan sync
+
+Derived from your source:
+WellSky’s progress-to-goals workflow is valuable, but your version should be simpler and not buried in old-school screens.
+
+Epic 14: Revenue readiness and basic financial ops
+
+For early version:
+
+visit completion validation
+signed visit validation
+exception flags
+export-ready invoices/payroll data
+authorization usage
+payer/service summary
+
+Later:
+
+claim generation
+physician signature tracking
+denial worklists
+remittance posting
+
+Derived from your source:
+Orders and signatures can block final billing; this is exactly why revenue readiness has to exist upstream.
+
+Epic 15: Dashboard and analytics
+
+Features:
+
+today’s visits
+unfilled visits
+late starts
+missed visits
+documentation aging
+QA backlog
+caregiver utilization
+branch performance
+revenue readiness count
+compliance exceptions
+6) Release plan
+Release 1: Sellable MVP
+
+Build:
+
+auth / RBAC
+agency config
+patient records
+caregiver records
+scheduling board
+caregiver mobile app
+EVV / GPS proof
+notes/tasks
+messaging
+missed-visit handling
+basic QA queue
+dashboards
+
+Outcome:
+You can sell to smaller agencies as an operations platform.
+
+Release 2: Clinical operations expansion
+
+Build:
+
+care plans
+structured assessments
+goal/intervention engine
+wound/infection workflows
+document templates
+compliance checklist engine
+branch-specific rules
+
+Outcome:
+You move into more clinically mature agencies.
+
+Release 3: Revenue cycle and skilled home health depth
+
+Build:
+
+physician orders
+signature management
+billing rules engine
+claims pipeline
+denials
+payer integrations
+full compliance workflows
+
+Outcome:
+You compete more directly with the enterprise category.
+
+7) What makes this 10x better
+
+Not more features. Better system shape.
+
+Your real differentiators should be:
+
+1. Mobile-first field execution
+The caregiver app should feel like modern consumer software, not a mini-desktop.
+
+2. Unified operational command center
+WellSky has Hotbox, Episode Manager, Orders Manager, COP checklist, and multiple separate screens. Your system should unify these into a role-based command center.
+
+3. Exception-first design
+Missed visit, no signature, patient unavailable, late caregiver, incomplete note, incident, infection, and missing order should become structured exceptions with ownership and SLAs.
+
+4. Revenue-readiness layer
+Don’t wait until billing to discover operational failure.
+
+5. Modular maturity
+Small agencies can start with scheduling/mobile/EVV, then turn on clinical and billing modules later.
+
+8) What tech needs as the next input package
+
+At this point, engineering should receive:
+
+product vision
+ICP and wedge
+user roles
+epics
+workflows
+scope by release
+core domain objects
+non-functional expectations
+Non-functional requirements tech should already assume
+HIPAA-ready architecture
+full audit log for every critical change
+role-based access
+offline-tolerant mobile execution
+reliable notifications
+attachment storage
+activity/event timeline per visit and patient
+exportability
+configurable task/form engine
+branch-level isolation where needed
+9) Final recommendation
+
+The strongest path is:
+
+Start as the operating system for small and mid-size home-based care agencies, not as a full Medicare-heavy replacement on day one.
+
+That is the commercial wedge.
+
+Then grow into:
+
+clinical depth
+compliance depth
+billing depth
+ecosystem depth
+
+That is how you build something real instead of getting buried under enterprise-compliance scope too early.
+
+The next correct step is to convert this into:
+PRD + module-wise backlog + sprint-ready stories + system architecture + DB schema + admin web/mobile screen map.
+
+Epic 1: Identity, Security, and Tenancy
+Epic goal
+
+Build the secure foundation so that:
+
+one agency cannot see another agency’s data
+branches can be separated cleanly
+users can be invited, activated, deactivated, and managed
+role-based access is enforced in backend and UI
+MFA and session security are in place
+all critical actions are auditable
+Scope assumptions for Epic 1
+
+These are the product decisions I recommend locking now so engineering is not guessing.
+
+Recommended decisions
+Tenant = Agency
+Branch belongs to one Agency
+User belongs to one Agency initially
+A user may belong to multiple branches within that agency
+RBAC = role + permissions matrix
+Branch-scoped permissions supported from day one
+Auth = email/password + MFA
+SSO/SAML comes later
+Tenancy model = shared database, shared schema, agency_id on all business entities
+Backend enforces tenant isolation, not just frontend hiding
+Audit logging starts now, not later
+Initial roles
+Internal Super Admin
+Agency Owner
+Branch Admin
+Scheduler / Coordinator
+Caregiver
+QA / Clinical Reviewer
+Billing / Back Office
+Read-only Auditor
+Story breakdown
+
+I’m breaking this into workstreams so tech can build it cleanly.
+
+Workstream A — Architecture & foundation
+E1-S01 — Define tenancy model
+
+Story
+As a platform architect, I want a clear multi-tenant model so the system can safely support many agencies.
+
+Acceptance criteria
+
+Tenant is defined as Agency
+Branch is defined as child of Agency
+User membership is defined at Agency level
+Branch assignments are defined separately
+ERD is updated and approved
+Naming conventions and IDs are finalized
+
+Notes
+This is a design story, but it must be explicit before coding starts.
+
+E1-S02 — Create agency entity and lifecycle
+
+Story
+As the platform, I need an Agency entity so each customer has a separate tenant container.
+
+Acceptance criteria
+
+Agency table/entity exists
+Fields include: id, name, slug, status, timezone, contact_email, created_at, updated_at
+Status supports at least: active, suspended, inactive
+Slug must be unique
+Agency can be soft-deactivated
+E1-S03 — Create branch entity and lifecycle
+
+Story
+As an agency admin, I want to manage branches so users and operations can be scoped correctly.
+
+Acceptance criteria
+
+Branch table/entity exists
+Branch belongs to exactly one agency
+Fields include: id, agency_id, name, code, address, timezone, status
+Branch can be active/inactive
+Branch name/code uniqueness is enforced within agency
+E1-S04 — Add tenant and branch scoping fields to all core future entities
+
+Story
+As the system, I need tenant-aware data design so future modules inherit isolation automatically.
+
+Acceptance criteria
+
+agency_id pattern is defined for all tenant-owned domain entities
+branch_id pattern is defined for branch-owned or branch-scoped entities
+engineering standard document exists for all new tables/entities
+migration pattern is documented
+E1-S05 — Define internal super admin model
+
+Story
+As the product operator, I need an internal admin role to provision and support agencies without breaking tenant isolation.
+
+Acceptance criteria
+
+Internal Super Admin role exists outside agency tenant membership
+Internal admin can create agencies and bootstrap first agency owner
+Internal admin actions are audited
+Internal admin cannot silently bypass audit
+Workstream B — Tenant isolation
+E1-S06 — Implement backend tenant context resolution
+
+Story
+As the backend, I need to resolve the current agency context on every authenticated request so data access is always scoped correctly.
+
+Acceptance criteria
+
+Authenticated requests resolve agency context from user membership/session/token
+Agency context is available in service layer
+Cross-agency access attempts fail
+Tenant context is test-covered
+E1-S07 — Enforce tenant isolation in repository/query layer
+
+Story
+As the platform, I want tenant filtering enforced below the controller layer so developers cannot accidentally leak data.
+
+Acceptance criteria
+
+Standard repository/service pattern always filters by agency_id
+Cross-tenant records are inaccessible even with guessed IDs
+Security tests exist for ID enumeration attempts
+Engineering guardrails are documented
+E1-S08 — Enforce branch scoping rules
+
+Story
+As an agency admin, I want branch-level isolation so users only see data for assigned branches when applicable.
+
+Acceptance criteria
+
+User can be assigned to one or many branches
+Branch-scoped roles only see permitted branches
+Agency Owner can see all agency branches
+Cross-branch restrictions work in API tests
+Workstream C — Identity & user lifecycle
+E1-S09 — Create user account model
+
+Story
+As the system, I need a user entity so people can authenticate and be managed securely.
+
+Acceptance criteria
+
+User entity exists with fields: id, first_name, last_name, email, phone, status, last_login_at
+Email uniqueness is enforced globally or per design decision
+User status supports: invited, active, locked, suspended, deactivated
+Soft delete/deactivation supported
+E1-S10 — Create agency membership model
+
+Story
+As the system, I need user-agency membership records so access is explicitly granted.
+
+Acceptance criteria
+
+Membership links user to agency
+Membership stores role assignment metadata
+Membership status can be active/inactive
+A user cannot operate in an agency without membership
+E1-S11 — Create user-branch assignment model
+
+Story
+As the system, I need user-branch assignments so branch visibility can be controlled cleanly.
+
+Acceptance criteria
+
+User can be assigned to one or multiple branches
+Assignments can be activated/deactivated
+UI and API can resolve assigned branches
+Branch-restricted users cannot access unassigned branches
+E1-S12 — Invite user to agency
+
+Story
+As an agency admin, I want to invite a user by email so I can onboard staff without manual account creation.
+
+Acceptance criteria
+
+Admin can send invite by email
+Invite captures role and optional branch assignments
+Invite token expires
+Duplicate invite behavior is defined
+Invite action is audited
+E1-S13 — Accept invitation and set password
+
+Story
+As an invited user, I want to accept my invite and create my credentials so I can access the platform securely.
+
+Acceptance criteria
+
+Invite link opens secure accept-invite flow
+User sets password and confirms profile basics
+Expired/invalid invite token is handled cleanly
+User status changes from invited to active after completion
+Acceptance is audited
+E1-S14 — Activate/deactivate/suspend user
+
+Story
+As an agency admin, I want to change a user’s status so I can control access immediately.
+
+Acceptance criteria
+
+Admin can activate, suspend, lock, or deactivate user
+Deactivated users cannot sign in
+Suspended users lose active sessions
+Status changes are audited with actor and timestamp
+E1-S15 — View user directory
+
+Story
+As an agency admin, I want a user directory so I can manage staff accounts efficiently.
+
+Acceptance criteria
+
+Admin can search/filter users by status, role, branch
+List shows invite status, last login, MFA status
+Only permitted admins can access directory
+Pagination exists
+E1-S16 — Edit user profile and assignments
+
+Story
+As an agency admin, I want to update a user’s role, branches, and basic details so staff changes can be managed without support.
+
+Acceptance criteria
+
+Admin can edit user name, phone, role, branch assignments
+Restricted fields are protected
+Changes are audited
+Permission checks enforced
+E1-S17 — User self-service profile
+
+Story
+As a user, I want to update my own basic profile details so my account stays current.
+
+Acceptance criteria
+
+User can edit own name, phone, preferred language, time zone
+User cannot elevate own role
+Changes are audited
+Validation is enforced
+Workstream D — Authentication
+E1-S18 — Email/password login
+
+Story
+As a user, I want to log in securely so I can access the platform.
+
+Acceptance criteria
+
+Login supports email + password
+Invalid credentials return safe generic error
+Locked/suspended/deactivated users cannot log in
+Successful login creates session/token set
+Login event is audited
+E1-S19 — Logout
+
+Story
+As a user, I want to log out so my session is closed securely.
+
+Acceptance criteria
+
+Logout terminates current session
+Access token/refresh token/session cookie is invalidated
+Logout event is audited
+User is redirected correctly
+E1-S20 — Forgot password
+
+Story
+As a user, I want to request a password reset so I can regain access without admin help.
+
+Acceptance criteria
+
+Password reset request can be initiated by email
+Reset token expires
+Response does not reveal whether email exists
+Password reset is audited
+E1-S21 — Reset password
+
+Story
+As a user, I want to set a new password using a secure reset flow so I can sign in again.
+
+Acceptance criteria
+
+Valid reset token required
+Password policy enforced
+Existing sessions can optionally be revoked
+Reset event is audited
+E1-S22 — Change password while logged in
+
+Story
+As a user, I want to change my password from settings so I can maintain account security.
+
+Acceptance criteria
+
+Current password required
+New password policy enforced
+Password change invalidates other sessions if configured
+Password change audited
+E1-S23 — Failed login protection
+
+Story
+As the platform, I need to protect against brute-force attempts so account compromise is harder.
+
+Acceptance criteria
+
+Failed attempts are tracked
+Threshold-based temporary lockout is enforced
+Rate limiting is applied
+Security events are logged
+Lockout behavior is configurable
+Workstream E — MFA
+E1-S24 — MFA enrollment
+
+Story
+As a user, I want to enroll MFA so my account has stronger protection.
+
+Acceptance criteria
+
+TOTP-based MFA enrollment supported
+Recovery codes generated and shown once
+Enrollment requires recent password re-auth
+MFA status visible in account settings
+E1-S25 — MFA challenge on login
+
+Story
+As the platform, I want to require MFA for protected users so login security is stronger.
+
+Acceptance criteria
+
+MFA challenge appears after correct password
+TOTP validation works
+Recovery code fallback works
+Agency policy can require MFA for all users or only certain roles
+E1-S26 — Admin visibility into MFA status
+
+Story
+As an agency admin, I want to see who has MFA enabled so I can enforce security policy.
+
+Acceptance criteria
+
+User directory shows MFA enabled/disabled
+MFA enforcement setting exists
+Admin cannot see secret keys
+Any admin actions related to MFA are audited
+Workstream F — Authorization / RBAC
+E1-S27 — Define role-permission matrix
+
+Story
+As the product team, I need a formal permission model so access is consistent and testable.
+
+Acceptance criteria
+
+Roles and permissions are documented
+CRUD permissions are defined per module area
+Branch-scoped vs agency-wide permissions are defined
+Matrix approved before implementation
+E1-S28 — Implement backend authorization guards
+
+Story
+As the platform, I need backend permission enforcement so unauthorized actions are blocked regardless of UI.
+
+Acceptance criteria
+
+Permission checks exist at service/controller layer
+Unauthorized actions return 403
+Sensitive operations require explicit permissions
+Unit/integration tests cover key denial paths
+E1-S29 — Implement frontend route/view authorization
+
+Story
+As the UI, I need permission-aware navigation so users only see what they are allowed to use.
+
+Acceptance criteria
+
+Menu items/routes hidden or disabled based on permission
+Deep links still blocked by backend if forced
+Role-based home/dashboard routing supported
+Unauthorized screens show controlled error state
+E1-S30 — Role assignment and reassignment
+
+Story
+As an agency admin, I want to assign and change roles so I can reflect staffing responsibilities correctly.
+
+Acceptance criteria
+
+Admin can assign roles during invite and later edit
+Role changes take effect immediately or on next token refresh
+Privileged role changes require elevated permission
+Role changes are audited
+E1-S31 — Branch-aware permission evaluation
+
+Story
+As the platform, I need permissions evaluated with branch scope so branch-limited users cannot operate outside assignment.
+
+Acceptance criteria
+
+Scheduler limited to Branch A cannot view/edit Branch B records
+Agency-wide roles bypass branch restriction where intended
+Tests cover single-branch and multi-branch cases
+Workstream G — Session & application security
+E1-S32 — Secure session/token strategy
+
+Story
+As the platform, I need a secure session model so authenticated access is hard to hijack.
+
+Acceptance criteria
+
+Token/session strategy is finalized
+Web uses secure, HTTP-only cookie or approved equivalent
+Refresh strategy defined
+Token expiration is enforced
+Security design documented
+E1-S33 — Idle timeout and absolute timeout
+
+Story
+As the platform, I need session timeouts so unattended access is minimized.
+
+Acceptance criteria
+
+Idle timeout configurable
+Absolute max session duration configurable
+Warning prompt shown before forced logout
+Timeout events are logged
+E1-S34 — View and revoke active sessions
+
+Story
+As a user, I want to view my active sessions so I can revoke suspicious access.
+
+Acceptance criteria
+
+User can view current/recent sessions
+User can revoke non-current sessions
+Admin can revoke a user’s sessions when deactivating account
+Revocation events are audited
+E1-S35 — Security headers and baseline hardening
+
+Story
+As the platform, I need baseline web security protections so common web attack surface is reduced.
+
+Acceptance criteria
+
+Security headers configured
+CSRF strategy defined if cookie-based auth is used
+CORS locked down by environment
+Sensitive cookies marked secure/same-site
+No secrets exposed to frontend
+E1-S36 — Password policy enforcement
+
+Story
+As the platform, I need a real password policy so credential security meets baseline expectations.
+
+Acceptance criteria
+
+Minimum length and complexity rules enforced
+Common/breached password checks supported if implemented
+Reuse policy defined
+Policy visible to user during setup/change flows
+Workstream H — Audit & compliance foundation
+E1-S37 — Create audit event model
+
+Story
+As the platform, I need a unified audit event structure so all critical actions can be traced.
+
+Acceptance criteria
+
+Audit event schema exists
+Includes actor, action, target_type, target_id, agency_id, branch_id, timestamp, metadata
+Supports success/failure events
+Storage and retention approach documented
+E1-S38 — Audit authentication events
+
+Story
+As the platform, I need login-related events recorded so access activity is traceable.
+
+Acceptance criteria
+
+Successful login logged
+Failed login logged
+Logout logged
+Password reset/change logged
+MFA enrollment/challenge events logged
+E1-S39 — Audit admin/security actions
+
+Story
+As the platform, I need administrative actions recorded so changes to access can be reviewed later.
+
+Acceptance criteria
+
+Invite sent
+Invite accepted
+User activated/deactivated
+Role changed
+Branch assignment changed
+MFA enforcement changed
+Agency/branch changes logged
+E1-S40 — Build audit log viewer
+
+Story
+As an authorized admin or auditor, I want to search audit logs so I can review sensitive changes and sign-in activity.
+
+Acceptance criteria
+
+Audit log screen exists
+Filter by date range, actor, action type, target user
+Export support can be basic CSV
+Access limited to authorized roles only
+Workstream I — Admin settings & controls
+E1-S41 — Agency settings screen
+
+Story
+As an agency owner, I want to manage basic agency information so tenant setup is self-service.
+
+Acceptance criteria
+
+Agency name, contact info, timezone editable
+Only permitted roles can edit
+Changes are audited
+E1-S42 — Branch management screen
+
+Story
+As an agency admin, I want to create and manage branches so org structure is reflected in the system.
+
+Acceptance criteria
+
+Create/edit/disable branch supported
+Branch list searchable
+Prevent deleting branch with active dependencies unless handled
+Changes audited
+E1-S43 — Security settings screen
+
+Story
+As an agency owner, I want to control security policies so the agency can enforce its standards.
+
+Acceptance criteria
+
+MFA required toggle available
+Session timeout values configurable within safe limits
+Password policy display available
+Policy changes audited
+Workstream J — Notifications & operational support
+E1-S44 — Invite and security email templates
+
+Story
+As the platform, I need branded and secure system emails so user onboarding and security flows work properly.
+
+Acceptance criteria
+
+Invite email template exists
+Password reset email template exists
+Security alert email template exists if configured
+Templates support agency branding later
+Links are signed and expire
+E1-S45 — Admin notification on critical account events
+
+Story
+As an agency admin, I want visibility into critical access events so I can react quickly.
+
+Acceptance criteria
+
+Optional notifications for repeated failed login, locked account, new admin created
+Delivery preferences configurable
+Events are audited
+Workstream K — QA, testing, and release hardening
+E1-S46 — Automated test coverage for tenancy
+
+Story
+As engineering, I need automated tests for tenant isolation so regressions do not leak data.
+
+Acceptance criteria
+
+API tests cover cross-tenant denial
+Branch-scoping tests cover denied access
+Tests run in CI
+E1-S47 — Automated test coverage for auth and MFA
+
+Story
+As engineering, I need authentication tests so core sign-in and security flows are stable.
+
+Acceptance criteria
+
+Login/logout tests
+Invite/accept flow tests
+Password reset tests
+MFA enrollment/challenge tests
+Lockout tests
+E1-S48 — Security review checklist before production readiness
+
+Story
+As the product team, I want a formal security readiness review so Epic 1 is not “done” only in code.
+
+Acceptance criteria
+
+Checklist covers session security, secrets handling, auditability, RBAC, error leakage
+High-risk findings resolved
+Sign-off captured
+Recommended implementation order
+
+This is the order I’d run it in.
+
+Phase A — foundation first
+E1-S01 to E1-S08
+Phase B — user lifecycle
+E1-S09 to E1-S17
+Phase C — auth + MFA
+E1-S18 to E1-S26
+Phase D — RBAC
+E1-S27 to E1-S31
+Phase E — session/security hardening
+E1-S32 to E1-S36
+Phase F — audit + admin controls
+E1-S37 to E1-S45
+Phase G — test + hardening
+E1-S46 to E1-S48
+Minimum shippable subset for Epic 1
+
+If you want the strict MVP version of Epic 1, the true must-haves are:
+
+E1-S01 to E1-S08
+E1-S09 to E1-S16
+E1-S18 to E1-S25
+E1-S27 to E1-S31
+E1-S32 to E1-S36
+E1-S37 to E1-S40
+E1-S46 to E1-S48
+
+That gives you a real secure tenant foundation.
+
+What is intentionally not in Epic 1
+
+Keep these out for now:
+
+SSO / SAML
+SCIM provisioning
+social login
+biometric auth
+advanced policy engine
+attribute-based access control
+delegated physician/family portal access
+consent management
+fine-grained PHI field masking
+cross-agency shared staff model
+
+Those can come later.
+
+Suggested engineering split
+Backend
+tenancy model
+auth
+MFA
+RBAC
+audit logging
+session controls
+Frontend web
+login/invite/reset flows
+user directory
+agency/branch settings
+role management
+audit viewer
+DevOps / Platform
+secrets
+email delivery
+security headers
+session storage
+logging
+monitoring
+environment config
+QA
+cross-tenant access tests
+auth flows
+privilege escalation tests
+audit validation
+Clean definition of done for Epic 1
+
+Epic 1 is done only when:
+
+data isolation is enforced in backend, not just UI
+agency admin can self-manage branches and users
+role-based access works in API and UI
+MFA is working
+session security is working
+critical actions are audited and searchable
+automated security regression tests exist
+
+Next, I can convert this into one of two formats:
+
+Jira-ready tickets with story points, priority, dependencies, and acceptance criteria
+Sprint 1 breakdown only for Epic 1 so engineering can start immediately

@@ -1,0 +1,59 @@
+erDiagram
+    AGENCIES ||--o{ BRANCHES : contains
+    USERS ||--o{ AGENCY_MEMBERSHIPS : holds
+    AGENCIES ||--o{ AGENCY_MEMBERSHIPS : grants_access_to
+    AGENCY_MEMBERSHIPS ||--o{ BRANCH_ASSIGNMENTS : has
+    BRANCHES ||--o{ BRANCH_ASSIGNMENTS : scopes_access_to
+
+    AGENCIES {
+        uuid id PK
+        string name
+        string slug UK
+        string status
+        string timezone
+        string contact_email
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BRANCHES {
+        uuid id PK
+        uuid agency_id FK
+        string name
+        string code
+        string timezone
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USERS {
+        uuid id PK
+        string first_name
+        string last_name
+        string email
+        string phone
+        string status
+        timestamp last_login_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    AGENCY_MEMBERSHIPS {
+        uuid id PK
+        uuid user_id FK
+        uuid agency_id FK
+        string role_key
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BRANCH_ASSIGNMENTS {
+        uuid id PK
+        uuid agency_membership_id FK
+        uuid branch_id FK
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
