@@ -31,23 +31,49 @@ public class EmailPasswordLoginService {
     private final UserAuthenticationPolicy userAuthenticationPolicy;
     private final SessionTokenService sessionTokenService;
     private final AuditEventRepository auditEventRepository;
+    private final LoginProtectionService loginProtectionService;
+    private final MfaPolicyService mfaPolicyService;
+    private final MfaLoginChallengeService mfaLoginChallengeService;
 
     @Transactional
     public LoginResult login(@Valid LoginCommand command) {
-        User user = userRepository.findByEmail(normalizeEmail(command.email()))
-                .orElseThrow(InvalidLoginCredentialsException::new);
+        String normalizedEmail = normalizeEmail(command.email());
+        String clientIpAddress = normalizeOptional(command.clientIpAddress());
+
+        loginProtectionService.assertLoginAllowed(normalizedEmail, clientIpAddress);
+
+        User user = userRepository.findByEmail(normalizedEmail)
+                .orElse(null);
+
+        if (user == null) {
+            loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, null, "INVALID_CREDENTIALS");
+            throw new InvalidLoginCredentialsException();
+        }
 
         if (!user.hasPasswordHash() || !passwordEncoder.matches(command.password(), user.getPasswordHash())) {
+            loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, user, "INVALID_CREDENTIALS");
             throw new InvalidLoginCredentialsException();
         }
 
         try {
             userAuthenticationPolicy.requireCanSignIn(user);
         } catch (UserSignInBlockedException exception) {
+            loginProtectionService.recordFailure(normalizedEmail, clientIpAddress, user, "BLOCKED_STATUS");
             throw new InvalidLoginCredentialsException();
         }
 
         user.recordLogin(OffsetDateTime.now());
+        loginProtectionService.recordSuccess(normalizedEmail, clientIpAddress, user);
+
+        boolean mfaRequired = user.isMfaEnabled() && mfaPolicyService.requiresMfa(user);
+        if (mfaPolicyService.requiresMfa(user) && !user.isMfaEnabled()) {
+            throw new MfaEnrollmentRequiredException();
+        }
+
+        if (mfaRequired) {
+            MfaLoginChallengeService.LoginChallengeResult challenge = mfaLoginChallengeService.createChallenge(user);
+            return LoginResult.mfaRequired(user.getId(), challenge.challengeToken(), challenge.expiresAt());
+        }
 
         SessionTokenService.IssuedSession issuedSession = sessionTokenService.issueFor(user);
 
@@ -62,7 +88,7 @@ public class EmailPasswordLoginService {
                 "{\"sessionId\":\"" + issuedSession.sessionId()
                         + "\",\"authenticationMethod\":\"EMAIL_PASSWORD\"}"));
 
-        return new LoginResult(
+        return LoginResult.authenticated(
                 user.getId(),
                 issuedSession.sessionId(),
                 issuedSession.accessToken(),
@@ -75,17 +101,45 @@ public class EmailPasswordLoginService {
         return email.trim().toLowerCase(Locale.ROOT);
     }
 
+    private static String normalizeOptional(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim();
+        return normalized.isBlank() ? null : normalized;
+    }
+
     public record LoginCommand(
             @NotBlank @Email String email,
-            @NotBlank String password) {
+            @NotBlank String password,
+            String clientIpAddress) {
     }
 
     public record LoginResult(
             java.util.UUID userId,
+            boolean mfaRequired,
+            String loginChallengeToken,
             java.util.UUID sessionId,
             String accessToken,
             OffsetDateTime accessTokenExpiresAt,
             String refreshToken,
             OffsetDateTime refreshTokenExpiresAt) {
+
+        static LoginResult authenticated(
+                java.util.UUID userId,
+                java.util.UUID sessionId,
+                String accessToken,
+                OffsetDateTime accessTokenExpiresAt,
+                String refreshToken,
+                OffsetDateTime refreshTokenExpiresAt) {
+            return new LoginResult(userId, false, null, sessionId, accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt);
+        }
+
+        static LoginResult mfaRequired(
+                java.util.UUID userId,
+                String loginChallengeToken,
+                OffsetDateTime challengeExpiresAt) {
+            return new LoginResult(userId, true, loginChallengeToken, null, null, challengeExpiresAt, null, null);
+        }
     }
 }

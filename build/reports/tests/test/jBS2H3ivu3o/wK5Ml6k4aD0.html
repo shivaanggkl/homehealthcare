@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.225s</div>
+<div class="counter">0.203s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,18 +85,25 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-loginWithValidEmailAndPasswordReturnsSessionTokenSetAndAudits()">2026-03-27T17:22:19.171-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
-2026-03-27T17:22:19.172-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:22:19.254-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
-2026-03-27T17:22:19.255-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.LoginController#login(LoginRequest)
-2026-03-27T17:22:19.256-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [LoginRequest[email=Alicia@Example.com, password=S3curePassword!]]
-2026-03-27T17:22:19.257-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.email=?
-2026-03-27T17:22:19.346-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
-2026-03-27T17:22:19.377-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
-2026-03-27T17:22:19.381-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [LoginResponse[userId=17a6514c-1b2a-43a9-add1-925351aae13a, sessionId=11111111-1111-1111-1111-1111111 (truncated)...]
-2026-03-27T17:22:19.389-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,metadata_json,occurred_at,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:22:19.391-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
-2026-03-27T17:22:19.391-05:00 DEBUG 15619 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.actor_id=? order by ae1_0.occurred_at
+<pre id="root-0-test-stdout-loginWithValidEmailAndPasswordReturnsSessionTokenSetAndAudits()">2026-03-27T17:41:28.714-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-27T17:41:28.715-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T17:41:28.800-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-27T17:41:28.801-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.LoginController#login(LoginRequest, HttpServletRequest)
+2026-03-27T17:41:28.801-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [LoginRequest[email=Alicia@Example.com, password=S3curePassword!]]
+2026-03-27T17:41:28.802-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.ip_address=? and ala1_0.attempted_at&gt;?
+2026-03-27T17:41:28.802-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.attempted_at&gt;?
+2026-03-27T17:41:28.803-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ala1_0.id,ala1_0.attempted_at,ala1_0.email,ala1_0.failure_reason,ala1_0.ip_address,ala1_0.outcome,ala1_0.user_id from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.outcome=? order by ala1_0.attempted_at desc fetch first ? rows only
+2026-03-27T17:41:28.804-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.outcome in (?) and ala1_0.attempted_at&gt;?
+2026-03-27T17:41:28.804-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.email=?
+2026-03-27T17:41:28.886-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ala1_0.id,ala1_0.attempted_at,ala1_0.email,ala1_0.failure_reason,ala1_0.ip_address,ala1_0.outcome,ala1_0.user_id from auth_login_attempts ala1_0 where ala1_0.id=?
+2026-03-27T17:41:28.893-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.user_id=? and am1_0.status=?
+2026-03-27T17:41:28.895-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-27T17:41:28.897-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T17:41:28.897-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [LoginResponse[userId=dbb70f56-8e4f-445b-a925-cba3310c0f66, mfaRequired=false, loginChallengeToken=nu (truncated)...]
+2026-03-27T17:41:28.908-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into auth_login_attempts (attempted_at,email,failure_reason,ip_address,outcome,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T17:41:28.909-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,metadata_json,occurred_at,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-27T17:41:28.909-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-27T17:41:28.909-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.actor_id=? order by ae1_0.occurred_at
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-loginWithValidEmailAndPasswordReturnsSessionTokenSetAndAudits()">Copy</button>
 </span>
@@ -111,7 +118,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 27, 2026, 5:22:24 PM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 27, 2026, 5:41:35 PM</p>
 </div>
 </div>
 </body>

@@ -60,6 +60,12 @@ public class User extends AuditableEntity {
     @Column(name = "mfa_enabled", nullable = false)
     private boolean mfaEnabled;
 
+    @Column(name = "mfa_secret", length = 64)
+    private String mfaSecret;
+
+    @Column(name = "mfa_enrolled_at")
+    private OffsetDateTime mfaEnrolledAt;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 32)
@@ -82,6 +88,8 @@ public class User extends AuditableEntity {
             String timeZone,
             String passwordHash,
             boolean mfaEnabled,
+            String mfaSecret,
+            OffsetDateTime mfaEnrolledAt,
             UserStatus status,
             OffsetDateTime lastLoginAt,
             OffsetDateTime deactivatedAt) {
@@ -94,6 +102,8 @@ public class User extends AuditableEntity {
         this.timeZone = timeZone;
         this.passwordHash = passwordHash;
         this.mfaEnabled = mfaEnabled;
+        this.mfaSecret = mfaSecret;
+        this.mfaEnrolledAt = mfaEnrolledAt;
         this.status = status;
         this.lastLoginAt = lastLoginAt;
         this.deactivatedAt = deactivatedAt;
@@ -167,8 +177,16 @@ public class User extends AuditableEntity {
         this.mfaEnabled = true;
     }
 
+    public void enrollMfa(String mfaSecret, OffsetDateTime enrolledAt) {
+        this.mfaSecret = normalizeOptional(mfaSecret);
+        this.mfaEnrolledAt = Objects.requireNonNull(enrolledAt, "enrolledAt must not be null");
+        this.mfaEnabled = true;
+    }
+
     public void disableMfa() {
         this.mfaEnabled = false;
+        this.mfaSecret = null;
+        this.mfaEnrolledAt = null;
     }
 
     @PrePersist

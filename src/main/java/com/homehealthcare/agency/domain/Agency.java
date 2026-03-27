@@ -1,6 +1,7 @@
 package com.homehealthcare.agency.domain;
 
 import com.homehealthcare.shared.persistence.AuditableEntity;
+import com.homehealthcare.security.branch.AgencyRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,8 +15,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -54,6 +58,14 @@ public class Agency extends AuditableEntity {
     @Column(name = "contact_email", nullable = false, length = 320)
     private String contactEmail;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mfa_policy_mode", nullable = false, length = 32)
+    private AgencyMfaPolicyMode mfaPolicyMode;
+
+    @Column(name = "mfa_required_roles", columnDefinition = "clob")
+    private String mfaRequiredRoles;
+
     @Column(name = "deactivated_at")
     private OffsetDateTime deactivatedAt;
 
@@ -65,6 +77,8 @@ public class Agency extends AuditableEntity {
             AgencyStatus status,
             String timezone,
             String contactEmail,
+            AgencyMfaPolicyMode mfaPolicyMode,
+            String mfaRequiredRoles,
             OffsetDateTime deactivatedAt) {
         this.id = id;
         this.name = name;
@@ -72,6 +86,8 @@ public class Agency extends AuditableEntity {
         this.status = status;
         this.timezone = timezone;
         this.contactEmail = contactEmail;
+        this.mfaPolicyMode = mfaPolicyMode;
+        this.mfaRequiredRoles = mfaRequiredRoles;
         this.deactivatedAt = deactivatedAt;
     }
 
@@ -83,7 +99,50 @@ public class Agency extends AuditableEntity {
                 .status(AgencyStatus.ACTIVE)
                 .timezone(timezone)
                 .contactEmail(contactEmail)
+                .mfaPolicyMode(AgencyMfaPolicyMode.OFF)
                 .build();
+    }
+
+    public void disableMfaRequirement() {
+        this.mfaPolicyMode = AgencyMfaPolicyMode.OFF;
+        this.mfaRequiredRoles = null;
+    }
+
+    public void requireMfaForAllUsers() {
+        this.mfaPolicyMode = AgencyMfaPolicyMode.ALL_USERS;
+        this.mfaRequiredRoles = null;
+    }
+
+    public void requireMfaForRoles(Set<AgencyRole> roles) {
+        Set<AgencyRole> normalizedRoles = new LinkedHashSet<>(Objects.requireNonNull(roles, "roles must not be null"));
+        if (normalizedRoles.isEmpty()) {
+            throw new IllegalArgumentException("At least one role must be configured for role-based MFA");
+        }
+        this.mfaPolicyMode = AgencyMfaPolicyMode.SELECTED_ROLES;
+        this.mfaRequiredRoles = normalizedRoles.stream()
+                .map(Enum::name)
+                .sorted()
+                .reduce((left, right) -> left + "," + right)
+                .orElse(null);
+    }
+
+    public boolean requiresMfaForRole(AgencyRole role) {
+        return switch (mfaPolicyMode) {
+            case OFF -> false;
+            case ALL_USERS -> true;
+            case SELECTED_ROLES -> requiredMfaRoles().contains(role);
+        };
+    }
+
+    public Set<AgencyRole> requiredMfaRoles() {
+        if (mfaRequiredRoles == null || mfaRequiredRoles.isBlank()) {
+            return Set.of();
+        }
+        return Arrays.stream(mfaRequiredRoles.split(","))
+                .map(String::trim)
+                .filter(value -> !value.isBlank())
+                .map(AgencyRole::valueOf)
+                .collect(java.util.stream.Collectors.toCollection(LinkedHashSet::new));
     }
 
     public void suspend() {
@@ -114,6 +173,12 @@ public class Agency extends AuditableEntity {
         slug = normalizeSlug(slug);
         timezone = normalizeTimezone(timezone);
         contactEmail = normalizeEmail(contactEmail);
+        if (mfaPolicyMode == null) {
+            mfaPolicyMode = AgencyMfaPolicyMode.OFF;
+        }
+        if (mfaPolicyMode != AgencyMfaPolicyMode.SELECTED_ROLES) {
+            mfaRequiredRoles = null;
+        }
     }
 
     private static String normalizeRequired(String value) {

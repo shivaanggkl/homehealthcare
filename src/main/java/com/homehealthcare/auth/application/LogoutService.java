@@ -21,13 +21,15 @@ public class LogoutService {
     private static final String DEFAULT_REDIRECT_TO = "/login?logout=success";
     private static final String ACTION_USER_LOGGED_OUT = "USER_LOGGED_OUT";
 
-    private final AuthSessionRepository authSessionRepository;
-    private final TokenHashingService tokenHashingService;
+    private final CurrentAuthSessionResolver currentAuthSessionResolver;
     private final AuditEventRepository auditEventRepository;
 
     @Transactional
     public LogoutResult logout(LogoutCommand command) {
-        Optional<AuthSession> session = resolveActiveSession(command);
+        Optional<AuthSession> session = currentAuthSessionResolver.resolve(
+                command.accessToken(),
+                command.refreshToken(),
+                command.sessionId());
         session.ifPresent(authSession -> {
             authSession.revoke("USER_LOGOUT", OffsetDateTime.now());
             auditEventRepository.save(AuditEvent.create(
@@ -42,28 +44,6 @@ public class LogoutService {
         });
 
         return new LogoutResult(resolveRedirectTo(command.redirectTo()), session.map(AuthSession::getId).orElse(null));
-    }
-
-    private Optional<AuthSession> resolveActiveSession(LogoutCommand command) {
-        if (command.accessToken() != null && !command.accessToken().isBlank()) {
-            return authSessionRepository.findByAccessTokenHashAndRevokedAtIsNull(
-                    tokenHashingService.hash(command.accessToken().trim()));
-        }
-
-        if (command.refreshToken() != null && !command.refreshToken().isBlank()) {
-            return authSessionRepository.findByRefreshTokenHashAndRevokedAtIsNull(
-                    tokenHashingService.hash(command.refreshToken().trim()));
-        }
-
-        if (command.sessionId() != null && !command.sessionId().isBlank()) {
-            try {
-                return authSessionRepository.findByIdAndRevokedAtIsNull(UUID.fromString(command.sessionId().trim()));
-            } catch (IllegalArgumentException exception) {
-                return Optional.empty();
-            }
-        }
-
-        return Optional.empty();
     }
 
     private static String resolveRedirectTo(String redirectTo) {
