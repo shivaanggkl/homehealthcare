@@ -11,6 +11,8 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
+import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
@@ -48,12 +50,16 @@ public class UserInvitationService {
     private final UserInvitationRepository userInvitationRepository;
     private final AuditEventRepository auditEventRepository;
     private final InvitationEmailSender invitationEmailSender;
+    private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
     public InviteUserResult inviteUser(
             @NotNull AgencyMembership actorMembership,
             @Valid InviteUserCommand command) {
-        requireInviterCanManageUsers(actorMembership);
+        agencyAuthorizationGuard.requirePermission(
+                actorMembership,
+                AgencyPermission.INVITE_USER,
+                UnauthorizedInvitationActorException::new);
 
         String normalizedEmail = command.email().trim().toLowerCase(Locale.ROOT);
         User user = userRepository.findByEmail(normalizedEmail)
@@ -109,14 +115,6 @@ public class UserInvitationService {
                         + ",\"expiresAt\":\"" + expiresAt + "\"}"));
 
         return new InviteUserResult(invitation, membership);
-    }
-
-    private static void requireInviterCanManageUsers(AgencyMembership actorMembership) {
-        if (!actorMembership.isActive()
-                || !(actorMembership.getRole() == AgencyRole.AGENCY_OWNER
-                || actorMembership.getRole() == AgencyRole.BRANCH_ADMIN)) {
-            throw new UnauthorizedInvitationActorException(actorMembership.getId());
-        }
     }
 
     private AgencyMembership updateExistingMembership(AgencyMembership membership, AgencyRole role) {

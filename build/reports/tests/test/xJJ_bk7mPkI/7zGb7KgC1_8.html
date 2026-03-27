@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.008s</div>
+<div class="counter">0.009s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,21 +85,21 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-authenticatedTenantCannotEnumerateBranchIdsFromAnotherAgency()">2026-03-27T17:41:32.616-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-27T17:41:32.617-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:41:32.617-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-27T17:41:32.617-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:41:32.618-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-27T17:41:32.618-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:41:32.618-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-27T17:41:32.619-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-27T17:41:32.620-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
-2026-03-27T17:41:32.620-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
-2026-03-27T17:41:32.620-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
-2026-03-27T17:41:32.620-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago Central&quot;]
-2026-03-27T17:41:32.621-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
-2026-03-27T17:41:32.621-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
-2026-03-27T17:41:32.622-05:00 DEBUG 23779 --- [homehealthcare] [    Test worker] .w.s.m.a.ResponseStatusExceptionResolver : Resolved [com.homehealthcare.branch.application.BranchNotFoundException: Branch not found for current agency: 3d478234-cd79-4a40-b82c-92f16ea1505b]
+<pre id="root-0-test-stdout-authenticatedTenantCannotEnumerateBranchIdsFromAnotherAgency()">2026-03-27T18:27:49.118-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-27T18:27:49.119-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T18:27:49.119-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-27T18:27:49.119-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T18:27:49.119-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-27T18:27:49.121-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-27T18:27:49.121-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-27T18:27:49.121-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-27T18:27:49.122-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
+2026-03-27T18:27:49.123-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-27T18:27:49.123-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
+2026-03-27T18:27:49.123-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago Central&quot;]
+2026-03-27T18:27:49.124-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
+2026-03-27T18:27:49.124-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-27T18:27:49.125-05:00 DEBUG 42505 --- [homehealthcare] [    Test worker] .w.s.m.a.ResponseStatusExceptionResolver : Resolved [com.homehealthcare.branch.application.BranchNotFoundException: Branch not found for current agency: 40654bf7-28b8-4451-a423-0596a8d4cffc]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-authenticatedTenantCannotEnumerateBranchIdsFromAnotherAgency()">Copy</button>
 </span>
@@ -114,7 +114,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 27, 2026, 5:41:35 PM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 27, 2026, 6:27:55 PM</p>
 </div>
 </div>
 </body>

@@ -115,6 +115,9 @@ class UserStatusManagementServiceTest {
                 fixture.targetUser().getId(),
                 UserStatus.DEACTIVATED);
 
+        assertThat(recordingUserSessionService.revocations())
+                .contains(new RecordingUserSessionService.Revocation(fixture.targetUser().getId(), "USER_DEACTIVATED"));
+
         User deactivated = userRepository.findById(fixture.targetUser().getId()).orElseThrow();
         assertThatThrownBy(() -> userAuthenticationPolicy.requireCanSignIn(deactivated))
                 .isInstanceOf(UserSignInBlockedException.class);
@@ -172,8 +175,9 @@ class UserStatusManagementServiceTest {
         private final List<Revocation> revocations = new ArrayList<>();
 
         @Override
-        public void revokeAllSessions(UUID userId, String reason) {
+        public List<UUID> revokeAllSessions(UUID userId, String reason) {
             revocations.add(new Revocation(userId, reason));
+            return List.of();
         }
 
         List<Revocation> revocations() {

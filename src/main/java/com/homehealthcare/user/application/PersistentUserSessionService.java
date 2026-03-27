@@ -3,6 +3,8 @@ package com.homehealthcare.user.application;
 import com.homehealthcare.auth.domain.AuthSession;
 import com.homehealthcare.auth.domain.AuthSessionRepository;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,14 @@ public class PersistentUserSessionService implements UserSessionService {
 
     @Override
     @Transactional
-    public void revokeAllSessions(UUID userId, String reason) {
+    public List<UUID> revokeAllSessions(UUID userId, String reason) {
+        List<UUID> revokedSessionIds = new ArrayList<>();
         for (AuthSession authSession : authSessionRepository.findAllByUser_IdAndRevokedAtIsNull(userId)) {
             authSession.revoke(reason, OffsetDateTime.now());
+            if (authSession.isRevoked()) {
+                revokedSessionIds.add(authSession.getId());
+            }
         }
+        return List.copyOf(revokedSessionIds);
     }
 }

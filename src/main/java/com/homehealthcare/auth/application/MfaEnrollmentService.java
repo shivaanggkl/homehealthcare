@@ -41,9 +41,8 @@ public class MfaEnrollmentService {
 
     @Transactional
     public EnrollmentStartResult startEnrollment(@Valid EnrollmentStartCommand command) {
-        AuthSession currentSession = currentAuthSessionResolver.require(
+        AuthSession currentSession = currentAuthSessionResolver.requireActive(
                 command.accessToken(),
-                command.refreshToken(),
                 command.sessionId());
         User user = currentSession.getUser();
 
@@ -118,9 +117,8 @@ public class MfaEnrollmentService {
 
     @Transactional(readOnly = true)
     public MfaStatusView currentStatus(@Valid MfaStatusCommand command) {
-        AuthSession currentSession = currentAuthSessionResolver.require(
+        AuthSession currentSession = currentAuthSessionResolver.requireActive(
                 command.accessToken(),
-                command.refreshToken(),
                 command.sessionId());
         User user = currentSession.getUser();
         return new MfaStatusView(
@@ -160,7 +158,6 @@ public class MfaEnrollmentService {
 
     public record EnrollmentStartCommand(
             String accessToken,
-            String refreshToken,
             String sessionId,
             @NotBlank String currentPassword) {
     }
@@ -172,7 +169,6 @@ public class MfaEnrollmentService {
 
     public record MfaStatusCommand(
             String accessToken,
-            String refreshToken,
             String sessionId) {
     }
 

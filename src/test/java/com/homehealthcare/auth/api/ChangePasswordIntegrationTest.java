@@ -14,6 +14,8 @@ import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
+import java.lang.reflect.Field;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -183,6 +185,81 @@ class ChangePasswordIntegrationTest {
 
         AuthSession persistedCurrentSession = authSessionRepository.findById(currentSession.sessionId()).orElseThrow();
         assertThat(persistedCurrentSession.isRevoked()).isFalse();
+    }
+
+    @Test
+    void expiredAccessTokenIsRejected() throws Exception {
+        User user = userRepository.saveAndFlush(User.invite(
+                "Morgan",
+                "Reviewer",
+                "morgan.change@example.com",
+                null));
+        user.activateWithCredentials(passwordEncoder.encode("StartPassword1!"));
+        userRepository.saveAndFlush(user);
+
+        SessionFixture currentSession = login(user.getEmail(), "StartPassword1!");
+        AuthSession authSession = authSessionRepository.findById(currentSession.sessionId()).orElseThrow();
+        Field field = AuthSession.class.getDeclaredField("accessTokenExpiresAt");
+        field.setAccessible(true);
+        field.set(authSession, OffsetDateTime.now().minusMinutes(1));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                        .contentType(APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + currentSession.accessToken())
+                        .content("""
+                                {
+                                  "currentPassword": "StartPassword1!",
+                                  "newPassword": "ChangedPassword1!",
+                                  "invalidateOtherSessions": false
+                                }
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json("""
+                        {
+                          "message": "Authenticated session is required"
+                        }
+                        """));
+    }
+
+    @Test
+    void idleTimedOutSessionIsRejectedAndAudited() throws Exception {
+        User user = userRepository.saveAndFlush(User.invite(
+                "Reese",
+                "Coordinator",
+                "reese.change@example.com",
+                null));
+        user.activateWithCredentials(passwordEncoder.encode("StartPassword1!"));
+        userRepository.saveAndFlush(user);
+
+        SessionFixture currentSession = login(user.getEmail(), "StartPassword1!");
+        AuthSession authSession = authSessionRepository.findById(currentSession.sessionId()).orElseThrow();
+        setField(authSession, "lastActivityAt", OffsetDateTime.now().minusHours(1));
+
+        mockMvc.perform(post("/api/auth/change-password")
+                        .contentType(APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + currentSession.accessToken())
+                        .content("""
+                                {
+                                  "currentPassword": "StartPassword1!",
+                                  "newPassword": "ChangedPassword1!",
+                                  "invalidateOtherSessions": false
+                                }
+                                """))
+                .andExpect(status().isUnauthorized());
+
+        AuthSession savedSession = authSessionRepository.findById(currentSession.sessionId()).orElseThrow();
+        assertThat(savedSession.isRevoked()).isTrue();
+        assertThat(savedSession.getRevocationReason()).isEqualTo("SESSION_IDLE_TIMEOUT");
+        assertThat(auditEventRepository.findAllByActorIdOrderByOccurredAtAsc(user.getId()))
+                .filteredOn(event -> event.getActionType().equals("USER_SESSION_TIMED_OUT"))
+                .singleElement()
+                .satisfies(event -> assertThat(event.getMetadataJson()).contains("\"timeoutType\":\"idle\""));
+    }
+
+    private static void setField(AuthSession authSession, String fieldName, Object value) throws Exception {
+        Field field = AuthSession.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(authSession, value);
     }
 
     private SessionFixture login(String email, String password) throws Exception {

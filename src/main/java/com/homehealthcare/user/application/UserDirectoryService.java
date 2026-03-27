@@ -5,6 +5,8 @@ import com.homehealthcare.branchassignment.domain.BranchAssignmentRepository;
 import com.homehealthcare.branchassignment.domain.BranchAssignmentStatus;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
+import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.security.tenant.CurrentTenant;
 import com.homehealthcare.user.domain.UserStatus;
@@ -31,12 +33,16 @@ public class UserDirectoryService {
     private final CurrentTenant currentTenant;
     private final AgencyMembershipRepository agencyMembershipRepository;
     private final BranchAssignmentRepository branchAssignmentRepository;
+    private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional(readOnly = true)
     public Page<UserDirectoryEntry> viewDirectory(UserDirectoryFilter filter, Pageable pageable) {
         AgencyMembership actorMembership = agencyMembershipRepository.findById(currentTenant.requireMembershipId())
                 .orElseThrow(() -> new UnauthorizedUserDirectoryActorException(currentTenant.requireMembershipId()));
-        requireDirectoryAccess(actorMembership);
+        agencyAuthorizationGuard.requirePermission(
+                actorMembership,
+                AgencyPermission.VIEW_USER_DIRECTORY,
+                UnauthorizedUserDirectoryActorException::new);
 
         Page<AgencyMembership> memberships = agencyMembershipRepository.findAll(buildSpecification(
                 actorMembership.getAgencyId(),
@@ -58,14 +64,6 @@ public class UserDirectoryService {
                 membership.getUser().getLastLoginAt(),
                 membership.getUser().isMfaEnabled(),
                 branchNamesByMembershipId.getOrDefault(membership.getId(), List.of())));
-    }
-
-    private static void requireDirectoryAccess(AgencyMembership actorMembership) {
-        if (!actorMembership.isActive()
-                || !(actorMembership.getRole() == AgencyRole.AGENCY_OWNER
-                || actorMembership.getRole() == AgencyRole.BRANCH_ADMIN)) {
-            throw new UnauthorizedUserDirectoryActorException(actorMembership.getId());
-        }
     }
 
     private Specification<AgencyMembership> buildSpecification(UUID agencyId, UserDirectoryFilter filter) {

@@ -29,9 +29,8 @@ public class ChangePasswordService {
 
     @Transactional
     public ChangePasswordResult changePassword(@Valid ChangePasswordCommand command) {
-        AuthSession currentSession = currentAuthSessionResolver.require(
+        AuthSession currentSession = currentAuthSessionResolver.requireActive(
                 command.accessToken(),
-                command.refreshToken(),
                 command.sessionId());
         User user = currentSession.getUser();
 
@@ -68,7 +67,6 @@ public class ChangePasswordService {
 
     public record ChangePasswordCommand(
             String accessToken,
-            String refreshToken,
             String sessionId,
             @NotBlank String currentPassword,
             @NotBlank String newPassword,

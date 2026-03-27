@@ -96,6 +96,7 @@ class UserDirectoryIntegrationTest {
                 .andExpect(jsonPath("$.totalElements").value(1))
                 .andExpect(jsonPath("$.content[0].email").value(casey.getEmail()))
                 .andExpect(jsonPath("$.content[0].mfaEnabled").value(true))
+                .andExpect(jsonPath("$.content[0].mfaSecret").doesNotExist())
                 .andExpect(jsonPath("$.content[0].userStatus").value("ACTIVE"))
                 .andExpect(jsonPath("$.content[0].lastLoginAt").exists())
                 .andExpect(jsonPath("$.content[0].branchNames[0]").value("North Branch"));

@@ -27,6 +27,21 @@ final class AuthCookieSupport {
                 Math.max(0, response.refreshTokenExpiresAt().toEpochSecond() - java.time.OffsetDateTime.now().toEpochSecond())));
     }
 
+    static void addRefreshCookies(HttpHeaders headers, RefreshSessionController.RefreshResponse response) {
+        headers.add(HttpHeaders.SET_COOKIE, buildCookie(
+                ACCESS_TOKEN_COOKIE,
+                response.accessToken(),
+                Math.max(0, response.accessTokenExpiresAt().toEpochSecond() - java.time.OffsetDateTime.now().toEpochSecond())));
+        headers.add(HttpHeaders.SET_COOKIE, buildCookie(
+                REFRESH_TOKEN_COOKIE,
+                response.refreshToken(),
+                Math.max(0, response.refreshTokenExpiresAt().toEpochSecond() - java.time.OffsetDateTime.now().toEpochSecond())));
+        headers.add(HttpHeaders.SET_COOKIE, buildCookie(
+                SESSION_ID_COOKIE,
+                response.sessionId().toString(),
+                Math.max(0, response.refreshTokenExpiresAt().toEpochSecond() - java.time.OffsetDateTime.now().toEpochSecond())));
+    }
+
     static void addLogoutCookies(HttpHeaders headers) {
         headers.add(HttpHeaders.SET_COOKIE, expireCookie(ACCESS_TOKEN_COOKIE));
         headers.add(HttpHeaders.SET_COOKIE, expireCookie(REFRESH_TOKEN_COOKIE));

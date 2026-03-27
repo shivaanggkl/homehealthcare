@@ -9,6 +9,8 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
+import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.user.domain.User;
 import jakarta.validation.Valid;
@@ -36,13 +38,17 @@ public class UserProfileAssignmentService {
     private final BranchRepository branchRepository;
     private final BranchAssignmentRepository branchAssignmentRepository;
     private final AuditEventRepository auditEventRepository;
+    private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
     public UpdatedUserResult updateUser(
             @NotNull AgencyMembership actorMembership,
             @NotNull UUID targetUserId,
             @Valid UpdateUserCommand command) {
-        requireEditorAccess(actorMembership);
+        agencyAuthorizationGuard.requirePermission(
+                actorMembership,
+                AgencyPermission.EDIT_USER_PROFILE,
+                UnauthorizedUserEditActorException::new);
 
         AgencyMembership targetMembership = agencyMembershipRepository.findByUser_IdAndAgency_Id(
                         targetUserId,
@@ -85,14 +91,6 @@ public class UserProfileAssignmentService {
                 targetUser.getPhone(),
                 targetMembership.getRole(),
                 branchNames);
-    }
-
-    private static void requireEditorAccess(AgencyMembership actorMembership) {
-        if (!actorMembership.isActive()
-                || !(actorMembership.getRole() == AgencyRole.AGENCY_OWNER
-                || actorMembership.getRole() == AgencyRole.BRANCH_ADMIN)) {
-            throw new UnauthorizedUserEditActorException(actorMembership.getId());
-        }
     }
 
     private static void enforceProtectedRoleRules(

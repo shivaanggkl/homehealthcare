@@ -1,8 +1,9 @@
 package com.homehealthcare.user.application;
 
 import java.util.UUID;
+import java.util.List;
 
 public interface UserSessionService {
 
-    void revokeAllSessions(UUID userId, String reason);
+    List<UUID> revokeAllSessions(UUID userId, String reason);
 }

@@ -3,6 +3,7 @@ package com.homehealthcare.auth.api;
 import com.homehealthcare.auth.application.InvalidLoginCredentialsException;
 import com.homehealthcare.auth.application.CurrentAuthSessionNotFoundException;
 import com.homehealthcare.auth.application.CurrentPasswordMismatchException;
+import com.homehealthcare.auth.application.CurrentSessionRevocationNotAllowedException;
 import com.homehealthcare.auth.application.PasswordResetTokenAlreadyUsedException;
 import com.homehealthcare.auth.application.PasswordResetTokenExpiredException;
 import com.homehealthcare.auth.application.PasswordResetTokenNotFoundException;
@@ -16,6 +17,7 @@ import com.homehealthcare.auth.application.MfaEnrollmentRequiredException;
 import com.homehealthcare.auth.application.MfaLoginChallengeAlreadyUsedException;
 import com.homehealthcare.auth.application.MfaLoginChallengeExpiredException;
 import com.homehealthcare.auth.application.MfaLoginChallengeNotFoundException;
+import com.homehealthcare.auth.application.ManagedSessionNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -57,10 +59,17 @@ class AuthenticationApiExceptionHandler {
             MfaEnrollmentChallengeAlreadyUsedException.class,
             MfaLoginChallengeNotFoundException.class,
             MfaLoginChallengeAlreadyUsedException.class,
-            InvalidTotpCodeException.class
+            InvalidTotpCodeException.class,
+            CurrentSessionRevocationNotAllowedException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleBadRequest(RuntimeException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler(ManagedSessionNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ErrorResponse handleManagedSessionNotFound(ManagedSessionNotFoundException exception) {
         return new ErrorResponse(exception.getMessage());
     }
 

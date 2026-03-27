@@ -78,7 +78,18 @@ class LoginIntegrationTest {
                 .andExpect(jsonPath("$.accessToken").value("access-token"))
                 .andExpect(jsonPath("$.refreshToken").value("refresh-token"))
                 .andExpect(jsonPath("$.accessTokenExpiresAt").value("2026-03-27T10:15:00Z"))
-                .andExpect(jsonPath("$.refreshTokenExpiresAt").value("2026-04-26T10:00:00Z"));
+                .andExpect(jsonPath("$.refreshTokenExpiresAt").value("2026-04-26T10:00:00Z"))
+                .andExpect(result -> assertThat(result.getResponse().getHeaders("Set-Cookie"))
+                        .anySatisfy(value -> assertThat(value)
+                                .contains("hhc_access_token=")
+                                .contains("HttpOnly")
+                                .contains("Secure")
+                                .contains("SameSite=Lax"))
+                        .anySatisfy(value -> assertThat(value)
+                                .contains("hhc_refresh_token=")
+                                .contains("HttpOnly")
+                                .contains("Secure")
+                                .contains("SameSite=Lax")));
 
         User savedUser = userRepository.findById(user.getId()).orElseThrow();
         assertThat(savedUser.getLastLoginAt()).isNotNull();

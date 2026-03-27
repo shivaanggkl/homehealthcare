@@ -2,9 +2,11 @@ package com.homehealthcare.user.application;
 
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.auth.application.UserSessionManagementService;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
-import com.homehealthcare.security.branch.AgencyRole;
+import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
+import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
 import com.homehealthcare.user.domain.UserStatus;
@@ -27,13 +29,18 @@ public class UserStatusManagementService {
     private final AgencyMembershipRepository agencyMembershipRepository;
     private final AuditEventRepository auditEventRepository;
     private final UserSessionService userSessionService;
+    private final UserSessionManagementService userSessionManagementService;
+    private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
     public User changeStatus(
             @NotNull AgencyMembership actorMembership,
             @NotNull UUID targetUserId,
             @NotNull UserStatus targetStatus) {
-        requireAdminActor(actorMembership);
+        agencyAuthorizationGuard.requirePermission(
+                actorMembership,
+                AgencyPermission.MANAGE_USER_STATUS,
+                UnauthorizedUserStatusActorException::new);
 
         AgencyMembership targetMembership = agencyMembershipRepository.findByUser_IdAndAgency_Id(
                         targetUserId,
@@ -44,8 +51,15 @@ public class UserStatusManagementService {
         applyStatus(user, targetStatus);
         User savedUser = userRepository.save(user);
 
-        if (targetStatus == UserStatus.SUSPENDED) {
-            userSessionService.revokeAllSessions(savedUser.getId(), "USER_SUSPENDED");
+        if (targetStatus == UserStatus.SUSPENDED || targetStatus == UserStatus.DEACTIVATED) {
+            String reason = targetStatus == UserStatus.SUSPENDED ? "USER_SUSPENDED" : "USER_DEACTIVATED";
+            java.util.List<java.util.UUID> revokedSessionIds = userSessionService.revokeAllSessions(savedUser.getId(), reason);
+            userSessionManagementService.auditAdminRevocations(
+                    actorMembership.getId(),
+                    actorMembership.getUser().getEmail(),
+                    actorMembership.getAgencyId(),
+                    revokedSessionIds,
+                    reason);
         }
 
         auditEventRepository.save(AuditEvent.create(
@@ -59,14 +73,6 @@ public class UserStatusManagementService {
                 "{\"newStatus\":\"" + savedUser.getStatus().name() + "\"}"));
 
         return savedUser;
-    }
-
-    private static void requireAdminActor(AgencyMembership actorMembership) {
-        if (!actorMembership.isActive()
-                || !(actorMembership.getRole() == AgencyRole.AGENCY_OWNER
-                || actorMembership.getRole() == AgencyRole.BRANCH_ADMIN)) {
-            throw new UnauthorizedUserStatusActorException(actorMembership.getId());
-        }
     }
 
     private static void applyStatus(User user, UserStatus targetStatus) {

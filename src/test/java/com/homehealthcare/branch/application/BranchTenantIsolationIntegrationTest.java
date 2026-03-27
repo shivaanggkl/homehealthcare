@@ -2,8 +2,11 @@ package com.homehealthcare.branch.application;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
@@ -34,6 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -112,12 +116,46 @@ class BranchTenantIsolationIntegrationTest {
     }
 
     @Test
+    void singleBranchSchedulerCannotViewOrEditOtherBranch() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care-single", "America/Chicago", "ops@northstar.example"));
+        Branch branchA = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago Central", "CHI-11", "123 Main St", "America/Chicago"));
+        Branch branchB = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago North", "CHI-12", "456 Lake St", "America/Chicago"));
+
+        mockMvc.perform(get("/test/branches/{branchId}", branchA.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.SCHEDULER_COORDINATOR,
+                                Set.of(branchA.getId())))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Chicago Central"));
+
+        mockMvc.perform(get("/test/branches/{branchId}", branchB.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.SCHEDULER_COORDINATOR,
+                                Set.of(branchA.getId())))))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(post("/test/branches/{branchId}/deactivate", branchB.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.SCHEDULER_COORDINATOR,
+                                Set.of(branchA.getId())))))
+                .andExpect(status().isForbidden());
+
+        assertThat(branchRepository.findById(branchB.getId()).orElseThrow().isDeactivated()).isFalse();
+    }
+
+    @Test
     void agencyOwnerCanSeeAllAgencyBranchesWithoutExplicitAssignments() throws Exception {
         Agency agency = agencyRepository.saveAndFlush(
                 Agency.create("North Star Home Care", "north-star-home-care", "America/Chicago", "ops@northstar.example"));
         branchRepository.saveAndFlush(
                 Branch.create(agency, "Chicago Central", "CHI-01", "123 Main St", "America/Chicago"));
-        branchRepository.saveAndFlush(
+        Branch second = branchRepository.saveAndFlush(
                 Branch.create(agency, "Chicago North", "CHI-02", "456 Lake St", "America/Chicago"));
 
         mockMvc.perform(get("/test/branches")
@@ -128,6 +166,74 @@ class BranchTenantIsolationIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andExpect(content().string("Chicago Central|Chicago North"));
+
+        mockMvc.perform(post("/test/branches/{branchId}/deactivate", second.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.AGENCY_OWNER,
+                                Set.of()))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("INACTIVE"));
+
+        assertThat(branchRepository.findById(second.getId()).orElseThrow().isDeactivated()).isTrue();
+    }
+
+    @Test
+    void agencyWideReadRoleCanViewAllBranchesWithoutExplicitAssignments() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care-audit", "America/Chicago", "ops@northstar.example"));
+        Branch first = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago Central", "CHI-31", "123 Main St", "America/Chicago"));
+        Branch second = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago North", "CHI-32", "456 Lake St", "America/Chicago"));
+
+        mockMvc.perform(get("/test/branches")
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.READ_ONLY_AUDITOR,
+                                Set.of()))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Chicago Central|Chicago North"));
+
+        mockMvc.perform(get("/test/branches/{branchId}", second.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.READ_ONLY_AUDITOR,
+                                Set.of()))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Chicago North"));
+
+        assertThat(branchRepository.findById(first.getId()).orElseThrow().isDeactivated()).isFalse();
+    }
+
+    @Test
+    void multiBranchBranchAdminCanEditAssignedBranchButNotUnassignedBranch() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care-admin", "America/Chicago", "ops@northstar.example"));
+        Branch first = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago Central", "CHI-21", "123 Main St", "America/Chicago"));
+        Branch second = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago North", "CHI-22", "456 Lake St", "America/Chicago"));
+        Branch third = branchRepository.saveAndFlush(
+                Branch.create(agency, "Chicago South", "CHI-23", "789 State St", "America/Chicago"));
+
+        mockMvc.perform(post("/test/branches/{branchId}/deactivate", third.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.BRANCH_ADMIN,
+                                Set.of(first.getId(), third.getId())))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("INACTIVE"));
+
+        mockMvc.perform(post("/test/branches/{branchId}/deactivate", second.getId())
+                        .with(authentication(authenticationFor(
+                                agency.getId(),
+                                AgencyRole.BRANCH_ADMIN,
+                                Set.of(first.getId(), third.getId())))))
+                .andExpect(status().isForbidden());
+
+        assertThat(branchRepository.findById(third.getId()).orElseThrow().isDeactivated()).isTrue();
+        assertThat(branchRepository.findById(second.getId()).orElseThrow().isDeactivated()).isFalse();
     }
 
     @Test
@@ -222,6 +328,11 @@ class BranchTenantIsolationIntegrationTest {
                     .map(Branch::getName)
                     .toList();
             return String.join("|", branchNames);
+        }
+
+        @PostMapping(path = "/test/branches/{branchId}/deactivate", produces = MediaType.TEXT_PLAIN_VALUE)
+        String deactivateBranch(@PathVariable UUID branchId) {
+            return branchService.deactivateBranchForCurrentAgency(branchId).getStatus().name();
         }
     }
 }

@@ -4,6 +4,7 @@ import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
 import com.homehealthcare.branch.domain.Branch;
 import com.homehealthcare.branch.domain.BranchRepository;
+import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.BranchAccessContext;
 import com.homehealthcare.security.branch.CurrentBranchAccess;
 import com.homehealthcare.security.tenant.CurrentTenant;
@@ -61,7 +62,7 @@ public class BranchService {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new BranchNotFoundException(branchId));
 
-        if (currentBranchAccess.get().map(access -> access.canAccessBranch(branch.getId())).orElse(true)) {
+        if (currentBranchAccess.get().map(access -> access.canAccessBranch(AgencyPermission.VIEW_BRANCH, branch.getId())).orElse(true)) {
             return branch;
         }
 
@@ -77,7 +78,10 @@ public class BranchService {
     }
 
     @Transactional
-    public Branch deactivateBranch(@NotNull Branch branch) {
+    public Branch deactivateBranchForCurrentAgency(@NotNull UUID branchId) {
+        Branch branch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new BranchNotFoundException(branchId));
+        requireBranchEditAccess(branch.getId());
         branch.deactivate();
         return branchRepository.save(branch);
     }
@@ -94,13 +98,22 @@ public class BranchService {
     }
 
     private List<Branch> listBranchesForScopedUser(UUID agencyId, BranchAccessContext access) {
-        if (access.canAccessAllBranches()) {
+        if (access.canAccessAllBranches(AgencyPermission.VIEW_BRANCH)) {
             return branchRepository.findAllByAgency_IdOrderByNameAsc(agencyId);
         }
         if (access.assignedBranchIds().isEmpty()) {
             return List.of();
         }
         return branchRepository.findAllByAgency_IdAndIdInOrderByNameAsc(agencyId, access.assignedBranchIds());
+    }
+
+    private void requireBranchEditAccess(UUID branchId) {
+        boolean allowed = currentBranchAccess.get()
+                .map(access -> access.canAccessBranch(AgencyPermission.EDIT_BRANCH, branchId))
+                .orElse(true);
+        if (!allowed) {
+            throw new UnauthorizedBranchOperationException(branchId);
+        }
     }
 
     public record CreateBranchCommand(

@@ -30,14 +30,11 @@ class MfaController {
     @GetMapping("/status")
     MfaStatusResponse status(
             @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader,
-            @RequestHeader(name = "X-Refresh-Token", required = false) String refreshTokenHeader,
             @RequestHeader(name = "X-Session-Id", required = false) String sessionIdHeader,
             @CookieValue(name = AuthCookieSupport.ACCESS_TOKEN_COOKIE, required = false) String accessTokenCookie,
-            @CookieValue(name = AuthCookieSupport.REFRESH_TOKEN_COOKIE, required = false) String refreshTokenCookie,
             @CookieValue(name = AuthCookieSupport.SESSION_ID_COOKIE, required = false) String sessionIdCookie) {
         MfaEnrollmentService.MfaStatusView status = mfaEnrollmentService.currentStatus(new MfaEnrollmentService.MfaStatusCommand(
                 bearerToken(authorizationHeader, accessTokenCookie),
-                firstNonBlank(refreshTokenHeader, refreshTokenCookie),
                 firstNonBlank(sessionIdHeader, sessionIdCookie)));
         return new MfaStatusResponse(status.userId(), status.mfaEnabled(), status.enrolledAt(), status.recoveryCodesRemaining());
     }
@@ -45,16 +42,13 @@ class MfaController {
     @PostMapping("/enrollment/start")
     ResponseEntity<EnrollmentStartResponse> start(
             @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader,
-            @RequestHeader(name = "X-Refresh-Token", required = false) String refreshTokenHeader,
             @RequestHeader(name = "X-Session-Id", required = false) String sessionIdHeader,
             @CookieValue(name = AuthCookieSupport.ACCESS_TOKEN_COOKIE, required = false) String accessTokenCookie,
-            @CookieValue(name = AuthCookieSupport.REFRESH_TOKEN_COOKIE, required = false) String refreshTokenCookie,
             @CookieValue(name = AuthCookieSupport.SESSION_ID_COOKIE, required = false) String sessionIdCookie,
             @Valid @RequestBody EnrollmentStartRequest request) {
         MfaEnrollmentService.EnrollmentStartResult result = mfaEnrollmentService.startEnrollment(
                 new MfaEnrollmentService.EnrollmentStartCommand(
                         bearerToken(authorizationHeader, accessTokenCookie),
-                        firstNonBlank(refreshTokenHeader, refreshTokenCookie),
                         firstNonBlank(sessionIdHeader, sessionIdCookie),
                         request.currentPassword()));
         return new ResponseEntity<>(new EnrollmentStartResponse(

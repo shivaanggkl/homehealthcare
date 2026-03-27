@@ -26,16 +26,13 @@ class ChangePasswordController {
     @PostMapping("/change-password")
     ResponseEntity<ChangePasswordResponse> changePassword(
             @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader,
-            @RequestHeader(name = "X-Refresh-Token", required = false) String refreshTokenHeader,
             @RequestHeader(name = "X-Session-Id", required = false) String sessionIdHeader,
             @CookieValue(name = AuthCookieSupport.ACCESS_TOKEN_COOKIE, required = false) String accessTokenCookie,
-            @CookieValue(name = AuthCookieSupport.REFRESH_TOKEN_COOKIE, required = false) String refreshTokenCookie,
             @CookieValue(name = AuthCookieSupport.SESSION_ID_COOKIE, required = false) String sessionIdCookie,
             @Valid @RequestBody ChangePasswordRequest request) {
         ChangePasswordService.ChangePasswordResult result = changePasswordService.changePassword(
                 new ChangePasswordService.ChangePasswordCommand(
                         bearerToken(authorizationHeader, accessTokenCookie),
-                        firstNonBlank(refreshTokenHeader, refreshTokenCookie),
                         firstNonBlank(sessionIdHeader, sessionIdCookie),
                         request.currentPassword(),
                         request.newPassword(),

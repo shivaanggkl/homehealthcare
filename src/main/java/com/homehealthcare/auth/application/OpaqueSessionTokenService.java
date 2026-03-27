@@ -18,13 +18,15 @@ public class OpaqueSessionTokenService implements SessionTokenService {
 
     private final AuthSessionRepository authSessionRepository;
     private final TokenHashingService tokenHashingService;
+    private final SessionSecurityProperties sessionSecurityProperties;
 
     @Override
     @Transactional
     public IssuedSession issueFor(User user) {
         OffsetDateTime issuedAt = OffsetDateTime.now();
-        OffsetDateTime accessTokenExpiresAt = issuedAt.plusMinutes(15);
-        OffsetDateTime refreshTokenExpiresAt = issuedAt.plusDays(30);
+        OffsetDateTime accessTokenExpiresAt = issuedAt.plus(sessionSecurityProperties.getAccessTokenTtl());
+        OffsetDateTime refreshTokenExpiresAt = issuedAt.plus(sessionSecurityProperties.getRefreshTokenTtl());
+        OffsetDateTime absoluteExpiresAt = issuedAt.plus(sessionSecurityProperties.getAbsoluteSessionDuration());
         String accessToken = generateOpaqueToken();
         String refreshToken = generateOpaqueToken();
 
@@ -33,7 +35,9 @@ public class OpaqueSessionTokenService implements SessionTokenService {
                 tokenHashingService.hash(accessToken),
                 accessTokenExpiresAt,
                 tokenHashingService.hash(refreshToken),
-                refreshTokenExpiresAt));
+                refreshTokenExpiresAt,
+                issuedAt,
+                absoluteExpiresAt));
 
         return new IssuedSession(
                 authSession.getId(),

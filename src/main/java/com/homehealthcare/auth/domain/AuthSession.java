@@ -44,6 +44,12 @@ public class AuthSession extends AuditableEntity {
     @Column(name = "refresh_token_expires_at", nullable = false)
     private OffsetDateTime refreshTokenExpiresAt;
 
+    @Column(name = "last_activity_at", nullable = false)
+    private OffsetDateTime lastActivityAt;
+
+    @Column(name = "absolute_expires_at", nullable = false)
+    private OffsetDateTime absoluteExpiresAt;
+
     @Column(name = "revoked_at")
     private OffsetDateTime revokedAt;
 
@@ -58,6 +64,8 @@ public class AuthSession extends AuditableEntity {
             OffsetDateTime accessTokenExpiresAt,
             String refreshTokenHash,
             OffsetDateTime refreshTokenExpiresAt,
+            OffsetDateTime lastActivityAt,
+            OffsetDateTime absoluteExpiresAt,
             OffsetDateTime revokedAt,
             String revocationReason) {
         this.id = id;
@@ -66,6 +74,8 @@ public class AuthSession extends AuditableEntity {
         this.accessTokenExpiresAt = accessTokenExpiresAt;
         this.refreshTokenHash = refreshTokenHash;
         this.refreshTokenExpiresAt = refreshTokenExpiresAt;
+        this.lastActivityAt = lastActivityAt;
+        this.absoluteExpiresAt = absoluteExpiresAt;
         this.revokedAt = revokedAt;
         this.revocationReason = revocationReason;
     }
@@ -75,7 +85,9 @@ public class AuthSession extends AuditableEntity {
             String accessTokenHash,
             OffsetDateTime accessTokenExpiresAt,
             String refreshTokenHash,
-            OffsetDateTime refreshTokenExpiresAt) {
+            OffsetDateTime refreshTokenExpiresAt,
+            OffsetDateTime lastActivityAt,
+            OffsetDateTime absoluteExpiresAt) {
         return AuthSession.builder()
                 .id(UUID.randomUUID())
                 .user(Objects.requireNonNull(user, "user must not be null"))
@@ -83,11 +95,42 @@ public class AuthSession extends AuditableEntity {
                 .accessTokenExpiresAt(Objects.requireNonNull(accessTokenExpiresAt, "accessTokenExpiresAt must not be null"))
                 .refreshTokenHash(Objects.requireNonNull(refreshTokenHash, "refreshTokenHash must not be null"))
                 .refreshTokenExpiresAt(Objects.requireNonNull(refreshTokenExpiresAt, "refreshTokenExpiresAt must not be null"))
+                .lastActivityAt(Objects.requireNonNull(lastActivityAt, "lastActivityAt must not be null"))
+                .absoluteExpiresAt(Objects.requireNonNull(absoluteExpiresAt, "absoluteExpiresAt must not be null"))
                 .build();
     }
 
     public boolean isRevoked() {
         return revokedAt != null;
+    }
+
+    public boolean isAccessTokenExpiredAt(OffsetDateTime timestamp) {
+        return !accessTokenExpiresAt.isAfter(timestamp);
+    }
+
+    public boolean isRefreshTokenExpiredAt(OffsetDateTime timestamp) {
+        return !refreshTokenExpiresAt.isAfter(timestamp);
+    }
+
+    public boolean isIdleExpiredAt(OffsetDateTime timestamp, java.time.Duration idleTimeout) {
+        return !lastActivityAt.plus(idleTimeout).isAfter(timestamp);
+    }
+
+    public boolean isAbsoluteExpiredAt(OffsetDateTime timestamp) {
+        return !absoluteExpiresAt.isAfter(timestamp);
+    }
+
+    public OffsetDateTime idleTimeoutAt(java.time.Duration idleTimeout) {
+        return lastActivityAt.plus(idleTimeout);
+    }
+
+    public OffsetDateTime forcedLogoutAt(java.time.Duration idleTimeout) {
+        OffsetDateTime idleExpiresAt = idleTimeoutAt(idleTimeout);
+        return idleExpiresAt.isBefore(absoluteExpiresAt) ? idleExpiresAt : absoluteExpiresAt;
+    }
+
+    public void recordActivity(OffsetDateTime occurredAt) {
+        this.lastActivityAt = Objects.requireNonNull(occurredAt, "occurredAt must not be null");
     }
 
     public void revoke(String reason, OffsetDateTime revokedAt) {
