@@ -7,5 +7,7 @@
 - `docs/architecture/erd/e1-s01-tenancy-model.mmd` is the source ERD for the tenancy foundation.
 - `docs/architecture/standards/entity-scoping-standard.md` defines `agency_id` and `branch_id` standards for future entities.
 - `docs/architecture/standards/migration-pattern.md` defines the migration checklist for tenant-aware tables.
+- `docs/architecture/standards/branch-scoping-guardrails.md` defines branch visibility rules for `E1-S08`.
+- `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.
 
 These files are the source of truth for Epic 1 design decisions until implementation starts.

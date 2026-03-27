@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
+import com.homehealthcare.security.tenant.TenantContext;
+import com.homehealthcare.security.tenant.TenantContextHolder;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -106,5 +109,26 @@ class BranchRepositoryTest {
         Branch activeAgain = branchRepository.saveAndFlush(inactive);
         assertThat(activeAgain.getStatus()).isEqualTo(BranchStatus.ACTIVE);
         assertThat(activeAgain.isDeactivated()).isFalse();
+    }
+
+    @Test
+    void inheritedFindByIdAndExistsByIdDoNotCrossTenantBoundaryWhenContextIsBound() {
+        Agency agencyOne = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care", "America/Chicago", "ops@northstar.example"));
+        Agency agencyTwo = agencyRepository.saveAndFlush(
+                Agency.create("Sunrise Home Care", "sunrise-home-care", "America/New_York", "ops@sunrise.example"));
+        Branch branchOne = branchRepository.saveAndFlush(
+                Branch.create(agencyOne, "Chicago Central", "CHI-01", "123 Main St", "America/Chicago"));
+        Branch branchTwo = branchRepository.saveAndFlush(
+                Branch.create(agencyTwo, "Brooklyn Central", "BK-01", "456 Flatbush Ave", "America/New_York"));
+
+        TenantContextHolder.set(new TenantContext(agencyOne.getId(), UUID.randomUUID()));
+        try {
+            assertThat(branchRepository.findById(branchOne.getId())).contains(branchOne);
+            assertThat(branchRepository.findById(branchTwo.getId())).isEmpty();
+            assertThat(branchRepository.existsById(branchTwo.getId())).isFalse();
+        } finally {
+            TenantContextHolder.clear();
+        }
     }
 }

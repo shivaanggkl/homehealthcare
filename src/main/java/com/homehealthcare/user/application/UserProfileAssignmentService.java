@@ -1,0 +1,152 @@
+package com.homehealthcare.user.application;
+
+import com.homehealthcare.branch.domain.Branch;
+import com.homehealthcare.branch.domain.BranchRepository;
+import com.homehealthcare.branchassignment.domain.BranchAssignment;
+import com.homehealthcare.branchassignment.domain.BranchAssignmentRepository;
+import com.homehealthcare.branchassignment.domain.BranchAssignmentStatus;
+import com.homehealthcare.membership.domain.AgencyMembership;
+import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.security.branch.AgencyRole;
+import com.homehealthcare.user.domain.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+@Service
+@Validated
+@RequiredArgsConstructor
+public class UserProfileAssignmentService {
+
+    private static final String ACTOR_TYPE_AGENCY_MEMBERSHIP = "AGENCY_MEMBERSHIP";
+    private static final String ACTION_USER_PROFILE_ASSIGNMENTS_UPDATED = "USER_PROFILE_ASSIGNMENTS_UPDATED";
+    private static final String TARGET_TYPE_USER = "USER";
+
+    private final AgencyMembershipRepository agencyMembershipRepository;
+    private final BranchRepository branchRepository;
+    private final BranchAssignmentRepository branchAssignmentRepository;
+    private final AuditEventRepository auditEventRepository;
+
+    @Transactional
+    public UpdatedUserResult updateUser(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID targetUserId,
+            @Valid UpdateUserCommand command) {
+        requireEditorAccess(actorMembership);
+
+        AgencyMembership targetMembership = agencyMembershipRepository.findByUser_IdAndAgency_Id(
+                        targetUserId,
+                        actorMembership.getAgencyId())
+                .orElseThrow(() -> new UserNotManageableInAgencyException(targetUserId, actorMembership.getAgencyId()));
+
+        enforceProtectedRoleRules(actorMembership, targetMembership, command.role());
+
+        User targetUser = targetMembership.getUser();
+        targetUser.updateProfile(command.firstName(), command.lastName(), command.phone());
+        targetMembership.changeRole(command.role());
+        agencyMembershipRepository.save(targetMembership);
+
+        synchronizeBranchAssignments(targetMembership, actorMembership.getAgencyId(), command.branchIds());
+
+        auditEventRepository.save(AuditEvent.create(
+                ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                actorMembership.getId(),
+                actorMembership.getUser().getEmail(),
+                ACTION_USER_PROFILE_ASSIGNMENTS_UPDATED,
+                TARGET_TYPE_USER,
+                targetUser.getId(),
+                actorMembership.getAgencyId(),
+                "{\"role\":\"" + command.role().name()
+                        + "\",\"branchCount\":" + command.branchIds().size()
+                        + ",\"phoneUpdated\":" + (command.phone() != null) + "}"));
+
+        List<String> branchNames = branchAssignmentRepository.findAllByAgencyMembership_IdAndStatusOrderByBranch_NameAsc(
+                        targetMembership.getId(),
+                        BranchAssignmentStatus.ACTIVE)
+                .stream()
+                .map(assignment -> assignment.getBranch().getName())
+                .toList();
+
+        return new UpdatedUserResult(
+                targetUser.getId(),
+                targetMembership.getId(),
+                targetUser.getFirstName(),
+                targetUser.getLastName(),
+                targetUser.getPhone(),
+                targetMembership.getRole(),
+                branchNames);
+    }
+
+    private static void requireEditorAccess(AgencyMembership actorMembership) {
+        if (!actorMembership.isActive()
+                || !(actorMembership.getRole() == AgencyRole.AGENCY_OWNER
+                || actorMembership.getRole() == AgencyRole.BRANCH_ADMIN)) {
+            throw new UnauthorizedUserEditActorException(actorMembership.getId());
+        }
+    }
+
+    private static void enforceProtectedRoleRules(
+            AgencyMembership actorMembership,
+            AgencyMembership targetMembership,
+            AgencyRole targetRole) {
+        if (actorMembership.getRole() == AgencyRole.BRANCH_ADMIN) {
+            if (targetMembership.getRole() == AgencyRole.AGENCY_OWNER || targetRole == AgencyRole.AGENCY_OWNER) {
+                throw new ProtectedUserEditException("Branch Admin cannot edit or assign Agency Owner role");
+            }
+        }
+    }
+
+    private void synchronizeBranchAssignments(AgencyMembership membership, UUID agencyId, Set<UUID> branchIds) {
+        Set<UUID> normalizedBranchIds = new HashSet<>(branchIds);
+        List<BranchAssignment> existingAssignments = branchAssignmentRepository
+                .findAllByAgencyMembership_IdAndStatusOrderByBranch_NameAsc(
+                        membership.getId(),
+                        BranchAssignmentStatus.ACTIVE);
+
+        for (UUID branchId : normalizedBranchIds) {
+            Branch branch = branchRepository.findByIdAndAgency_Id(branchId, agencyId)
+                    .orElseThrow(() -> new com.homehealthcare.invitation.application.InvalidInvitationBranchException(branchId, agencyId));
+
+            branchAssignmentRepository.findByAgencyMembership_IdAndBranch_Id(membership.getId(), branchId)
+                    .ifPresentOrElse(existing -> {
+                        existing.activate();
+                        branchAssignmentRepository.save(existing);
+                    }, () -> branchAssignmentRepository.save(BranchAssignment.assign(membership, branch)));
+        }
+
+        for (BranchAssignment assignment : existingAssignments) {
+            if (!normalizedBranchIds.contains(assignment.getBranchId())) {
+                assignment.deactivate();
+                branchAssignmentRepository.save(assignment);
+            }
+        }
+    }
+
+    public record UpdateUserCommand(
+            @NotBlank String firstName,
+            @NotBlank String lastName,
+            String phone,
+            @NotNull AgencyRole role,
+            @NotNull Set<UUID> branchIds) {
+    }
+
+    public record UpdatedUserResult(
+            UUID userId,
+            UUID membershipId,
+            String firstName,
+            String lastName,
+            String phone,
+            AgencyRole role,
+            List<String> branchNames) {
+    }
+}
