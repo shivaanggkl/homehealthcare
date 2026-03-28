@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-03-28T14:05:32.800Z" hostname="Shivangs-MacBook-Pro.local" time="0.003">
+<testsuite name="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-03-28T14:20:11.955Z" hostname="Shivangs-MacBook-Pro.local" time="0.005">
   <properties/>
-  <testcase name="disallowedRoleIsDeniedSensitivePermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.001"/>
+  <testcase name="disallowedRoleIsDeniedSensitivePermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.002"/>
   <testcase name="inactiveMembershipIsDeniedEvenWhenRoleWouldNormallyBeAllowed()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.001"/>
-  <testcase name="branchScopedEpic2PermissionsRemainUnavailableToAgencyWideReadOnlyRoles()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.0"/>
+  <testcase name="branchScopedEpic2PermissionsRemainUnavailableToAgencyWideReadOnlyRoles()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.001"/>
   <testcase name="allowedRoleHasConfiguredPermission()" classname="com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

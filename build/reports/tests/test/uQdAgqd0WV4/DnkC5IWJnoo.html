@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.257s</div>
+<div class="counter">0.241s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,25 +85,25 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-invalidAndExpiredTokensAreRejected()">2026-03-28T09:05:20.443-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
-2026-03-28T09:05:20.444-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:20.685-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
-2026-03-28T09:05:20.688-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.id=?
-2026-03-28T09:05:20.689-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into password_reset_tokens (cancelled_at,consumed_at,created_at,email,expires_at,requested_at,status,token,updated_at,user_id,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:20.690-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.ResetPasswordController#resetPassword(ResetPasswordRequest)
-2026-03-28T09:05:20.690-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [ResetPasswordRequest[token=missing-token, newPassword=NewSecurePass1!, revokeExistingSessions=false]]
-2026-03-28T09:05:20.691-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.token=?
-2026-03-28T09:05:20.692-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.homehealthcare.auth.api.AuthenticationApiExceptionHandler#handleBadRequest(RuntimeException)
-2026-03-28T09:05:20.692-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
-2026-03-28T09:05:20.692-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ErrorResponse[message=Password reset token is invalid]]
-2026-03-28T09:05:20.693-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.homehealthcare.auth.application.PasswordResetTokenNotFoundException: Password reset token is invalid]
-2026-03-28T09:05:20.693-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.ResetPasswordController#resetPassword(ResetPasswordRequest)
-2026-03-28T09:05:20.694-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [ResetPasswordRequest[token=expired-reset-token, newPassword=NewSecurePass1!, revokeExistingSessions= (truncated)...]
-2026-03-28T09:05:20.694-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.token=?
-2026-03-28T09:05:20.695-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.homehealthcare.auth.api.AuthenticationApiExceptionHandler#handleExpiredResetToken(PasswordResetTokenExpiredException)
-2026-03-28T09:05:20.696-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
-2026-03-28T09:05:20.696-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ErrorResponse[message=Password reset token has expired]]
-2026-03-28T09:05:20.696-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.homehealthcare.auth.application.PasswordResetTokenExpiredException: Password reset token has expired]
+<pre id="root-0-test-stdout-invalidAndExpiredTokensAreRejected()">2026-03-28T09:19:53.555-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-28T09:19:53.556-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:53.768-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-28T09:19:53.771-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.id=?
+2026-03-28T09:19:53.773-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into password_reset_tokens (cancelled_at,consumed_at,created_at,email,expires_at,requested_at,status,token,updated_at,user_id,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:53.775-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.ResetPasswordController#resetPassword(ResetPasswordRequest)
+2026-03-28T09:19:53.777-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [ResetPasswordRequest[token=missing-token, newPassword=NewSecurePass1!, revokeExistingSessions=false]]
+2026-03-28T09:19:53.778-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.token=?
+2026-03-28T09:19:53.782-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.homehealthcare.auth.api.AuthenticationApiExceptionHandler#handleBadRequest(RuntimeException)
+2026-03-28T09:19:53.782-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-28T09:19:53.782-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ErrorResponse[message=Password reset token is invalid]]
+2026-03-28T09:19:53.783-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.homehealthcare.auth.application.PasswordResetTokenNotFoundException: Password reset token is invalid]
+2026-03-28T09:19:53.783-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.ResetPasswordController#resetPassword(ResetPasswordRequest)
+2026-03-28T09:19:53.784-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [ResetPasswordRequest[token=expired-reset-token, newPassword=NewSecurePass1!, revokeExistingSessions= (truncated)...]
+2026-03-28T09:19:53.788-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prt1_0.id,prt1_0.cancelled_at,prt1_0.consumed_at,prt1_0.created_at,prt1_0.email,prt1_0.expires_at,prt1_0.requested_at,prt1_0.status,prt1_0.token,prt1_0.updated_at,prt1_0.user_id from password_reset_tokens prt1_0 where prt1_0.token=?
+2026-03-28T09:19:53.791-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.homehealthcare.auth.api.AuthenticationApiExceptionHandler#handleExpiredResetToken(PasswordResetTokenExpiredException)
+2026-03-28T09:19:53.791-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-28T09:19:53.791-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ErrorResponse[message=Password reset token has expired]]
+2026-03-28T09:19:53.792-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.homehealthcare.auth.application.PasswordResetTokenExpiredException: Password reset token has expired]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-invalidAndExpiredTokensAreRejected()">Copy</button>
 </span>
@@ -118,7 +118,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:43 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
 </div>
 </div>
 </body>

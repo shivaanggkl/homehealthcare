@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.011s</div>
+<div class="counter">0.009s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,14 +85,14 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-enforcesUniqueCodeWithinAgency()">2026-03-28T09:05:24.414-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:05:24.416-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:24.417-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-28T09:05:24.418-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:24.419-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-28T09:05:24.420-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:24.420-05:00  WARN 28810 --- [homehealthcare] [    Test worker] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
-2026-03-28T09:05:24.421-05:00  WARN 28810 --- [homehealthcare] [    Test worker] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: &quot;PUBLIC.UK_BRANCHES_AGENCY_CODE INDEX PUBLIC.UK_BRANCHES_AGENCY_CODE_INDEX_2 ON PUBLIC.BRANCHES(AGENCY_ID NULLS FIRST, CODE NULLS FIRST) VALUES ( /* key:26 */ UUID 'dc4cefa2-1b3d-4d93-8ee3-4d500a71f37b', 'CHI-01')&quot;; SQL statement:
+<pre id="root-0-test-stdout-enforcesUniqueCodeWithinAgency()">2026-03-28T09:19:59.634-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:19:59.635-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.636-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-28T09:19:59.637-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.637-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-28T09:19:59.638-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.639-05:00  WARN 38125 --- [homehealthcare] [    Test worker] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
+2026-03-28T09:19:59.639-05:00  WARN 38125 --- [homehealthcare] [    Test worker] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: &quot;PUBLIC.UK_BRANCHES_AGENCY_CODE INDEX PUBLIC.UK_BRANCHES_AGENCY_CODE_INDEX_2 ON PUBLIC.BRANCHES(AGENCY_ID NULLS FIRST, CODE NULLS FIRST) VALUES ( /* key:27 */ UUID '91b0430e-2fe4-4221-8162-0a95893a1d19', 'CHI-01')&quot;; SQL statement:
 insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?) [23505-240]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-enforcesUniqueCodeWithinAgency()">Copy</button>
@@ -108,7 +108,7 @@ insert into branches (address,agency_id,code,created_at,deactivated_at,name,stat
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:43 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
 </div>
 </div>
 </body>

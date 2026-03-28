@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.039s</div>
+<div class="counter">0.014s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,16 +85,16 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-visitTypeCanReferenceAgencyServiceLineAndRejectsCrossAgencyReference()">2026-03-28T09:04:58.992-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:04:58.994-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:04:58.995-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:04:58.997-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:04:58.998-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
-2026-03-28T09:04:59.000-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:04:59.002-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
-2026-03-28T09:04:59.005-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:04:59.011-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select vt1_0.id,vt1_0.agency_id,vt1_0.billable,vt1_0.code,vt1_0.created_at,vt1_0.default_duration_minutes,vt1_0.description,vt1_0.display_order,vt1_0.effective_from,vt1_0.effective_to,vt1_0.name,vt1_0.service_line_id,vt1_0.status,vt1_0.updated_at from visit_types vt1_0 where vt1_0.id=?
-2026-03-28T09:04:59.022-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into visit_types (agency_id,billable,code,created_at,default_duration_minutes,description,display_order,effective_from,effective_to,name,service_line_id,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+<pre id="root-0-test-stdout-visitTypeCanReferenceAgencyServiceLineAndRejectsCrossAgencyReference()">2026-03-28T09:19:59.810-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:19:59.811-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.811-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:19:59.812-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.812-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
+2026-03-28T09:19:59.813-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.813-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
+2026-03-28T09:19:59.814-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:19:59.814-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select vt1_0.id,vt1_0.agency_id,vt1_0.billable,vt1_0.code,vt1_0.created_at,vt1_0.default_duration_minutes,vt1_0.description,vt1_0.display_order,vt1_0.effective_from,vt1_0.effective_to,vt1_0.name,vt1_0.service_line_id,vt1_0.status,vt1_0.updated_at from visit_types vt1_0 where vt1_0.id=?
+2026-03-28T09:19:59.815-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into visit_types (agency_id,billable,code,created_at,default_duration_minutes,description,display_order,effective_from,effective_to,name,service_line_id,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-visitTypeCanReferenceAgencyServiceLineAndRejectsCrossAgencyReference()">Copy</button>
 </span>
@@ -109,7 +109,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:43 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
 </div>
 </div>
 </body>

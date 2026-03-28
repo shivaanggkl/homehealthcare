@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.043s</div>
+<div class="counter">0.036s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,22 +85,22 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-userCanReadAndUpdateOwnProfile()">2026-03-28T09:05:38.644-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:05:38.645-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:38.646-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
-2026-03-28T09:05:38.648-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:05:38.649-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
-2026-03-28T09:05:38.650-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
-2026-03-28T09:05:38.651-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserSelfProfileController#profile()
-2026-03-28T09:05:38.652-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
-2026-03-28T09:05:38.654-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
-2026-03-28T09:05:38.656-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [SelfProfileResponse[userId=e48efbf9-2a18-418e-9060-453ab1a59e8f, firstName=Casey, lastName=Caregiver (truncated)...]
-2026-03-28T09:05:38.661-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserSelfProfileController#update(UpdateSelfProfileRequest)
-2026-03-28T09:05:38.666-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [UpdateSelfProfileRequest[firstName=Casey Updated, lastName=Caregiver Updated, phone=555-333-4444, pr (truncated)...]
-2026-03-28T09:05:38.670-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
-2026-03-28T09:05:38.676-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
-2026-03-28T09:05:38.677-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
-2026-03-28T09:05:38.677-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [SelfProfileResponse[userId=e48efbf9-2a18-418e-9060-453ab1a59e8f, firstName=Casey Updated, lastName=C (truncated)...]
+<pre id="root-0-test-stdout-userCanReadAndUpdateOwnProfile()">2026-03-28T09:20:18.234-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:20:18.235-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:20:18.236-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-28T09:20:18.237-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:20:18.237-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-28T09:20:18.238-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-28T09:20:18.239-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserSelfProfileController#profile()
+2026-03-28T09:20:18.240-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-28T09:20:18.241-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-28T09:20:18.241-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [SelfProfileResponse[userId=c1d33347-31c1-441d-91e2-da182ae3897e, firstName=Casey, lastName=Caregiver (truncated)...]
+2026-03-28T09:20:18.246-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserSelfProfileController#update(UpdateSelfProfileRequest)
+2026-03-28T09:20:18.248-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [UpdateSelfProfileRequest[firstName=Casey Updated, lastName=Caregiver Updated, phone=555-333-4444, pr (truncated)...]
+2026-03-28T09:20:18.251-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-28T09:20:18.256-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-28T09:20:18.257-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-28T09:20:18.257-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [SelfProfileResponse[userId=c1d33347-31c1-441d-91e2-da182ae3897e, firstName=Casey Updated, lastName=C (truncated)...]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-userCanReadAndUpdateOwnProfile()">Copy</button>
 </span>
@@ -115,7 +115,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:43 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
 </div>
 </div>
 </body>
