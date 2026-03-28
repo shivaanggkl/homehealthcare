@@ -2,6 +2,7 @@ package com.homehealthcare.serviceline.application;
 
 import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.configuration.foundation.ConfigurationAuditService;
+import com.homehealthcare.configuration.foundation.ConfigurationDependencyGuard;
 import com.homehealthcare.configuration.foundation.ConfigurationEntityNotFoundException;
 import com.homehealthcare.configuration.foundation.DuplicateConfigurationException;
 import com.homehealthcare.configuration.foundation.Epic2ConfigurationTargetType;
@@ -28,6 +29,7 @@ public class ServiceLineCatalogService {
     private final ServiceLineRepository serviceLineRepository;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
     private final ConfigurationAuditService configurationAuditService;
+    private final ConfigurationDependencyGuard configurationDependencyGuard;
 
     @Transactional
     public ServiceLine create(@NotNull AgencyMembership actorMembership, @Valid ManageServiceLineCommand command) {
@@ -81,6 +83,7 @@ public class ServiceLineCatalogService {
         ServiceLine serviceLine = serviceLineRepository.findById(serviceLineId)
                 .orElseThrow(() -> new ConfigurationEntityNotFoundException("ServiceLine", serviceLineId));
         assertSameAgency(actorMembership.getAgencyId(), serviceLine.getAgencyId(), "ServiceLine", serviceLineId);
+        configurationDependencyGuard.assertServiceLineCanDeactivate(serviceLineId);
 
         serviceLine.deactivate();
         ServiceLine saved = serviceLineRepository.saveAndFlush(serviceLine);

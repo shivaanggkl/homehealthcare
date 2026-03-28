@@ -1,5 +1,6 @@
 package com.homehealthcare.certification.domain;
 
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface CaregiverCertificationRepository extends JpaRepository<Caregive
     boolean existsByAgency_IdAndNameAndIdNot(UUID agencyId, String name, UUID id);
 
     boolean existsByAgency_IdAndCodeAndIdNot(UUID agencyId, String code, UUID id);
+
+    List<CaregiverCertification> findAllByAgency_IdOrderByDisplayOrderAscNameAsc(UUID agencyId);
 }

@@ -1,7 +1,10 @@
 package com.homehealthcare.configuration.foundation;
 
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+@ResponseStatus(HttpStatus.FORBIDDEN)
 public class UnauthorizedConfigurationActorException extends RuntimeException {
 
     public UnauthorizedConfigurationActorException(UUID actorMembershipId) {

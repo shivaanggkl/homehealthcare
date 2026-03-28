@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.027s</div>
+<div class="counter">0.008s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,23 +85,23 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-crossAgencyTargetUserReturnsNotFound()">2026-03-28T09:20:18.114-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:20:18.115-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:20:18.116-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
-2026-03-28T09:20:18.117-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:20:18.117-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
-2026-03-28T09:20:18.118-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
-2026-03-28T09:20:18.118-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:20:18.120-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:20:18.123-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
-2026-03-28T09:20:18.125-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:20:18.127-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
-2026-03-28T09:20:18.129-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
-2026-03-28T09:20:18.131-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserProfileAssignmentController#updateUser(UUID, UpdateUserRequest)
-2026-03-28T09:20:18.132-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [UpdateUserRequest[firstName=Jordan, lastName=Elsewhere, phone=null, role=CAREGIVER, branchIds=[]]]
-2026-03-28T09:20:18.132-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
-2026-03-28T09:20:18.134-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.user_id=? and am1_0.agency_id=?
-2026-03-28T09:20:18.135-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] .w.s.m.a.ResponseStatusExceptionResolver : Resolved [com.homehealthcare.user.application.UserNotManageableInAgencyException: User 3f3a960f-7bc9-4c1b-be9b-09a2ad83a4b8 is not a member of agency 74c8edd6-470c-4003-92d2-f27e90f89f41]
+<pre id="root-0-test-stdout-crossAgencyTargetUserReturnsNotFound()">2026-03-28T09:58:05.827-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:58:05.828-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:58:05.828-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-28T09:58:05.828-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-28T09:58:05.829-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:58:05.830-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-28T09:58:05.830-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-28T09:58:05.830-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.user.api.UserProfileAssignmentController#updateUser(UUID, UpdateUserRequest)
+2026-03-28T09:58:05.831-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [UpdateUserRequest[firstName=Jordan, lastName=Elsewhere, phone=null, role=CAREGIVER, branchIds=[]]]
+2026-03-28T09:58:05.831-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-28T09:58:05.832-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.user_id=? and am1_0.agency_id=?
+2026-03-28T09:58:05.832-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] .w.s.m.a.ResponseStatusExceptionResolver : Resolved [com.homehealthcare.user.application.UserNotManageableInAgencyException: User f43724f8-04c5-425a-a28d-a417fc18b102 is not a member of agency 133f1fd1-c0e7-4a05-b161-e242c4d92090]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-crossAgencyTargetUserReturnsNotFound()">Copy</button>
 </span>
@@ -116,7 +116,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:58:08 AM</p>
 </div>
 </div>
 </body>

@@ -63,7 +63,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.021s</div>
+<div class="counter">0.017s</div>
 <p>duration</p>
 </div>
 </td>
@@ -85,20 +85,20 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-agencyWideReadRoleCanViewAllBranchesWithoutExplicitAssignments()">2026-03-28T09:19:59.567-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
-2026-03-28T09:19:59.568-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:19:59.570-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-28T09:19:59.571-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:19:59.573-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
-2026-03-28T09:19:59.576-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
-2026-03-28T09:19:59.577-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#visibleBranches(String)
-2026-03-28T09:19:59.579-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.agency_id=? order by b1_0.name
-2026-03-28T09:19:59.579-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
-2026-03-28T09:19:59.580-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago Central|Chicago North&quot;]
-2026-03-28T09:19:59.581-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
-2026-03-28T09:19:59.582-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
-2026-03-28T09:19:59.584-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
-2026-03-28T09:19:59.584-05:00 DEBUG 38125 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago North&quot;]
+<pre id="root-0-test-stdout-agencyWideReadRoleCanViewAllBranchesWithoutExplicitAssignments()">2026-03-28T09:57:56.926-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-28T09:57:56.927-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:57:56.928-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-28T09:57:56.929-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:57:56.930-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-28T09:57:56.931-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-28T09:57:56.933-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#visibleBranches(String)
+2026-03-28T09:57:56.934-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.agency_id=? order by b1_0.name
+2026-03-28T09:57:56.936-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
+2026-03-28T09:57:56.936-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago Central|Chicago North&quot;]
+2026-03-28T09:57:56.937-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.branch.application.BranchTenantIsolationIntegrationTest$TestBranchController#branchName(UUID)
+2026-03-28T09:57:56.938-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-28T09:57:56.939-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
+2026-03-28T09:57:56.939-05:00 DEBUG 84140 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [&quot;Chicago North&quot;]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-agencyWideReadRoleCanViewAllBranchesWithoutExplicitAssignments()">Copy</button>
 </span>
@@ -113,7 +113,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:20:23 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:58:08 AM</p>
 </div>
 </div>
 </body>

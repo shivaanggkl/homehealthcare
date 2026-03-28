@@ -85,7 +85,7 @@ class PhaseBCatalogConfigurationServiceTest {
                         "Companion and personal care",
                         1));
 
-        visitTypeCatalogService.create(
+        var visitType = visitTypeCatalogService.create(
                 actorMembership,
                 new VisitTypeCatalogService.ManageVisitTypeCommand(
                         serviceLine.getId(),
@@ -111,6 +111,7 @@ class PhaseBCatalogConfigurationServiceTest {
                         "Cardiopulmonary resuscitation",
                         true));
 
+        visitTypeCatalogService.deactivate(actorMembership, visitType.getId());
         serviceLineCatalogService.deactivate(actorMembership, serviceLine.getId());
 
         List<AuditEvent> events = auditEventRepository.findAllByAgencyIdOrderByOccurredAtAsc(actorMembership.getAgencyId());

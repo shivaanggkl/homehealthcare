@@ -1,5 +1,6 @@
 package com.homehealthcare.alertrule.domain;
 
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface AlertRuleRepository extends JpaRepository<AlertRule, UUID> {
     boolean existsByAgency_IdAndBranch_IdAndNameAndIdNot(UUID agencyId, UUID branchId, String name, UUID id);
 
     boolean existsByAgency_IdAndBranchIsNullAndNameAndIdNot(UUID agencyId, String name, UUID id);
+
+    List<AlertRule> findAllByAgency_IdOrderByDisplayOrderAscNameAsc(UUID agencyId);
 }

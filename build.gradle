@@ -63,3 +63,23 @@ tasks.register('authMfaTest', Test) {
 		includeTestsMatching 'com.homehealthcare.auth.api.FailedLoginProtectionRateLimitIntegrationTest'
 	}
 }
+
+tasks.register('epic2ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 2 configuration API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.agencyprofile.api.AgencyProfileIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.serviceline.api.ServiceLineIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.visittype.api.VisitTypeIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.workforce.api.WorkforceCatalogIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.tasktemplate.api.TaskTemplateIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.documentationtemplate.api.DocumentationTemplateIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.branchpolicy.api.BranchPolicyIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.alertrule.api.AlertRuleIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.mileagepay.api.MileagePaySettingIntegrationTest'
+	}
+}

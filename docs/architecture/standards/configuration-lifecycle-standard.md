@@ -36,6 +36,10 @@ Dependency handling rules
 
 - configuration records with active downstream references should not be hard-deleted
 - when a dependency blocks removal, the API should return a controlled conflict response
+- dependency conflicts should return HTTP `409 Conflict`
+- current enforced examples include:
+  - service lines referenced by active visit types or active task templates
+  - visit types referenced by active task templates
 - the default operator action should be:
   - deactivate
   - archive

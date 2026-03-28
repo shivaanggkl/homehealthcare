@@ -1,6 +1,7 @@
 package com.homehealthcare.visittype.application;
 
 import com.homehealthcare.configuration.foundation.ConfigurationAuditService;
+import com.homehealthcare.configuration.foundation.ConfigurationDependencyGuard;
 import com.homehealthcare.configuration.foundation.ConfigurationEntityNotFoundException;
 import com.homehealthcare.configuration.foundation.DuplicateConfigurationException;
 import com.homehealthcare.configuration.foundation.Epic2ConfigurationTargetType;
@@ -31,6 +32,7 @@ public class VisitTypeCatalogService {
     private final ServiceLineRepository serviceLineRepository;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
     private final ConfigurationAuditService configurationAuditService;
+    private final ConfigurationDependencyGuard configurationDependencyGuard;
 
     @Transactional
     public VisitType create(@NotNull AgencyMembership actorMembership, @Valid ManageVisitTypeCommand command) {
@@ -99,6 +101,7 @@ public class VisitTypeCatalogService {
         VisitType visitType = visitTypeRepository.findById(visitTypeId)
                 .orElseThrow(() -> new ConfigurationEntityNotFoundException("VisitType", visitTypeId));
         assertSameAgency(actorMembership.getAgencyId(), visitType.getAgencyId(), "VisitType", visitTypeId);
+        configurationDependencyGuard.assertVisitTypeCanDeactivate(visitTypeId);
 
         visitType.deactivate();
         VisitType saved = visitTypeRepository.saveAndFlush(visitType);

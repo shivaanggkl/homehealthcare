@@ -1,5 +1,6 @@
 package com.homehealthcare.visittype.domain;
 
+import com.homehealthcare.configuration.foundation.ConfigurationStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,4 +19,6 @@ public interface VisitTypeRepository extends JpaRepository<VisitType, UUID> {
     List<VisitType> findAllByAgency_IdOrderByDisplayOrderAscNameAsc(UUID agencyId);
 
     Optional<VisitType> findByAgency_IdAndCode(UUID agencyId, String code);
+
+    boolean existsByServiceLine_IdAndStatus(UUID serviceLineId, ConfigurationStatus status);
 }
