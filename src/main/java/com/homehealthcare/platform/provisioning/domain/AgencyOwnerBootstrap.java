@@ -76,6 +76,14 @@ public class AgencyOwnerBootstrap extends AgencyScopedEntity {
                 .build();
     }
 
+    public void complete() {
+        this.status = AgencyOwnerBootstrapStatus.COMPLETED;
+    }
+
+    public void cancel() {
+        this.status = AgencyOwnerBootstrapStatus.CANCELLED;
+    }
+
     @PrePersist
     @PreUpdate
     void normalize() {
