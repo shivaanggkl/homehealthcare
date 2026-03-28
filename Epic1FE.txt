@@ -1,0 +1,528 @@
+Epic 1 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document translates Epic 1 backend work into the frontend stories required to deliver Epic 1 on the web application.
+
+It is based on:
+
+- the Epic 1 requirements in `Requirements.txt`
+- the current backend code and public HTTP API surface in `README.md`
+- the backend stories you marked complete:
+  - `S01–S11`
+  - `S12–S14`
+  - `S16`
+  - `S18–S25`
+  - `S24–S25`
+  - `S27–S28`
+  - `S30–S39`
+  - `S44–S48`
+
+Important planning note
+
+Epic 1 backend is stronger than the current REST API surface.
+
+What is already exposed as public backend APIs:
+
+- login, logout, refresh
+- forgot/reset/change password
+- MFA enrollment and MFA login challenge
+- session status and active-session revocation
+- agency MFA policy
+- admin notification preferences
+- password policy
+
+What exists mostly in backend services but is not yet exposed as public REST APIs:
+
+- invite user
+- accept invite
+- user directory
+- edit user profile, role, and branch assignments
+- self-service profile update
+- audit log viewer
+- agency settings
+- branch management
+- security settings beyond MFA policy
+
+Status legend
+
+- READY: frontend can be built now against existing backend APIs
+- PARTIAL: some backend support exists, but additional API work is needed
+- BLOCKED: service/domain logic exists or requirements exist, but frontend should wait for public APIs
+
+========================================================================
+FE-01 — App shell, auth bootstrap, and session-aware startup
+Related Epic 1 stories: `E1-S18`, `E1-S19`, `E1-S32`, `E1-S33`, `E1-S34`
+Backend status: READY
+
+Story
+As a signed-in user, I want the frontend to restore my authenticated state correctly so I can continue working without manual re-login on every refresh.
+
+Frontend acceptance criteria
+
+- app boot checks current auth state using `GET /api/auth/session`
+- authenticated state can be restored from secure cookies or token/session headers for local dev
+- expired or revoked sessions send user back to login cleanly
+- session metadata is stored in frontend auth state only as needed for UX
+- logout fully clears local auth state
+
+========================================================================
+FE-02 — Email/password login screen
+Related Epic 1 stories: `E1-S18`, `E1-S23`
+Backend status: READY
+
+Story
+As a user, I want a clean login screen so I can sign in with email and password.
+
+Frontend acceptance criteria
+
+- email/password form posts to `POST /api/auth/login`
+- generic invalid-credentials error is shown without account leakage
+- rate-limit and temporary-lockout responses are handled clearly
+- successful login routes user either to app home or MFA challenge depending on response
+- access token, refresh token, and session id from response are supported for local non-cookie dev flows
+
+========================================================================
+FE-03 — MFA login challenge screen
+Related Epic 1 stories: `E1-S25`
+Backend status: READY
+
+Story
+As a protected user, I want to complete MFA after password verification so login remains secure.
+
+Frontend acceptance criteria
+
+- challenge screen is shown when login returns `mfaRequired=true`
+- user can submit either TOTP code or recovery code to `POST /api/auth/login/mfa`
+- used recovery-code success state is communicated clearly
+- expired or invalid challenge errors are handled cleanly
+- successful challenge completes auth bootstrap and redirects into the app
+
+========================================================================
+FE-04 — Logout flow
+Related Epic 1 stories: `E1-S19`
+Backend status: READY
+
+Story
+As a user, I want logout to end my session cleanly from anywhere in the UI.
+
+Frontend acceptance criteria
+
+- logout action calls `POST /api/auth/logout`
+- redirect behavior from backend is honored
+- local auth state is cleared immediately
+- protected routes become inaccessible after logout
+
+========================================================================
+FE-05 — Forgot password screen
+Related Epic 1 stories: `E1-S20`
+Backend status: READY
+
+Story
+As a user, I want to request a reset email so I can regain access without contacting support.
+
+Frontend acceptance criteria
+
+- email form posts to `POST /api/auth/forgot-password`
+- success UI is the same whether the email exists or not
+- page explains that reset links expire
+- UI does not reveal account existence
+
+========================================================================
+FE-06 — Reset password screen
+Related Epic 1 stories: `E1-S21`, `E1-S36`
+Backend status: READY
+
+Story
+As a user, I want to set a new password from a reset link so I can sign in again.
+
+Frontend acceptance criteria
+
+- reset token is read from URL and posted to `POST /api/auth/reset-password`
+- password rules are loaded from `GET /api/auth/password-policy`
+- UI supports optional "revoke other sessions" choice
+- invalid, expired, or already-used token states are handled with controlled UX
+
+========================================================================
+FE-07 — Change password screen
+Related Epic 1 stories: `E1-S22`, `E1-S36`
+Backend status: READY
+
+Story
+As a signed-in user, I want to change my password from account settings.
+
+Frontend acceptance criteria
+
+- screen loads password policy from `GET /api/auth/password-policy`
+- form posts current password, new password, and invalidate-other-sessions choice to `POST /api/auth/change-password`
+- weak-password, reuse, and wrong-current-password errors are handled inline
+- success state is clear and does not leak secret data
+
+========================================================================
+FE-08 — MFA status and enrollment settings
+Related Epic 1 stories: `E1-S24`
+Backend status: READY
+
+Story
+As a user, I want to enroll MFA from settings so my account has stronger protection.
+
+Frontend acceptance criteria
+
+- settings page loads `GET /api/auth/mfa/status`
+- enrollment start form asks for current password and calls `POST /api/auth/mfa/enrollment/start`
+- UI shows QR-compatible `otpauthUri`, manual entry key, and recovery codes once
+- confirm step posts to `POST /api/auth/mfa/enrollment/confirm`
+- expired enrollment tokens and invalid TOTP codes are handled cleanly
+
+========================================================================
+FE-09 — Active sessions screen
+Related Epic 1 stories: `E1-S34`
+Backend status: READY
+
+Story
+As a user, I want to review and revoke suspicious sessions from settings.
+
+Frontend acceptance criteria
+
+- page loads `GET /api/auth/sessions`
+- current session is clearly labeled
+- non-current sessions can be revoked through `DELETE /api/auth/sessions/{sessionId}`
+- current session cannot be revoked from this screen
+- revoked state updates without requiring full page refresh
+
+========================================================================
+FE-10 — Session timeout warning UX
+Related Epic 1 stories: `E1-S33`
+Backend status: READY
+
+Story
+As a user, I want a warning before forced logout so I do not lose work unexpectedly.
+
+Frontend acceptance criteria
+
+- app polls or refreshes `GET /api/auth/session` appropriately
+- warning modal/banner appears when `warningRequired=true`
+- countdown uses `secondsUntilForcedLogout`
+- once forced logout happens, the user is redirected to login cleanly
+- refresh or re-auth path works with the existing session strategy
+
+========================================================================
+FE-11 — Password policy presentation component
+Related Epic 1 stories: `E1-S36`
+Backend status: READY
+
+Story
+As a user, I want to see password rules during setup and change flows so I can succeed on the first try.
+
+Frontend acceptance criteria
+
+- reusable UI component consumes `GET /api/auth/password-policy`
+- same component is used in reset password, change password, and future invite acceptance
+- rules are rendered from backend values, not hardcoded
+
+========================================================================
+FE-12 — Permission-aware route and navigation guards
+Related Epic 1 stories: `E1-S29`, `E1-S27`, `E1-S28`, `E1-S31`
+Backend status: PARTIAL
+
+Story
+As the UI, I want permission-aware routing and menus so users only see what they should use.
+
+Frontend acceptance criteria
+
+- menu items and routes can be hidden or disabled by role and permission
+- unauthorized deep links render a controlled unauthorized state
+- role-based default landing pages are supported
+- branch-limited and agency-wide roles can be represented in frontend permission metadata
+- backend `403` and `404` security responses are handled gracefully
+
+Dependency note
+
+Backend authorization exists, but a frontend-facing "current user / current permissions / current agency context" endpoint is still needed for a robust implementation.
+
+========================================================================
+FE-13 — Admin MFA policy settings screen
+Related Epic 1 stories: `E1-S26`, `E1-S43`
+Backend status: READY
+
+Story
+As an agency admin, I want to configure agency MFA enforcement from a settings page.
+
+Frontend acceptance criteria
+
+- page reads current policy from `GET /api/security/mfa-policy`
+- admin can update mode and required roles through `PUT /api/security/mfa-policy`
+- non-admin access shows controlled unauthorized state
+- UI never exposes MFA secrets or recovery codes
+
+========================================================================
+FE-14 — Admin notification preferences screen
+Related Epic 1 stories: `E1-S45`
+Backend status: READY
+
+Story
+As an admin, I want to manage critical security notification preferences.
+
+Frontend acceptance criteria
+
+- page reads current values from `GET /api/security/admin-notifications`
+- admin can update email delivery and event-type preferences through `PUT /api/security/admin-notifications`
+- UI clearly explains the supported alert types:
+  - repeated failed login
+  - locked account
+  - new admin created
+- unauthorized users see controlled access denial
+
+========================================================================
+FE-15 — User directory screen
+Related Epic 1 stories: `E1-S15`, `E1-S26`
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want a searchable staff directory so I can manage users efficiently.
+
+Frontend acceptance criteria
+
+- searchable and filterable list by status, role, and branch
+- columns for invite status, last login, and MFA enabled
+- pagination controls
+- role-based access to the screen
+
+Dependency note
+
+The backend directory logic exists, but there is no public controller/API for this yet.
+
+========================================================================
+FE-16 — Invite user flow
+Related Epic 1 stories: `E1-S12`, `E1-S30`
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to invite a user with role and optional branch assignments from the UI.
+
+Frontend acceptance criteria
+
+- form captures email, role, and optional branch assignments
+- UI explains duplicate-invite behavior
+- privileged role assignment requires elevated confirmation or explicit permission check
+- invite success and audit-sensitive actions are clearly communicated
+
+Dependency note
+
+The backend invite service exists, but there is no public invite controller/API yet.
+
+========================================================================
+FE-17 — Accept invitation flow
+Related Epic 1 stories: `E1-S13`
+Backend status: BLOCKED
+
+Story
+As an invited user, I want a frontend onboarding flow that accepts my invite and sets my password.
+
+Frontend acceptance criteria
+
+- route can parse signed invite link parameters
+- password rules are shown from backend password policy
+- user can confirm profile basics and set password
+- invalid, expired, or already-used invite tokens show controlled terminal states
+
+Dependency note
+
+Backend acceptance service exists, but no public accept-invite HTTP endpoint exists yet.
+
+========================================================================
+FE-18 — User edit screen for admins
+Related Epic 1 stories: `E1-S16`, `E1-S30`
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to edit a staff member’s profile, role, and branch assignments.
+
+Frontend acceptance criteria
+
+- admin can update name, phone, role, and branch assignments
+- restricted role-change paths are visually protected
+- branch assignment UI supports one or many branches
+- immediate-effect messaging is shown for role changes
+
+Dependency note
+
+Backend service exists, but no public edit-user API exists yet.
+
+========================================================================
+FE-19 — User status management actions
+Related Epic 1 stories: `E1-S14`
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to activate, suspend, lock, or deactivate users from the UI.
+
+Frontend acceptance criteria
+
+- status-change actions are available only to authorized admins
+- destructive status changes require confirmation
+- UI explains session revocation side effects for suspension/deactivation
+- updated user status is reflected immediately in the UI
+
+Dependency note
+
+Backend service exists, but no public user-status management API exists yet.
+
+========================================================================
+FE-20 — User self-service profile screen
+Related Epic 1 stories: `E1-S17`
+Backend status: BLOCKED
+
+Story
+As a user, I want to update my own profile details from settings.
+
+Frontend acceptance criteria
+
+- user can edit first name, last name, phone, preferred language, and time zone
+- UI prevents any self-role editing path
+- validation errors are shown inline
+
+Dependency note
+
+Backend service exists, but no public self-profile API exists yet.
+
+========================================================================
+FE-21 — Audit log viewer
+Related Epic 1 stories: `E1-S40`
+Backend status: BLOCKED
+
+Story
+As an authorized admin or auditor, I want an audit log screen to review sensitive changes and sign-in events.
+
+Frontend acceptance criteria
+
+- filter by date range, actor, action type, and target user
+- paginated results
+- CSV export entry point
+- role-restricted access
+
+Dependency note
+
+Audit model exists, but no public audit-log viewer API exists yet.
+
+========================================================================
+FE-22 — Agency settings screen
+Related Epic 1 stories: `E1-S41`
+Backend status: BLOCKED
+
+Story
+As an agency owner, I want to edit agency profile information in the UI.
+
+Frontend acceptance criteria
+
+- editable agency name, contact info, and timezone
+- owner-only access
+- success and validation states are clear
+
+Dependency note
+
+No public agency-settings API exists yet.
+
+========================================================================
+FE-23 — Branch management screen
+Related Epic 1 stories: `E1-S42`
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage branches from the UI.
+
+Frontend acceptance criteria
+
+- searchable branch list
+- create, edit, and disable branch actions
+- dependency-related restrictions are surfaced clearly
+- branch availability can support later assignment UIs
+
+Dependency note
+
+Branch logic exists, but no public branch-management API exists yet.
+
+========================================================================
+FE-24 — Security settings screen
+Related Epic 1 stories: `E1-S43`
+Backend status: PARTIAL
+
+Story
+As an agency owner, I want a consolidated security settings page.
+
+Frontend acceptance criteria
+
+- MFA policy section uses the existing MFA policy endpoints
+- password policy section displays current password rules
+- session policy section is designed for timeout settings once backend API exists
+- audit-sensitive changes are clearly labeled in the UI
+
+Dependency note
+
+MFA policy and password policy are ready now. Session-timeout configuration API is not exposed yet.
+
+========================================================================
+FE-25 — Role-based home and unauthorized states
+Related Epic 1 stories: `E1-S29`
+Backend status: PARTIAL
+
+Story
+As a user, I want to land on a home screen that matches my role and see clear unauthorized states when I lack access.
+
+Frontend acceptance criteria
+
+- login redirect target varies by role or permission profile
+- unauthorized route state is distinct from not-found state
+- permission-denied pages explain the problem without leaking sensitive information
+
+Dependency note
+
+Needs a frontend-readable current-user/permission contract.
+
+========================================================================
+Recommended FE implementation order
+
+Phase 1 — build now against existing APIs
+
+1. `FE-01` App shell, auth bootstrap, and session-aware startup
+2. `FE-02` Login screen
+3. `FE-03` MFA login challenge
+4. `FE-04` Logout
+5. `FE-05` Forgot password
+6. `FE-06` Reset password
+7. `FE-07` Change password
+8. `FE-08` MFA settings and enrollment
+9. `FE-09` Active sessions
+10. `FE-10` Session timeout warning UX
+11. `FE-11` Password policy component
+12. `FE-13` Admin MFA policy settings
+13. `FE-14` Admin notification preferences
+
+Phase 2 — add after minimal auth shell is working
+
+14. `FE-12` Permission-aware route and navigation guards
+15. `FE-24` Security settings screen
+16. `FE-25` Role-based home and unauthorized states
+
+Phase 3 — requires new backend REST APIs
+
+17. `FE-15` User directory
+18. `FE-16` Invite user
+19. `FE-17` Accept invitation
+20. `FE-18` User edit and assignments
+21. `FE-19` User status management
+22. `FE-20` Self-service profile
+23. `FE-21` Audit log viewer
+24. `FE-22` Agency settings
+25. `FE-23` Branch management
+
+Definition of done for Epic 1 frontend
+
+Epic 1 frontend is meaningfully complete when:
+
+- all READY stories are implemented end to end
+- PARTIAL stories are either implemented or explicitly deferred
+- backend gaps for BLOCKED stories are converted into API backlog items
+- auth, MFA, session, and permission UX paths are tested in browser flows
+- unauthorized, expired-token, expired-link, and timeout states all have controlled UI

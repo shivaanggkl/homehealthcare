@@ -1,0 +1,10 @@
+Hi {{recipientName}},
+
+{{agencyName}} invited you to join {{platformName}} as {{roleName}}.
+
+Accept your invitation:
+{{actionUrl}}
+
+This link expires at {{expiresAt}}.
+
+If you were not expecting this email, contact {{supportEmail}}.
