@@ -13,6 +13,8 @@ import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.platform.email.SystemEmailTemplateService;
 import com.homehealthcare.platform.email.TemplatedEmail;
+import com.homehealthcare.notification.application.AdminNotificationEventType;
+import com.homehealthcare.notification.application.AdminSecurityNotificationService;
 import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
 import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.AgencyRole;
@@ -53,6 +55,7 @@ public class UserInvitationService {
     private final AuditEventRepository auditEventRepository;
     private final InvitationEmailSender invitationEmailSender;
     private final SystemEmailTemplateService systemEmailTemplateService;
+    private final AdminSecurityNotificationService adminSecurityNotificationService;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
@@ -127,6 +130,19 @@ public class UserInvitationService {
                         + "\",\"role\":\"" + membership.getRole().name()
                         + "\",\"branchCount\":" + command.branchIds().size()
                         + ",\"expiresAt\":\"" + expiresAt + "\"}"));
+
+        if (membership.getRole() == AgencyRole.AGENCY_OWNER || membership.getRole() == AgencyRole.BRANCH_ADMIN) {
+            adminSecurityNotificationService.notifyAgencyAdmins(new AdminSecurityNotificationService.CriticalAdminNotification(
+                    actorMembership.getAgencyId(),
+                    null,
+                    AdminNotificationEventType.NEW_ADMIN_CREATED,
+                    "New admin created",
+                    normalizedEmail + " was invited as " + membership.getRole().name() + ".",
+                    "new-admin-invite-" + membership.getId(),
+                    expiresAt,
+                    "AGENCY_MEMBERSHIP",
+                    membership.getId()));
+        }
 
         return new InviteUserResult(invitation, membership);
     }

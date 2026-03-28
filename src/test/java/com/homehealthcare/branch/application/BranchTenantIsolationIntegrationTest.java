@@ -93,6 +93,25 @@ class BranchTenantIsolationIntegrationTest {
     }
 
     @Test
+    void authenticatedTenantCannotCreateBranchInAnotherAgency() throws Exception {
+        Agency actorAgency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", "north-star-home-care-write", "America/Chicago", "ops@northstar.example"));
+        Agency otherAgency = agencyRepository.saveAndFlush(
+                Agency.create("Sunrise Home Care", "sunrise-home-care-write", "America/New_York", "ops@sunrise.example"));
+
+        mockMvc.perform(post("/test/branches/create")
+                        .with(authentication(authenticationFor(actorAgency.getId())))
+                        .param("agencyId", otherAgency.getId().toString())
+                        .param("name", "Unauthorized Branch")
+                        .param("code", "UNAUTH-01")
+                        .param("address", "999 Forbidden Ave")
+                        .param("timezone", "America/New_York"))
+                .andExpect(status().isForbidden());
+
+        assertThat(branchRepository.findByAgency_IdAndCode(otherAgency.getId(), "UNAUTH-01")).isEmpty();
+    }
+
+    @Test
     void branchCreateAndDeactivateAreAuditedForAuthorizedAgencyActor() throws Exception {
         Agency agency = agencyRepository.saveAndFlush(
                 Agency.create("North Star Home Care", "north-star-home-care-audit-branch", "America/Chicago", "ops@northstar.example"));

@@ -7,6 +7,8 @@ import com.homehealthcare.branchassignment.domain.BranchAssignmentRepository;
 import com.homehealthcare.branchassignment.domain.BranchAssignmentStatus;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.notification.application.AdminNotificationEventType;
+import com.homehealthcare.notification.application.AdminSecurityNotificationService;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
@@ -40,6 +42,7 @@ public class UserProfileAssignmentService {
     private final BranchRepository branchRepository;
     private final BranchAssignmentRepository branchAssignmentRepository;
     private final AuditEventRepository auditEventRepository;
+    private final AdminSecurityNotificationService adminSecurityNotificationService;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
@@ -94,6 +97,21 @@ public class UserProfileAssignmentService {
                     null,
                     "{\"previousRole\":\"" + previousRole.name()
                             + "\",\"newRole\":\"" + command.role().name() + "\"}"));
+
+            if ((command.role() == AgencyRole.AGENCY_OWNER || command.role() == AgencyRole.BRANCH_ADMIN)
+                    && previousRole != AgencyRole.AGENCY_OWNER
+                    && previousRole != AgencyRole.BRANCH_ADMIN) {
+                adminSecurityNotificationService.notifyAgencyAdmins(new AdminSecurityNotificationService.CriticalAdminNotification(
+                        actorMembership.getAgencyId(),
+                        null,
+                        AdminNotificationEventType.NEW_ADMIN_CREATED,
+                        "New admin created",
+                        targetUser.getEmail() + " was granted the " + command.role().name() + " role.",
+                        "new-admin-role-" + targetUser.getId(),
+                        java.time.OffsetDateTime.now().plusDays(1),
+                        TARGET_TYPE_USER,
+                        targetUser.getId()));
+            }
         }
 
         if (!previousBranchIds.equals(updatedBranchIds)) {

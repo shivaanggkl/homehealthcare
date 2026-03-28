@@ -15,4 +15,6 @@ public interface AgencyMembershipRepository extends JpaRepository<AgencyMembersh
     Optional<AgencyMembership> findByUser_IdAndAgency_Id(UUID userId, UUID agencyId);
 
     List<AgencyMembership> findAllByUser_IdAndStatus(UUID userId, AgencyMembershipStatus status);
+
+    List<AgencyMembership> findAllByAgency_IdAndStatus(UUID agencyId, AgencyMembershipStatus status);
 }

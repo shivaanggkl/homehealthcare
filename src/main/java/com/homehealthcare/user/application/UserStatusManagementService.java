@@ -3,6 +3,8 @@ package com.homehealthcare.user.application;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.auth.application.UserSessionManagementService;
+import com.homehealthcare.notification.application.AdminNotificationEventType;
+import com.homehealthcare.notification.application.AdminSecurityNotificationService;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
@@ -30,6 +32,7 @@ public class UserStatusManagementService {
     private final AuditEventRepository auditEventRepository;
     private final UserSessionService userSessionService;
     private final UserSessionManagementService userSessionManagementService;
+    private final AdminSecurityNotificationService adminSecurityNotificationService;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
@@ -71,6 +74,19 @@ public class UserStatusManagementService {
                 savedUser.getId(),
                 actorMembership.getAgencyId(),
                 "{\"newStatus\":\"" + savedUser.getStatus().name() + "\"}"));
+
+        if (targetStatus == UserStatus.LOCKED) {
+            adminSecurityNotificationService.notifyAgencyAdmins(new AdminSecurityNotificationService.CriticalAdminNotification(
+                    actorMembership.getAgencyId(),
+                    null,
+                    AdminNotificationEventType.LOCKED_ACCOUNT,
+                    "Account locked",
+                    "User " + savedUser.getEmail() + " was locked by an agency administrator.",
+                    "locked-account-" + savedUser.getId(),
+                    java.time.OffsetDateTime.now().plusDays(1),
+                    TARGET_TYPE_USER,
+                    savedUser.getId()));
+        }
 
         return savedUser;
     }

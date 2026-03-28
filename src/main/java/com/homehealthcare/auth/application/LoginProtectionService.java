@@ -3,6 +3,11 @@ package com.homehealthcare.auth.application;
 import com.homehealthcare.auth.domain.AuthLoginAttempt;
 import com.homehealthcare.auth.domain.AuthLoginAttemptOutcome;
 import com.homehealthcare.auth.domain.AuthLoginAttemptRepository;
+import com.homehealthcare.membership.domain.AgencyMembership;
+import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.membership.domain.AgencyMembershipStatus;
+import com.homehealthcare.notification.application.AdminNotificationEventType;
+import com.homehealthcare.notification.application.AdminSecurityNotificationService;
 import com.homehealthcare.user.domain.User;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,6 +26,8 @@ public class LoginProtectionService {
 
     private final AuthLoginAttemptRepository authLoginAttemptRepository;
     private final LoginProtectionProperties properties;
+    private final AgencyMembershipRepository agencyMembershipRepository;
+    private final AdminSecurityNotificationService adminSecurityNotificationService;
 
     @Transactional
     public void assertLoginAllowed(String email, String ipAddress) {
@@ -74,6 +81,20 @@ public class LoginProtectionService {
                     normalizedIp,
                     lockoutUntil,
                     reason);
+            if (user != null) {
+                for (AgencyMembership membership : agencyMembershipRepository.findAllByUser_IdAndStatus(user.getId(), AgencyMembershipStatus.ACTIVE)) {
+                    adminSecurityNotificationService.notifyAgencyAdmins(new AdminSecurityNotificationService.CriticalAdminNotification(
+                            membership.getAgencyId(),
+                            null,
+                            AdminNotificationEventType.REPEATED_FAILED_LOGIN,
+                            "Repeated failed login detected",
+                            "Multiple failed login attempts triggered a temporary lockout for " + user.getEmail() + ".",
+                            "failed-login-" + user.getId(),
+                            lockoutUntil,
+                            "USER",
+                            user.getId()));
+                }
+            }
         } else {
             log.warn("Recorded failed login email={} ip={} reason={}", normalizedEmail, normalizedIp, reason);
         }
