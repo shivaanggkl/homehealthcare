@@ -37,6 +37,7 @@ public class AcceptInvitationService {
         return new InvitationDetails(
                 invitation.getId(),
                 invitation.getAgencyId(),
+                invitation.getAgencyMembershipId(),
                 invitation.getEmail(),
                 invitation.getUser().getFirstName(),
                 invitation.getUser().getLastName(),
@@ -102,6 +103,7 @@ public class AcceptInvitationService {
     public record InvitationDetails(
             java.util.UUID invitationId,
             java.util.UUID agencyId,
+            java.util.UUID membershipId,
             String email,
             String firstName,
             String lastName,

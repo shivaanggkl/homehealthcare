@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.homehealthcare.security.tenant.TenantContextIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-03-28T00:07:01.287Z" hostname="Shivangs-MacBook-Pro.local" time="0.552">
+<testsuite name="com.homehealthcare.security.tenant.TenantContextIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-03-28T06:11:29.005Z" hostname="Shivangs-MacBook-Pro.local" time="1.932">
   <properties/>
   <testcase name="rejectsAmbiguousMembershipWithoutSelectedAgency()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.01"/>
-  <testcase name="rejectsCrossAgencyAccessAttempt()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.004"/>
-  <testcase name="rejectsInactiveAgencyMemberships()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.001"/>
-  <testcase name="resolvesAgencyContextForSingleMembershipAuthentication()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.003"/>
-  <testcase name="resolvesExplicitAgencySelectionWhenUserHasMultipleMemberships()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.002"/>
-  <system-out><![CDATA[2026-03-27T19:07:01.288-05:00  INFO 60842 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.security.tenant.TenantContextIntegrationTest]: TenantContextIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-27T19:07:01.288-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
-2026-03-27T19:07:01.289-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
-2026-03-27T19:07:01.294-05:00  INFO 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.security.tenant.TenantContextIntegrationTest
-2026-03-27T19:07:01.294-05:00  INFO 60842 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.security.tenant.TenantContextIntegrationTest]: TenantContextIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-27T19:07:01.295-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
-2026-03-27T19:07:01.295-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
-2026-03-27T19:07:01.295-05:00  INFO 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.security.tenant.TenantContextIntegrationTest
-2026-03-27T19:07:01.295-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [TenantContextIntegrationTest]: using SpringBootContextLoader
-2026-03-27T19:07:01.295-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [TenantContextIntegrationTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, WithSecurityContextTestExecutionListener, EventPublishingTestExecutionListener, ReactorContextTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockitoResetTestExecutionListener]
+  <testcase name="rejectsCrossAgencyAccessAttempt()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.01"/>
+  <testcase name="rejectsInactiveAgencyMemberships()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.005"/>
+  <testcase name="resolvesAgencyContextForSingleMembershipAuthentication()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.006"/>
+  <testcase name="resolvesExplicitAgencySelectionWhenUserHasMultipleMemberships()" classname="com.homehealthcare.security.tenant.TenantContextIntegrationTest" time="0.005"/>
+  <system-out><![CDATA[2026-03-28T01:11:29.008-05:00  INFO 11640 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.security.tenant.TenantContextIntegrationTest]: TenantContextIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T01:11:29.008-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T01:11:29.013-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T01:11:29.036-05:00  INFO 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.security.tenant.TenantContextIntegrationTest
+2026-03-28T01:11:29.038-05:00  INFO 11640 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.security.tenant.TenantContextIntegrationTest]: TenantContextIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T01:11:29.038-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T01:11:29.039-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [TenantContextIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T01:11:29.039-05:00  INFO 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.security.tenant.TenantContextIntegrationTest
+2026-03-28T01:11:29.039-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [TenantContextIntegrationTest]: using SpringBootContextLoader
+2026-03-28T01:11:29.040-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [TenantContextIntegrationTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, WithSecurityContextTestExecutionListener, EventPublishingTestExecutionListener, ReactorContextTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockitoResetTestExecutionListener]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -26,24 +26,24 @@
 
  :: Spring Boot ::                (v4.0.5)
 
-2026-03-27T19:07:01.303-05:00  INFO 60842 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : Starting TenantContextIntegrationTest using Java 21.0.9 with PID 60842 (started by shiva in /Users/shiva/Documents/GitHub/homehealthcare)
-2026-03-27T19:07:01.303-05:00  INFO 60842 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
-2026-03-27T19:07:01.303-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.boot.SpringApplication               : Loading source class com.homehealthcare.HomehealthcareApplication
-2026-03-27T19:07:01.304-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@62fc0cfa
-2026-03-27T19:07:01.448-05:00  INFO 60842 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-03-27T19:07:01.466-05:00  INFO 60842 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 17 JPA repository interfaces.
-2026-03-27T19:07:01.515-05:00  INFO 60842 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Starting...
-2026-03-27T19:07:01.517-05:00  INFO 60842 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-12 - Added connection conn110: url=jdbc:h2:mem:homehealthcare user=SA
-2026-03-27T19:07:01.517-05:00  INFO 60842 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Start completed.
-2026-03-27T19:07:01.519-05:00  INFO 60842 --- [homehealthcare] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:homehealthcare (H2 2.4)
-2026-03-27T19:07:01.519-05:00  WARN 60842 --- [homehealthcare] [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
-2026-03-27T19:07:01.528-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 19 migrations (execution time 00:00.007s)
-2026-03-27T19:07:01.529-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": 19
-2026-03-27T19:07:01.529-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Schema "PUBLIC" is up to date. No migration necessary.
-2026-03-27T19:07:01.533-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.homehealthcare'. Automatic @Repository and @Entity scanning is enabled.
-2026-03-27T19:07:01.538-05:00  INFO 60842 --- [homehealthcare] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-03-27T19:07:01.550-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-03-27T19:07:01.550-05:00  INFO 60842 --- [homehealthcare] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-03-28T01:11:29.081-05:00  INFO 11640 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : Starting TenantContextIntegrationTest using Java 21.0.9 with PID 11640 (started by shiva in /Users/shiva/Documents/GitHub/homehealthcare)
+2026-03-28T01:11:29.082-05:00  INFO 11640 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
+2026-03-28T01:11:29.082-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.boot.SpringApplication               : Loading source class com.homehealthcare.HomehealthcareApplication
+2026-03-28T01:11:29.084-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@42d7ffe5
+2026-03-28T01:11:29.475-05:00  INFO 11640 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-28T01:11:29.530-05:00  INFO 11640 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 17 JPA repository interfaces.
+2026-03-28T01:11:29.713-05:00  INFO 11640 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Starting...
+2026-03-28T01:11:29.716-05:00  INFO 11640 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-12 - Added connection conn110: url=jdbc:h2:mem:homehealthcare user=SA
+2026-03-28T01:11:29.716-05:00  INFO 11640 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Start completed.
+2026-03-28T01:11:29.718-05:00  INFO 11640 --- [homehealthcare] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:homehealthcare (H2 2.4)
+2026-03-28T01:11:29.719-05:00  WARN 11640 --- [homehealthcare] [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026-03-28T01:11:29.734-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 19 migrations (execution time 00:00.012s)
+2026-03-28T01:11:29.737-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": 19
+2026-03-28T01:11:29.737-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Schema "PUBLIC" is up to date. No migration necessary.
+2026-03-28T01:11:29.751-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.homehealthcare'. Automatic @Repository and @Entity scanning is enabled.
+2026-03-28T01:11:29.776-05:00  INFO 11640 --- [homehealthcare] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-28T01:11:29.821-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-28T01:11:29.826-05:00  INFO 11640 --- [homehealthcare] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [jdbc:h2:mem:homehealthcare]
 	Database driver: H2 JDBC Driver
 	Database dialect: H2Dialect
@@ -55,29 +55,29 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-03-27T19:07:01.616-05:00  INFO 60842 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-27T19:07:01.618-05:00  INFO 60842 --- [homehealthcare] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-03-27T19:07:01.752-05:00  WARN 60842 --- [homehealthcare] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
+2026-03-28T01:11:30.163-05:00  INFO 11640 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-28T01:11:30.174-05:00  INFO 11640 --- [homehealthcare] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-28T01:11:30.654-05:00  WARN 11640 --- [homehealthcare] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 6780dc83-3b2d-457f-8562-0c0da19a4030
+Using generated security password: 32457910-971a-4828-9133-61a8586c1893
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-03-27T19:07:01.753-05:00  INFO 60842 --- [homehealthcare] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-03-27T19:07:01.786-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : 21 mappings in 'requestMappingHandlerMapping'
-2026-03-27T19:07:01.789-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
-2026-03-27T19:07:01.791-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 2 RequestBodyAdvice, 1 ResponseBodyAdvice
-2026-03-27T19:07:01.794-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
-2026-03-27T19:07:01.809-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, tenantContextFilter urls=[/*] order=2147483647
-2026-03-27T19:07:01.809-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
-2026-03-27T19:07:01.810-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
-2026-03-27T19:07:01.810-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.s.filter.OrderedFormContentFilter  : Filter 'formContentFilter' configured for use
-2026-03-27T19:07:01.810-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedRequestContextFilter    : Filter 'requestContextFilter' configured for use
-2026-03-27T19:07:01.810-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
-2026-03-27T19:07:01.810-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-03-27T19:07:01.810-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-03-27T19:07:01.810-05:00  INFO 60842 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
-2026-03-27T19:07:01.815-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
+2026-03-28T01:11:30.657-05:00  INFO 11640 --- [homehealthcare] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-28T01:11:30.793-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : 27 mappings in 'requestMappingHandlerMapping'
+2026-03-28T01:11:30.806-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-03-28T01:11:30.813-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 2 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-28T01:11:30.822-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-28T01:11:30.875-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, tenantContextFilter urls=[/*] order=2147483647
+2026-03-28T01:11:30.876-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
+2026-03-28T01:11:30.877-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-03-28T01:11:30.877-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.s.filter.OrderedFormContentFilter  : Filter 'formContentFilter' configured for use
+2026-03-28T01:11:30.877-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedRequestContextFilter    : Filter 'requestContextFilter' configured for use
+2026-03-28T01:11:30.877-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
+2026-03-28T01:11:30.877-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-03-28T01:11:30.877-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-03-28T01:11:30.879-05:00  INFO 11640 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-03-28T01:11:30.891-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 
 ============================
@@ -457,7 +457,7 @@ Negative matches:
 
    DataJpaRepositoriesAutoConfiguration:
       Did not match:
-         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &authLoginAttemptRepository, &authSessionRepository, &agencyOwnerBootstrapRepository, &internalSuperAdminRepository, &userRepository, &auditEventRepository, &passwordResetTokenRepository, &mfaEnrollmentChallengeRepository, &userPasswordHistoryRepository, &branchAssignmentRepository, &branchRepository, &authMfaLoginChallengeRepository, &userMfaRecoveryCodeRepository, &agencyRepository, &userInvitationRepository, &agencyMembershipRepository, &adminNotificationPreferenceRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
+         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &adminNotificationPreferenceRepository, &agencyMembershipRepository, &branchRepository, &internalSuperAdminRepository, &mfaEnrollmentChallengeRepository, &userInvitationRepository, &authLoginAttemptRepository, &authSessionRepository, &agencyRepository, &branchAssignmentRepository, &auditEventRepository, &passwordResetTokenRepository, &userRepository, &userMfaRecoveryCodeRepository, &userPasswordHistoryRepository, &agencyOwnerBootstrapRepository, &authMfaLoginChallengeRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
       Matched:
          - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
          - @ConditionalOnBooleanProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
@@ -813,15 +813,15 @@ Unconditional classes:
 
 
 
-2026-03-27T19:07:01.816-05:00  INFO 60842 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : Started TenantContextIntegrationTest in 0.519 seconds (process running for 25.361)
-2026-03-27T19:07:01.817-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
-2026-03-27T19:07:01.817-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
-2026-03-27T19:07:01.835-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.security.tenant.TenantContextIntegrationTest$TestTenantController#currentAgencyId()
-2026-03-27T19:07:01.836-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
-2026-03-27T19:07:01.836-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing ["9519c794-7c86-4dfa-8fc6-e8f7304916fb"]
-2026-03-27T19:07:01.838-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.security.tenant.TenantContextIntegrationTest$TestTenantController#currentAgencyId()
-2026-03-27T19:07:01.838-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
-2026-03-27T19:07:01.838-05:00 DEBUG 60842 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing ["5030dee3-cc4a-42bb-a33a-dd92d37464c0"]
+2026-03-28T01:11:30.895-05:00  INFO 11640 --- [homehealthcare] [    Test worker] c.h.s.t.TenantContextIntegrationTest     : Started TenantContextIntegrationTest in 1.838 seconds (process running for 95.342)
+2026-03-28T01:11:30.895-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2026-03-28T01:11:30.896-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2026-03-28T01:11:30.929-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.security.tenant.TenantContextIntegrationTest$TestTenantController#currentAgencyId()
+2026-03-28T01:11:30.930-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
+2026-03-28T01:11:30.930-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing ["86e88296-f49c-4b3f-9711-54cdd4de5754"]
+2026-03-28T01:11:30.936-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.security.tenant.TenantContextIntegrationTest$TestTenantController#currentAgencyId()
+2026-03-28T01:11:30.936-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain', given [*/*] and supported [text/plain]
+2026-03-28T01:11:30.936-05:00 DEBUG 11640 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing ["2d5e6e1e-fc54-4140-bc31-57cf7f8faf91"]
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

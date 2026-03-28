@@ -26,19 +26,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Import(UserDirectoryIntegrationTest.TestUserDirectoryController.class)
 class UserDirectoryIntegrationTest {
 
     @Autowired
@@ -84,7 +79,7 @@ class UserDirectoryIntegrationTest {
         AgencyMembership jordanMembership = createMembership(jordan, agency, AgencyRole.QA_CLINICAL_REVIEWER);
         branchAssignmentRepository.saveAndFlush(BranchAssignment.assign(jordanMembership, southBranch));
 
-        mockMvc.perform(get("/test/user-directory")
+        mockMvc.perform(get("/api/users")
                         .param("status", UserStatus.ACTIVE.name())
                         .param("role", AgencyRole.SCHEDULER_COORDINATOR.name())
                         .param("branchId", northBranch.getId().toString())
@@ -108,7 +103,7 @@ class UserDirectoryIntegrationTest {
                 Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
         AgencyMembership caregiverMembership = createMembership(createUser("Casey", "Caregiver"), agency, AgencyRole.CAREGIVER);
 
-        mockMvc.perform(get("/test/user-directory")
+        mockMvc.perform(get("/api/users")
                         .with(authentication(authenticationFor(caregiverMembership))))
                 .andExpect(status().isForbidden());
     }
@@ -138,28 +133,5 @@ class UserDirectoryIntegrationTest {
     }
 
     record TestTenantPrincipal(UUID currentAgencyId, Set<TenantMembership> memberships) implements TenantAccessPrincipal {
-    }
-
-    @RestController
-    static class TestUserDirectoryController {
-
-        private final UserDirectoryService userDirectoryService;
-
-        TestUserDirectoryController(UserDirectoryService userDirectoryService) {
-            this.userDirectoryService = userDirectoryService;
-        }
-
-        @GetMapping("/test/user-directory")
-        org.springframework.data.domain.Page<UserDirectoryService.UserDirectoryEntry> directory(
-                @RequestParam(required = false) String search,
-                @RequestParam(required = false) UserStatus status,
-                @RequestParam(required = false) AgencyRole role,
-                @RequestParam(required = false) UUID branchId,
-                @RequestParam(defaultValue = "0") int page,
-                @RequestParam(defaultValue = "20") int size) {
-            return userDirectoryService.viewDirectory(
-                    new UserDirectoryService.UserDirectoryFilter(search, status, role, branchId),
-                    org.springframework.data.domain.PageRequest.of(page, size));
-        }
     }
 }

@@ -1,0 +1,362 @@
+Epic 1 Backend Completion Backlog
+HomeHealthCare
+
+Purpose
+
+This document lists only the incomplete backend work still needed to finish Epic 1 properly.
+
+It is based on:
+
+- the Epic 1 requirements in `Requirements.txt`
+- the current backend public API surface in `README.md`
+- the Epic 1 frontend backlog in `Epic1FE.txt`
+
+Scope rule
+
+- Include only Epic 1 backend gaps
+- Focus on missing or partial public backend contracts, not frontend work
+- Prefer API/controller completion stories where domain/service logic already exists
+
+Important note
+
+Epic 1 backend already covers a large amount of domain and service logic.
+The main remaining gap is that several Epic 1 capabilities are not yet exposed as stable public HTTP APIs for frontend use.
+
+Status legend
+
+- PARTIAL: some backend support exists, but the public contract is incomplete
+- MISSING API: domain/service logic exists or requirements exist, but no frontend-consumable public API is available
+
+========================================================================
+BE-01 — Current user access profile endpoint
+Related Epic 1 stories: `E1-S27`, `E1-S28`, `E1-S29`, `E1-S31`
+Current status: PARTIAL
+
+Why this is needed
+
+Frontend route authorization in `FE-12` and role-based home behavior in `FE-25` currently rely on frontend fallback metadata because the backend does not expose a current-user/current-agency/current-permissions contract.
+
+Story
+As the frontend and backend together, we need a current access profile endpoint so role, permission, agency, and branch scope are sourced from the backend instead of frontend overrides.
+
+Recommended acceptance criteria
+
+- `GET /api/me/access` or equivalent exists
+- response includes:
+  - user id
+  - current agency id
+  - membership id
+  - role
+  - effective permissions
+  - branch scope type
+  - assigned branch ids where applicable
+- response is tenant-safe and branch-safe
+- unauthorized or inactive membership states are handled cleanly
+- tests cover agency-wide and branch-limited users
+
+========================================================================
+BE-02 — User directory public API
+Related Epic 1 stories: `E1-S15`
+Current status: MISSING API
+
+What exists already
+
+- directory service logic exists
+
+Gap
+
+- no public controller/API for frontend use
+
+Story
+As the backend, we need a public user directory API so authorized admins can list and filter staff from the web UI.
+
+Recommended acceptance criteria
+
+- `GET /api/users` or equivalent exists
+- supports filters for:
+  - status
+  - role
+  - branch
+  - search text
+- supports pagination
+- returns invite status, last login, and MFA enabled state
+- only permitted admins can access it
+- tests cover authorized and unauthorized access
+
+========================================================================
+BE-03 — Invite user public API
+Related Epic 1 stories: `E1-S12`
+Current status: MISSING API
+
+What exists already
+
+- invite service logic exists
+
+Gap
+
+- no public invite controller/API
+
+Story
+As the backend, we need an invitation API so agency admins can invite staff with role and optional branch assignments from the web UI.
+
+Recommended acceptance criteria
+
+- `POST /api/users/invitations` or equivalent exists
+- request supports:
+  - email
+  - role
+  - optional branch assignments
+- duplicate invite behavior is exposed clearly in the response
+- privileged role assignment is permission-checked
+- invite action remains audited
+- tests cover valid, duplicate, unauthorized, and invalid-branch cases
+
+========================================================================
+BE-04 — Accept invitation public API
+Related Epic 1 stories: `E1-S13`
+Current status: MISSING API
+
+What exists already
+
+- invitation acceptance service logic exists
+
+Gap
+
+- no public HTTP endpoint for frontend onboarding
+
+Story
+As the backend, we need a public accept-invitation API so invited users can complete onboarding from the web app.
+
+Recommended acceptance criteria
+
+- endpoint exists to:
+  - validate invite token
+  - accept invite
+  - set password
+  - confirm profile basics
+- invalid, expired, and already-used tokens are handled cleanly
+- successful acceptance activates the user
+- acceptance remains audited
+- tests cover the full invite-accept HTTP flow
+
+========================================================================
+BE-05 — User edit and assignment public API
+Related Epic 1 stories: `E1-S16`
+Current status: MISSING API
+
+What exists already
+
+- admin edit service logic exists
+
+Gap
+
+- no public controller/API for editing user basics, role, and branch assignments
+
+Story
+As the backend, we need a user-management update API so agency admins can edit staff details and assignments from the UI.
+
+Recommended acceptance criteria
+
+- `PUT /api/users/{userId}` or equivalent exists
+- request supports:
+  - first name
+  - last name
+  - phone
+  - role
+  - branch assignments
+- restricted fields remain protected
+- protected role-change paths are enforced
+- changes remain audited
+- tests cover authorized, unauthorized, restricted-role, and cross-agency cases
+
+========================================================================
+BE-06 — User status management public API
+Related Epic 1 stories: `E1-S14`
+Current status: MISSING API
+
+What exists already
+
+- status-management service logic exists
+
+Gap
+
+- no public controller/API for activate, suspend, lock, or deactivate actions
+
+Story
+As the backend, we need a public user-status API so authorized admins can change account status from the UI.
+
+Recommended acceptance criteria
+
+- status action endpoint exists
+- supports:
+  - activate
+  - suspend
+  - lock
+  - deactivate
+- suspension and deactivation side effects are reflected in the response where relevant
+- deactivated users cannot sign in
+- audited status change behavior is preserved
+- tests cover authorization and side-effect cases
+
+========================================================================
+BE-07 — Self-service profile public API
+Related Epic 1 stories: `E1-S17`
+Current status: MISSING API
+
+What exists already
+
+- self-profile service logic exists
+
+Gap
+
+- no public controller/API for the signed-in user profile
+
+Story
+As the backend, we need a self-profile API so users can update their own basic details from settings.
+
+Recommended acceptance criteria
+
+- `GET /api/me/profile` and `PUT /api/me/profile` or equivalent exist
+- supports:
+  - first name
+  - last name
+  - phone
+  - preferred language
+  - time zone
+- self-role editing is impossible through the contract
+- validation errors are returned clearly
+- changes remain audited
+
+========================================================================
+BE-08 — Audit log viewer public API
+Related Epic 1 stories: `E1-S40`
+Current status: MISSING API
+
+What exists already
+
+- unified audit event model exists
+
+Gap
+
+- no public audit-log query/export API
+
+Story
+As the backend, we need an audit-log viewer API so authorized admins and auditors can review sensitive changes and sign-in activity.
+
+Recommended acceptance criteria
+
+- `GET /api/audit-events` or equivalent exists
+- supports filters for:
+  - date range
+  - actor
+  - action type
+  - target user
+- supports pagination
+- supports CSV export entry point
+- only authorized roles can access it
+- tests cover role restrictions and filter behavior
+
+========================================================================
+BE-09 — Agency settings public API
+Related Epic 1 stories: `E1-S41`
+Current status: MISSING API
+
+What exists already
+
+- agency model exists
+
+Gap
+
+- no public agency-settings API
+
+Story
+As the backend, we need an agency-settings API so agency owners can self-manage basic tenant information.
+
+Recommended acceptance criteria
+
+- `GET /api/agency/settings` and `PUT /api/agency/settings` or equivalent exist
+- supports:
+  - agency name
+  - contact info
+  - timezone
+- only permitted roles can edit
+- changes remain audited
+- tests cover validation and authorization
+
+========================================================================
+BE-10 — Branch management public API
+Related Epic 1 stories: `E1-S42`
+Current status: MISSING API
+
+What exists already
+
+- branch domain and branch service logic exist
+
+Gap
+
+- no public branch-management API for list/create/edit/disable flows
+
+Story
+As the backend, we need a branch-management API so agency admins can manage org structure from the web UI.
+
+Recommended acceptance criteria
+
+- branch list endpoint exists and supports search
+- create branch endpoint exists
+- edit branch endpoint exists
+- disable branch endpoint exists
+- dependency-related restrictions are surfaced clearly
+- changes remain audited
+- tests cover authorized, unauthorized, and dependency-blocked cases
+
+========================================================================
+BE-11 — Consolidated security settings contract
+Related Epic 1 stories: `E1-S43`
+Current status: PARTIAL
+
+What exists already
+
+- agency MFA policy API exists
+- password policy API exists
+- runtime session timeout/status APIs exist
+
+Gap
+
+- no owner-facing configuration API for session security policy
+- no consolidated backend contract for the full security settings screen
+
+Story
+As the backend, we need a complete security settings contract so the owner-facing Epic 1 security screen is fully backed by real API behavior instead of partial read-only sections.
+
+Recommended acceptance criteria
+
+- current security settings contract is documented and explicit
+- if session timeout configuration belongs in Epic 1, add public API for:
+  - idle timeout policy
+  - absolute session duration policy
+  - warning window policy
+- if session timeout configuration does not belong in Epic 1, document that scope boundary clearly
+- tests cover authorization and validation for all editable security settings
+
+========================================================================
+Suggested implementation order
+
+1. `BE-01` Current user access profile endpoint
+2. `BE-02` User directory public API
+3. `BE-03` Invite user public API
+4. `BE-04` Accept invitation public API
+5. `BE-05` User edit and assignment public API
+6. `BE-06` User status management public API
+7. `BE-07` Self-service profile public API
+8. `BE-08` Audit log viewer public API
+9. `BE-09` Agency settings public API
+10. `BE-10` Branch management public API
+11. `BE-11` Consolidated security settings contract
+
+Definition of done for Epic 1 backend completion
+
+- every Epic 1 user-facing screen has a stable backend contract
+- service-layer-only Epic 1 capabilities are exposed as secured public APIs where required
+- authorization, tenant scope, and branch scope are enforced at the API level as well as below it
+- controller/integration tests exist for each new Epic 1 public API
+- backend README public API section is updated to match reality
