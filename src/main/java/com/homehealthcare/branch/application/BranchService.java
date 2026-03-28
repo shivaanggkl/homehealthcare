@@ -8,6 +8,7 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.security.authorization.AgencyAuthorizationGuard;
 import com.homehealthcare.security.authorization.AgencyPermission;
 import com.homehealthcare.security.branch.BranchAccessContext;
 import com.homehealthcare.security.branch.CurrentBranchAccess;
@@ -31,6 +32,7 @@ public class BranchService {
 
     private static final String ACTOR_TYPE_AGENCY_MEMBERSHIP = "AGENCY_MEMBERSHIP";
     private static final String ACTION_BRANCH_CREATED = "BRANCH_CREATED";
+    private static final String ACTION_BRANCH_UPDATED = "BRANCH_UPDATED";
     private static final String ACTION_BRANCH_DEACTIVATED = "BRANCH_DEACTIVATED";
 
     private final AgencyRepository agencyRepository;
@@ -39,10 +41,12 @@ public class BranchService {
     private final AuditEventRepository auditEventRepository;
     private final CurrentTenant currentTenant;
     private final CurrentBranchAccess currentBranchAccess;
+    private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     @Transactional
     public Branch createBranch(@Valid CreateBranchCommand command) {
         UUID agencyId = requireAllowedAgency(command.agencyId());
+        requireCreateBranchPermission();
 
         Agency agency = agencyRepository.findById(agencyId)
                 .orElseThrow(() -> new AgencyNotFoundException(agencyId));
@@ -63,7 +67,7 @@ public class BranchService {
                 normalizedCode,
                 command.address(),
                 command.timezone());
-        Branch savedBranch = branchRepository.save(branch);
+        Branch savedBranch = branchRepository.saveAndFlush(branch);
         currentTenant.get()
                 .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
                 .ifPresent(actorMembership -> auditEventRepository.save(AuditEvent.createSuccess(
@@ -101,13 +105,65 @@ public class BranchService {
                 .orElseGet(() -> branchRepository.findAllByAgency_IdOrderByNameAsc(agencyId));
     }
 
+    @Transactional(readOnly = true)
+    public List<Branch> searchAccessibleBranchesForCurrentAgency(String search) {
+        List<Branch> branches = listAccessibleBranchesForCurrentAgency();
+        if (search == null || search.isBlank()) {
+            return branches;
+        }
+        String normalizedSearch = search.trim().toLowerCase(Locale.ROOT);
+        return branches.stream()
+                .filter(branch -> branch.getName().toLowerCase(Locale.ROOT).contains(normalizedSearch)
+                        || branch.getCode().toLowerCase(Locale.ROOT).contains(normalizedSearch))
+                .toList();
+    }
+
+    @Transactional
+    public Branch updateBranchForCurrentAgency(@NotNull UUID branchId, @Valid UpdateBranchCommand command) {
+        Branch branch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new BranchNotFoundException(branchId));
+        requireBranchEditAccess(branch.getId());
+
+        String normalizedName = command.name().trim();
+        String normalizedCode = command.code().trim().toUpperCase(Locale.ROOT);
+        if (!branch.getName().equalsIgnoreCase(normalizedName)
+                && branchRepository.existsByAgency_IdAndName(branch.getAgencyId(), normalizedName)) {
+            throw new DuplicateBranchNameException(normalizedName);
+        }
+        if (!branch.getCode().equalsIgnoreCase(normalizedCode)
+                && branchRepository.existsByAgency_IdAndCode(branch.getAgencyId(), normalizedCode)) {
+            throw new DuplicateBranchCodeException(normalizedCode);
+        }
+
+        branch.rename(normalizedName);
+        branch.updateCode(normalizedCode);
+        branch.updateAddress(command.address());
+        branch.updateTimezone(command.timezone());
+        Branch savedBranch = branchRepository.saveAndFlush(branch);
+        currentTenant.get()
+                .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
+                .ifPresent(actorMembership -> auditEventRepository.save(AuditEvent.createSuccess(
+                        ACTOR_TYPE_AGENCY_MEMBERSHIP,
+                        actorMembership.getId(),
+                        actorMembership.getUser().getEmail(),
+                        ACTION_BRANCH_UPDATED,
+                        "BRANCH",
+                        savedBranch.getId(),
+                        savedBranch.getAgencyId(),
+                        savedBranch.getId(),
+                        "{\"name\":\"" + savedBranch.getName()
+                                + "\",\"code\":\"" + savedBranch.getCode() + "\"}")));
+        return savedBranch;
+    }
+
     @Transactional
     public Branch deactivateBranchForCurrentAgency(@NotNull UUID branchId) {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new BranchNotFoundException(branchId));
+        requireBranchDeactivatePermission();
         requireBranchEditAccess(branch.getId());
         branch.deactivate();
-        Branch savedBranch = branchRepository.save(branch);
+        Branch savedBranch = branchRepository.saveAndFlush(branch);
         currentTenant.get()
                 .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
                 .ifPresent(actorMembership -> auditEventRepository.save(AuditEvent.createSuccess(
@@ -153,8 +209,34 @@ public class BranchService {
         }
     }
 
+    private void requireCreateBranchPermission() {
+        currentTenant.get()
+                .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
+                .ifPresent(actorMembership -> agencyAuthorizationGuard.requirePermission(
+                        actorMembership,
+                        AgencyPermission.EDIT_BRANCH,
+                        UnauthorizedBranchOperationException::new));
+    }
+
+    private void requireBranchDeactivatePermission() {
+        currentTenant.get()
+                .flatMap(context -> agencyMembershipRepository.findById(context.membershipId()))
+                .ifPresent(actorMembership -> {
+                    if (actorMembership.getRole() != com.homehealthcare.security.branch.AgencyRole.AGENCY_OWNER) {
+                        throw new UnauthorizedBranchOperationException(actorMembership.getId());
+                    }
+                });
+    }
+
     public record CreateBranchCommand(
             @NotNull UUID agencyId,
+            @NotBlank String name,
+            @NotBlank String code,
+            @NotBlank String address,
+            @NotBlank String timezone) {
+    }
+
+    public record UpdateBranchCommand(
             @NotBlank String name,
             @NotBlank String code,
             @NotBlank String address,

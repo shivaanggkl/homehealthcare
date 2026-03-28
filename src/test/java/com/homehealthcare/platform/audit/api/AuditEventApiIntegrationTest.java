@@ -1,0 +1,133 @@
+package com.homehealthcare.platform.audit.api;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.homehealthcare.agency.domain.Agency;
+import com.homehealthcare.agency.domain.AgencyRepository;
+import com.homehealthcare.membership.domain.AgencyMembership;
+import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.security.branch.AgencyRole;
+import com.homehealthcare.security.tenant.TenantAccessPrincipal;
+import com.homehealthcare.security.tenant.TenantMembership;
+import com.homehealthcare.user.domain.User;
+import com.homehealthcare.user.domain.UserRepository;
+import java.time.Instant;
+import java.util.Set;
+import java.util.UUID;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+class AuditEventApiIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AgencyMembershipRepository agencyMembershipRepository;
+
+    @Autowired
+    private AuditEventRepository auditEventRepository;
+
+    @Test
+    void ownerCanFilterAndExportAuditEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        User targetUser = createUser("Casey", "Caregiver");
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                "USER_STATUS_CHANGED",
+                "USER",
+                targetUser.getId(),
+                agency.getId(),
+                null,
+                "{\"newStatus\":\"LOCKED\"}"));
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                "AGENCY_SETTINGS_UPDATED",
+                "AGENCY",
+                agency.getId(),
+                agency.getId(),
+                null,
+                "{\"timezone\":\"America/New_York\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", "USER_STATUS_CHANGED")
+                        .param("targetUserId", targetUser.getId().toString())
+                        .param("from", Instant.now().minusSeconds(3600).toString())
+                        .param("to", Instant.now().plusSeconds(3600).toString())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value("USER_STATUS_CHANGED"))
+                .andExpect(jsonPath("$.content[0].targetId").value(targetUser.getId().toString()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", "USER_STATUS_CHANGED")
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("text/csv"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("USER_STATUS_CHANGED")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(targetUser.getId().toString())));
+    }
+
+    @Test
+    void caregiverCannotViewAuditEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership caregiverMembership = createMembership(createUser("Casey", "Caregiver"), agency, AgencyRole.CAREGIVER);
+
+        mockMvc.perform(get("/api/audit-events")
+                        .with(authentication(authenticationFor(caregiverMembership))))
+                .andExpect(status().isForbidden());
+    }
+
+    private AgencyMembership createMembership(User user, Agency agency, AgencyRole role) {
+        return agencyMembershipRepository.saveAndFlush(AgencyMembership.grant(user, agency, role));
+    }
+
+    private User createUser(String firstName, String lastName) {
+        return userRepository.saveAndFlush(User.invite(firstName, lastName, UUID.randomUUID() + "@northstar.example", null));
+    }
+
+    private static UsernamePasswordAuthenticationToken authenticationFor(AgencyMembership membership) {
+        TestTenantPrincipal principal = new TestTenantPrincipal(
+                membership.getAgencyId(),
+                Set.of(new TenantMembership(membership.getId(), membership.getAgencyId())));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                principal,
+                "password",
+                AuthorityUtils.createAuthorityList("ROLE_USER"));
+        authentication.setDetails(principal);
+        return authentication;
+    }
+
+    record TestTenantPrincipal(UUID currentAgencyId, Set<TenantMembership> memberships) implements TenantAccessPrincipal {
+    }
+}

@@ -16,6 +16,7 @@
 - `docs/architecture/standards/audit-event-standard.md` defines the unified audit-event schema, success/failure outcomes, and retention rules.
 - `docs/architecture/standards/system-email-standard.md` defines invite, password reset, and security alert email template rules and signed-link requirements.
 - `docs/architecture/standards/admin-security-notification-standard.md` defines admin alert types, delivery preferences, and notification audit rules.
+- `docs/architecture/standards/security-settings-contract.md` defines the consolidated Epic 1 security settings contract and the session-policy scope boundary.
 - `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.
