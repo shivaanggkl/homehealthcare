@@ -42,3 +42,24 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('authMfaTest', Test) {
+	group = 'verification'
+	description = 'Runs the authentication and MFA regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.auth.api.LoginIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.LogoutIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.invitation.application.AcceptInvitationServiceTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.ForgotPasswordIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.ResetPasswordIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.ChangePasswordIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.MfaEnrollmentIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.MfaLoginChallengeIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.FailedLoginProtectionLockoutIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.auth.api.FailedLoginProtectionRateLimitIntegrationTest'
+	}
+}

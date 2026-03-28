@@ -19,5 +19,6 @@
 - `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.
+- `docs/reviews/epic-1-security-readiness-review.md` records the pre-production security checklist, resolved high-risk findings, and Epic 1 sign-off for `E1-S48`.
 
 These files are the source of truth for Epic 1 design decisions until implementation starts.

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - totpEnrollmentGeneratesRecoveryCodesRequiresPasswordReauthAndExposesStatus()</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<a class="breadcrumb" href="../index.html">all</a> &gt; 
+<a class="breadcrumb" href="index.html">com.homehealthcare.auth.api.MfaEnrollmentIntegrationTest</a> &gt; 
+<span class="breadcrumb">totpEnrollmentGeneratesRecoveryCodesRequiresPasswordReauthAndExposesStatus()</span>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="successGroup" href="#">Gradle Test Run :authMfaTest</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Gradle Test Run :authMfaTest</h2>
+<h1>totpEnrollmentGeneratesRecoveryCodesRequiresPasswordReauthAndExposesStatus()</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="" href="#">summary</a>
+</li>
+<li>
+<a class="" href="#">standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>summary</h2>
+<div>
+<div class="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>skipped</p>
+</div>
+</td>
+<td>
+<div class="infoBox duration">
+<div class="counter">0.891s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="tab">
+<h2>standard output</h2>
+<span class="code">
+<pre id="root-0-test-stdout-totpEnrollmentGeneratesRecoveryCodesRequiresPasswordReauthAndExposesStatus()">2026-03-27T19:08:58.548-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-27T19:08:58.549-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:58.646-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-27T19:08:58.647-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.LoginController#login(LoginRequest, HttpServletRequest)
+2026-03-27T19:08:58.647-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [LoginRequest[email=alicia.mfa@example.com, password=StartPassword1!]]
+2026-03-27T19:08:58.648-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.ip_address=? and ala1_0.attempted_at&gt;?
+2026-03-27T19:08:58.649-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.attempted_at&gt;?
+2026-03-27T19:08:58.649-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ala1_0.id,ala1_0.attempted_at,ala1_0.email,ala1_0.failure_reason,ala1_0.ip_address,ala1_0.outcome,ala1_0.user_id from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.outcome=? order by ala1_0.attempted_at desc fetch first ? rows only
+2026-03-27T19:08:58.650-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(ala1_0.id) from auth_login_attempts ala1_0 where ala1_0.email=? and ala1_0.outcome in (?) and ala1_0.attempted_at&gt;?
+2026-03-27T19:08:58.651-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.email=?
+2026-03-27T19:08:58.815-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ala1_0.id,ala1_0.attempted_at,ala1_0.email,ala1_0.failure_reason,ala1_0.ip_address,ala1_0.outcome,ala1_0.user_id from auth_login_attempts ala1_0 where ala1_0.id=?
+2026-03-27T19:08:58.817-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.user_id=? and am1_0.status=?
+2026-03-27T19:08:58.818-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select as1_0.id,as1_0.absolute_expires_at,as1_0.access_token_expires_at,as1_0.access_token_hash,as1_0.created_at,as1_0.last_activity_at,as1_0.refresh_token_expires_at,as1_0.refresh_token_hash,as1_0.revocation_reason,as1_0.revoked_at,as1_0.updated_at,as1_0.user_id from auth_sessions as1_0 where as1_0.id=?
+2026-03-27T19:08:58.819-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-27T19:08:58.821-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T19:08:58.821-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [LoginResponse[userId=4c01d1c2-ec85-48b3-8591-cc693239c88e, mfaRequired=false, loginChallengeToken=nu (truncated)...]
+2026-03-27T19:08:58.822-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.MfaController#status(String, String, String, String)
+2026-03-27T19:08:58.825-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into auth_login_attempts (attempted_at,email,failure_reason,ip_address,outcome,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:58.825-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into auth_sessions (absolute_expires_at,access_token_expires_at,access_token_hash,created_at,last_activity_at,refresh_token_expires_at,refresh_token_hash,revocation_reason,revoked_at,updated_at,user_id,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:58.826-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:58.826-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-27T19:08:58.826-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select as1_0.id,as1_0.absolute_expires_at,as1_0.access_token_expires_at,as1_0.access_token_hash,as1_0.created_at,as1_0.last_activity_at,as1_0.refresh_token_expires_at,as1_0.refresh_token_hash,as1_0.revocation_reason,as1_0.revoked_at,as1_0.updated_at,as1_0.user_id from auth_sessions as1_0 where as1_0.access_token_hash=? and as1_0.revoked_at is null
+2026-03-27T19:08:58.829-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(umrc1_0.id) from user_mfa_recovery_codes umrc1_0 where umrc1_0.user_id=? and umrc1_0.consumed_at is null
+2026-03-27T19:08:58.830-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T19:08:58.832-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [MfaStatusResponse[userId=4c01d1c2-ec85-48b3-8591-cc693239c88e, mfaEnabled=false, enrolledAt=null, re (truncated)...]
+2026-03-27T19:08:58.837-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.MfaController#start(String, String, String, String, EnrollmentStartRequest)
+2026-03-27T19:08:58.838-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [EnrollmentStartRequest[currentPassword=StartPassword1!]]
+2026-03-27T19:08:58.842-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update auth_sessions set absolute_expires_at=?,access_token_expires_at=?,access_token_hash=?,last_activity_at=?,refresh_token_expires_at=?,refresh_token_hash=?,revocation_reason=?,revoked_at=?,updated_at=? where id=?
+2026-03-27T19:08:58.843-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select as1_0.id,as1_0.absolute_expires_at,as1_0.access_token_expires_at,as1_0.access_token_hash,as1_0.created_at,as1_0.last_activity_at,as1_0.refresh_token_expires_at,as1_0.refresh_token_hash,as1_0.revocation_reason,as1_0.revoked_at,as1_0.updated_at,as1_0.user_id from auth_sessions as1_0 where as1_0.access_token_hash=? and as1_0.revoked_at is null
+2026-03-27T19:08:59.052-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select mec1_0.id,mec1_0.auth_session_id,mec1_0.cancelled_at,mec1_0.completed_at,mec1_0.created_at,mec1_0.expires_at,mec1_0.reauthenticated_at,mec1_0.recovery_code_hashes,mec1_0.status,mec1_0.token,mec1_0.totp_secret,mec1_0.updated_at,mec1_0.user_id from mfa_enrollment_challenges mec1_0 where mec1_0.user_id=? and mec1_0.status=? order by mec1_0.created_at desc fetch first ? rows only
+2026-03-27T19:08:59.056-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select mec1_0.id,mec1_0.auth_session_id,mec1_0.cancelled_at,mec1_0.completed_at,mec1_0.created_at,mec1_0.expires_at,mec1_0.reauthenticated_at,mec1_0.recovery_code_hashes,mec1_0.status,mec1_0.token,mec1_0.totp_secret,mec1_0.updated_at,mec1_0.user_id from mfa_enrollment_challenges mec1_0 where mec1_0.id=?
+2026-03-27T19:08:59.089-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-27T19:08:59.149-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T19:08:59.153-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [EnrollmentStartResponse[enrollmentToken=b212944c-412f-429d-bf80-a2d35152d11b, manualEntryKey=5VPQIZW (truncated)...]
+2026-03-27T19:08:59.196-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.MfaController#confirm(EnrollmentConfirmRequest)
+2026-03-27T19:08:59.199-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read &quot;application/json;charset=UTF-8&quot; to [EnrollmentConfirmRequest[enrollmentToken=b212944c-412f-429d-bf80-a2d35152d11b, totpCode=870897]]
+2026-03-27T19:08:59.236-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into mfa_enrollment_challenges (auth_session_id,cancelled_at,completed_at,created_at,expires_at,reauthenticated_at,recovery_code_hashes,status,token,totp_secret,updated_at,user_id,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:59.285-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:59.287-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update auth_sessions set absolute_expires_at=?,access_token_expires_at=?,access_token_hash=?,last_activity_at=?,refresh_token_expires_at=?,refresh_token_hash=?,revocation_reason=?,revoked_at=?,updated_at=? where id=?
+2026-03-27T19:08:59.308-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select mec1_0.id,mec1_0.auth_session_id,mec1_0.cancelled_at,mec1_0.completed_at,mec1_0.created_at,mec1_0.expires_at,mec1_0.reauthenticated_at,mec1_0.recovery_code_hashes,mec1_0.status,mec1_0.token,mec1_0.totp_secret,mec1_0.updated_at,mec1_0.user_id from mfa_enrollment_challenges mec1_0 where mec1_0.token=?
+2026-03-27T19:08:59.337-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.user_id=?
+2026-03-27T19:08:59.343-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.358-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.359-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.362-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.364-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.367-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.369-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.376-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select umrc1_0.id,umrc1_0.code_hash,umrc1_0.consumed_at,umrc1_0.created_at,umrc1_0.ordinal,umrc1_0.updated_at,umrc1_0.user_id from user_mfa_recovery_codes umrc1_0 where umrc1_0.id=?
+2026-03-27T19:08:59.378-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-27T19:08:59.381-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.382-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.382-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.382-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.383-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.383-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.383-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.384-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into user_mfa_recovery_codes (code_hash,consumed_at,created_at,ordinal,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-27T19:08:59.384-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-27T19:08:59.385-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update users set deactivated_at=?,email=?,first_name=?,last_login_at=?,last_name=?,mfa_enabled=?,mfa_enrolled_at=?,mfa_secret=?,password_hash=?,phone=?,preferred_language=?,status=?,time_zone=?,updated_at=? where id=?
+2026-03-27T19:08:59.388-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update mfa_enrollment_challenges set cancelled_at=?,completed_at=?,expires_at=?,reauthenticated_at=?,recovery_code_hashes=?,status=?,token=?,totp_secret=?,updated_at=? where id=?
+2026-03-27T19:08:59.395-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(umrc1_0.id) from user_mfa_recovery_codes umrc1_0 where umrc1_0.user_id=? and umrc1_0.consumed_at is null
+2026-03-27T19:08:59.398-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T19:08:59.408-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [EnrollmentConfirmResponse[userId=4c01d1c2-ec85-48b3-8591-cc693239c88e, mfaEnabled=true, recoveryCode (truncated)...]
+2026-03-27T19:08:59.415-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(umrc1_0.id) from user_mfa_recovery_codes umrc1_0 where umrc1_0.user_id=? and umrc1_0.consumed_at is null
+2026-03-27T19:08:59.422-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select mec1_0.id,mec1_0.auth_session_id,mec1_0.cancelled_at,mec1_0.completed_at,mec1_0.created_at,mec1_0.expires_at,mec1_0.reauthenticated_at,mec1_0.recovery_code_hashes,mec1_0.status,mec1_0.token,mec1_0.totp_secret,mec1_0.updated_at,mec1_0.user_id from mfa_enrollment_challenges mec1_0 where mec1_0.token=?
+2026-03-27T19:08:59.423-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.auth.api.MfaController#status(String, String, String, String)
+2026-03-27T19:08:59.424-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select as1_0.id,as1_0.absolute_expires_at,as1_0.access_token_expires_at,as1_0.access_token_hash,as1_0.created_at,as1_0.last_activity_at,as1_0.refresh_token_expires_at,as1_0.refresh_token_hash,as1_0.revocation_reason,as1_0.revoked_at,as1_0.updated_at,as1_0.user_id from auth_sessions as1_0 where as1_0.access_token_hash=? and as1_0.revoked_at is null
+2026-03-27T19:08:59.426-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select count(umrc1_0.id) from user_mfa_recovery_codes umrc1_0 where umrc1_0.user_id=? and umrc1_0.consumed_at is null
+2026-03-27T19:08:59.426-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-27T19:08:59.427-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [MfaStatusResponse[userId=4c01d1c2-ec85-48b3-8591-cc693239c88e, mfaEnabled=true, enrolledAt=2026-03-2 (truncated)...]
+2026-03-27T19:08:59.430-05:00 DEBUG 61769 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.actor_id=? order by ae1_0.occurred_at
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-totpEnrollmentGeneratesRecoveryCodesRequiresPasswordReauthAndExposesStatus()">Copy</button>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 27, 2026, 7:09:04 PM</p>
+</div>
+</div>
+</body>
+</html>
