@@ -6,6 +6,7 @@
 - `docs/architecture/adr/0002-internal-super-admin-model.md` defines the approved internal operator model for `E1-S05`.
 - `docs/architecture/adr/0003-role-permission-matrix.md` records the approved RBAC model for `E1-S27`.
 - `docs/architecture/adr/0004-secure-session-token-strategy.md` records the approved auth session model for `E1-S32`.
+- `docs/architecture/adr/0005-epic-2-configuration-foundation.md` records the approved shared foundation for Epic 2 configuration modules.
 - `docs/architecture/erd/e1-s01-tenancy-model.mmd` is the source ERD for the tenancy foundation.
 - `docs/architecture/standards/entity-scoping-standard.md` defines `agency_id` and `branch_id` standards for future entities.
 - `docs/architecture/standards/migration-pattern.md` defines the migration checklist for tenant-aware tables.
@@ -17,6 +18,8 @@
 - `docs/architecture/standards/system-email-standard.md` defines invite, password reset, and security alert email template rules and signed-link requirements.
 - `docs/architecture/standards/admin-security-notification-standard.md` defines admin alert types, delivery preferences, and notification audit rules.
 - `docs/architecture/standards/security-settings-contract.md` defines the consolidated Epic 1 security settings contract and the session-policy scope boundary.
+- `docs/architecture/standards/configuration-domain-standard.md` defines shared categories, fields, and audit expectations for Epic 2 configuration modules.
+- `docs/architecture/standards/configuration-lifecycle-standard.md` defines the shared lifecycle, effective-date, and dependency rules for Epic 2 configuration entities.
 - `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.

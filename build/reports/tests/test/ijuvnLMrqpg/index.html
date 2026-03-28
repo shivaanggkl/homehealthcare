@@ -62,7 +62,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">12.983s</div>
+<div class="counter">1.862s</div>
 <p>duration</p>
 </div>
 </td>
@@ -99,7 +99,7 @@
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>1.958s</td>
+<td>0.260s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
@@ -110,7 +110,7 @@
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0.034s</td>
+<td>0.024s</td>
 <td class="success">100%</td>
 </tr>
 </table>
@@ -119,10 +119,16 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest">01:29:03.739 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest]: AgencyMfaPolicyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-01:29:03.944 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest
-01:29:04.049 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest]: AgencyMfaPolicyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-01:29:04.057 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest
+<pre id="root-0-test-stdout-com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest">2026-03-28T09:04:59.104-05:00  INFO 28810 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest]: AgencyMfaPolicyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T09:04:59.105-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AgencyMfaPolicyIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T09:04:59.110-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AgencyMfaPolicyIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T09:04:59.127-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest
+2026-03-28T09:04:59.128-05:00  INFO 28810 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest]: AgencyMfaPolicyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T09:04:59.128-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AgencyMfaPolicyIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T09:04:59.130-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AgencyMfaPolicyIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T09:04:59.130-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest
+2026-03-28T09:04:59.130-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [AgencyMfaPolicyIntegrationTest]: using SpringBootContextLoader
+2026-03-28T09:04:59.131-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [AgencyMfaPolicyIntegrationTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, WithSecurityContextTestExecutionListener, EventPublishingTestExecutionListener, ReactorContextTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockitoResetTestExecutionListener]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -133,46 +139,24 @@
 
  :: Spring Boot ::                (v4.0.5)
 
-2026-03-28T01:29:04.543-05:00  INFO 39243 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : Starting AgencyMfaPolicyIntegrationTest using Java 21.0.9 with PID 39243 (started by shiva in /Users/shiva/Documents/GitHub/homehealthcare)
-2026-03-28T01:29:04.545-05:00  INFO 39243 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2026-03-28T01:29:04.546-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.boot.SpringApplication               : Loading source class com.homehealthcare.HomehealthcareApplication
-2026-03-28T01:29:04.574-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4b0f2299
-2026-03-28T01:29:05.681-05:00  INFO 39243 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-03-28T01:29:05.833-05:00  INFO 39243 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 134 ms. Found 17 JPA repository interfaces.
-2026-03-28T01:29:07.814-05:00  INFO 39243 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-03-28T01:29:08.071-05:00  INFO 39243 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:homehealthcare user=SA
-2026-03-28T01:29:08.074-05:00  INFO 39243 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-03-28T01:29:08.172-05:00  INFO 39243 --- [homehealthcare] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:homehealthcare (H2 2.4)
-2026-03-28T01:29:08.183-05:00  WARN 39243 --- [homehealthcare] [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
-2026-03-28T01:29:08.244-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; does not exist yet
-2026-03-28T01:29:08.248-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 19 migrations (execution time 00:00.035s)
-2026-03-28T01:29:08.261-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; ...
-2026-03-28T01:29:08.313-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema &quot;PUBLIC&quot;: &lt;&lt; Empty Schema &gt;&gt;
-2026-03-28T01:29:08.324-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;1 - create agencies&quot;
-2026-03-28T01:29:08.345-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;2 - create branches&quot;
-2026-03-28T01:29:08.363-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;3 - create internal super admin and audit tables&quot;
-2026-03-28T01:29:08.385-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;4 - create users&quot;
-2026-03-28T01:29:08.396-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;5 - create agency memberships&quot;
-2026-03-28T01:29:08.411-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;6 - create branch assignments&quot;
-2026-03-28T01:29:08.430-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;7 - create user invitations&quot;
-2026-03-28T01:29:08.452-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;8 - add user password hash&quot;
-2026-03-28T01:29:08.473-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;9 - add user mfa enabled&quot;
-2026-03-28T01:29:08.486-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;10 - add user profile preferences&quot;
-2026-03-28T01:29:08.508-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;11 - create auth sessions&quot;
-2026-03-28T01:29:08.519-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;12 - create password reset tokens&quot;
-2026-03-28T01:29:08.531-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;13 - create auth login attempts&quot;
-2026-03-28T01:29:08.548-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;14 - create mfa enrollment tables&quot;
-2026-03-28T01:29:08.600-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;15 - add agency mfa policy and login challenges&quot;
-2026-03-28T01:29:08.632-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;16 - add session timeout fields&quot;
-2026-03-28T01:29:08.751-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;17 - create user password history&quot;
-2026-03-28T01:29:08.762-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;18 - extend audit event model&quot;
-2026-03-28T01:29:08.780-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;19 - create admin notification preferences&quot;
-2026-03-28T01:29:08.796-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Successfully applied 19 migrations to schema &quot;PUBLIC&quot;, now at version v19 (execution time 00:00.306s)
-2026-03-28T01:29:08.916-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.homehealthcare'. Automatic @Repository and @Entity scanning is enabled.
-2026-03-28T01:29:08.984-05:00  INFO 39243 --- [homehealthcare] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-03-28T01:29:09.051-05:00  INFO 39243 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.7.Final
-2026-03-28T01:29:09.536-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-03-28T01:29:09.625-05:00  INFO 39243 --- [homehealthcare] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-03-28T09:04:59.155-05:00  INFO 28810 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : Starting AgencyMfaPolicyIntegrationTest using Java 21.0.9 with PID 28810 (started by shiva in /Users/shiva/Documents/GitHub/homehealthcare)
+2026-03-28T09:04:59.155-05:00  INFO 28810 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-03-28T09:04:59.155-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.boot.SpringApplication               : Loading source class com.homehealthcare.HomehealthcareApplication
+2026-03-28T09:04:59.157-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@7ebd3267
+2026-03-28T09:04:59.376-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-28T09:04:59.429-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 51 ms. Found 22 JPA repository interfaces.
+2026-03-28T09:04:59.616-05:00  INFO 28810 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-03-28T09:04:59.618-05:00  INFO 28810 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:homehealthcare user=SA
+2026-03-28T09:04:59.618-05:00  INFO 28810 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-03-28T09:04:59.620-05:00  INFO 28810 --- [homehealthcare] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:homehealthcare (H2 2.4)
+2026-03-28T09:04:59.622-05:00  WARN 28810 --- [homehealthcare] [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026-03-28T09:04:59.634-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 20 migrations (execution time 00:00.009s)
+2026-03-28T09:04:59.637-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema &quot;PUBLIC&quot;: 20
+2026-03-28T09:04:59.638-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Schema &quot;PUBLIC&quot; is up to date. No migration necessary.
+2026-03-28T09:04:59.651-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.homehealthcare'. Automatic @Repository and @Entity scanning is enabled.
+2026-03-28T09:04:59.672-05:00  INFO 28810 --- [homehealthcare] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-28T09:04:59.697-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-28T09:04:59.699-05:00  INFO 28810 --- [homehealthcare] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [jdbc:h2:mem:homehealthcare]
 	Database driver: H2 JDBC Driver
 	Database dialect: H2Dialect
@@ -184,30 +168,29 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-03-28T01:29:11.542-05:00  INFO 39243 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-28T01:29:11.569-05:00  INFO 39243 --- [homehealthcare] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-03-28T01:29:11.655-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-03-28T01:29:13.528-05:00  WARN 39243 --- [homehealthcare] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
+2026-03-28T09:04:59.975-05:00  INFO 28810 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-28T09:04:59.981-05:00  INFO 28810 --- [homehealthcare] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-28T09:05:00.496-05:00  WARN 28810 --- [homehealthcare] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: a0c9ebd2-0cee-4e45-a688-6559410be77f
+Using generated security password: 8c447567-2fb9-464b-8b03-5466b26d8465
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-03-28T01:29:13.546-05:00  INFO 39243 --- [homehealthcare] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-03-28T01:29:14.047-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : 38 mappings in 'requestMappingHandlerMapping'
-2026-03-28T01:29:14.104-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
-2026-03-28T01:29:14.141-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 2 RequestBodyAdvice, 1 ResponseBodyAdvice
-2026-03-28T01:29:14.201-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-2026-03-28T01:29:14.405-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, tenantContextFilter urls=[/*] order=2147483647
-2026-03-28T01:29:14.405-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
-2026-03-28T01:29:14.415-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
-2026-03-28T01:29:14.415-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.s.filter.OrderedFormContentFilter  : Filter 'formContentFilter' configured for use
-2026-03-28T01:29:14.416-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedRequestContextFilter    : Filter 'requestContextFilter' configured for use
-2026-03-28T01:29:14.419-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
-2026-03-28T01:29:14.420-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-03-28T01:29:14.420-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-03-28T01:29:14.423-05:00  INFO 39243 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
-2026-03-28T01:29:14.460-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
+2026-03-28T09:05:00.497-05:00  INFO 28810 --- [homehealthcare] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-28T09:05:00.584-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : 38 mappings in 'requestMappingHandlerMapping'
+2026-03-28T09:05:00.591-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-03-28T09:05:00.596-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 2 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-28T09:05:00.601-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-28T09:05:00.638-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, tenantContextFilter urls=[/*] order=2147483647
+2026-03-28T09:05:00.638-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
+2026-03-28T09:05:00.645-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-03-28T09:05:00.645-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.s.filter.OrderedFormContentFilter  : Filter 'formContentFilter' configured for use
+2026-03-28T09:05:00.645-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedRequestContextFilter    : Filter 'requestContextFilter' configured for use
+2026-03-28T09:05:00.645-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
+2026-03-28T09:05:00.646-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-03-28T09:05:00.646-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-03-28T09:05:00.647-05:00  INFO 28810 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-03-28T09:05:00.667-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 
 ============================
@@ -587,7 +570,7 @@ Negative matches:
 
    DataJpaRepositoriesAutoConfiguration:
       Did not match:
-         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &amp;internalSuperAdminRepository, &amp;adminNotificationPreferenceRepository, &amp;userMfaRecoveryCodeRepository, &amp;agencyOwnerBootstrapRepository, &amp;authLoginAttemptRepository, &amp;agencyMembershipRepository, &amp;branchAssignmentRepository, &amp;mfaEnrollmentChallengeRepository, &amp;branchRepository, &amp;userInvitationRepository, &amp;authMfaLoginChallengeRepository, &amp;userRepository, &amp;auditEventRepository, &amp;passwordResetTokenRepository, &amp;authSessionRepository, &amp;agencyRepository, &amp;userPasswordHistoryRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
+         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &amp;internalSuperAdminRepository, &amp;agencyMembershipRepository, &amp;branchAssignmentRepository, &amp;caregiverCertificationRepository, &amp;authMfaLoginChallengeRepository, &amp;userRepository, &amp;agencyOwnerBootstrapRepository, &amp;caregiverSkillRepository, &amp;authSessionRepository, &amp;agencyProfileRepository, &amp;userPasswordHistoryRepository, &amp;serviceLineRepository, &amp;branchRepository, &amp;authLoginAttemptRepository, &amp;agencyRepository, &amp;auditEventRepository, &amp;visitTypeRepository, &amp;mfaEnrollmentChallengeRepository, &amp;adminNotificationPreferenceRepository, &amp;passwordResetTokenRepository, &amp;userInvitationRepository, &amp;userMfaRecoveryCodeRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
       Matched:
          - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
          - @ConditionalOnBooleanProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
@@ -943,9 +926,9 @@ Unconditional classes:
 
 
 
-2026-03-28T01:29:14.484-05:00  INFO 39243 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : Started AgencyMfaPolicyIntegrationTest in 10.336 seconds (process running for 13.077)
-2026-03-28T01:29:14.486-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
-2026-03-28T01:29:14.488-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2026-03-28T09:05:00.671-05:00  INFO 28810 --- [homehealthcare] [    Test worker] c.h.a.a.AgencyMfaPolicyIntegrationTest   : Started AgencyMfaPolicyIntegrationTest in 1.536 seconds (process running for 12.661)
+2026-03-28T09:05:00.672-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2026-03-28T09:05:00.673-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-com.homehealthcare.agency.api.AgencyMfaPolicyIntegrationTest">Copy</button>
 </span>
@@ -960,7 +943,7 @@ Unconditional classes:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 1:30:15 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:43 AM</p>
 </div>
 </div>
 </body>

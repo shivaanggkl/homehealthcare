@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
+import com.homehealthcare.configuration.foundation.Epic2ConfigurationAuditAction;
+import com.homehealthcare.configuration.foundation.Epic2ConfigurationTargetType;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
@@ -95,6 +97,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(content().contentTypeCompatibleWith("text/csv"))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("USER_STATUS_CHANGED")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(targetUser.getId().toString())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic2ConfigurationEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID serviceLineId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic2ConfigurationAuditAction.CREATED.actionType(),
+                Epic2ConfigurationTargetType.SERVICE_LINE.name(),
+                serviceLineId,
+                agency.getId(),
+                null,
+                "{\"code\":\"PD\",\"status\":\"ACTIVE\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic2ConfigurationAuditAction.CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic2ConfigurationAuditAction.CREATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic2ConfigurationTargetType.SERVICE_LINE.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic2ConfigurationAuditAction.CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic2ConfigurationTargetType.SERVICE_LINE.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic2ConfigurationAuditAction.CREATED.actionType())));
     }
 
     @Test

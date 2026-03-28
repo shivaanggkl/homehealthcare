@@ -1,0 +1,550 @@
+Epic 2 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 2 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 2 title
+
+Agency setup and configuration
+
+Epic 2 feature scope from the requirements
+
+- agency profile
+- service lines
+- visit types
+- caregiver skills/certifications
+- task templates
+- documentation templates
+- branch policies
+- alert rules
+- mileage/pay settings
+
+Planning assumptions
+
+- Epic 1 is complete and available as the security, tenancy, RBAC, audit, and session foundation
+- all Epic 2 data remains agency-scoped unless explicitly branch-scoped
+- branch overrides are supported only where the business model clearly needs them
+- all configuration changes are audit-sensitive
+- all admin-facing Epic 2 features need public HTTP APIs for the frontend
+
+Scope rule
+
+- Include only Epic 2 backend work
+- Cover domain model, public APIs, validation, RBAC, audit, and tests
+- Do not include frontend-only tasks
+
+Status legend
+
+- NOT STARTED: no Epic 2 implementation exists yet
+
+========================================================================
+BE2-01 — Define Epic 2 configuration domain model
+Related Epic 2 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a clear Epic 2 configuration model so agency setup features share a consistent data shape and governance model.
+
+Recommended acceptance criteria
+
+- configuration entities are classified as:
+  - agency-scoped master data
+  - branch-overridable policy data
+  - template/catalog data
+- naming, status, sort-order, and effective-date patterns are defined
+- audit expectations are defined for all Epic 2 configuration entities
+- entity ownership and future module dependencies are documented
+
+========================================================================
+BE2-02 — Create agency profile configuration extension model
+Related Epic 2 features: agency profile
+Current status: NOT STARTED
+
+Story
+As the backend, I need a richer agency profile model so agencies can manage operational setup beyond the Epic 1 basics.
+
+Recommended acceptance criteria
+
+- agency profile extension fields are defined for:
+  - legal or display name support if needed
+  - primary phone
+  - primary address
+  - support or operations contact details
+  - timezone and locale defaults
+- changes remain agency-scoped
+- profile changes are audited
+
+========================================================================
+BE2-03 — Create service line model and lifecycle
+Related Epic 2 features: service lines
+Current status: NOT STARTED
+
+Story
+As the platform, I need a service line model so agencies can define the operational programs they offer.
+
+Recommended acceptance criteria
+
+- service line entity exists
+- fields include:
+  - id
+  - agency_id
+  - name
+  - code
+  - description
+  - status
+  - display_order
+- uniqueness is enforced within agency for name and/or code
+- active/inactive lifecycle is supported
+- service line changes are audited
+
+========================================================================
+BE2-04 — Create visit type model and lifecycle
+Related Epic 2 features: visit types
+Current status: NOT STARTED
+
+Story
+As the platform, I need visit types so agencies can standardize how visits are categorized and configured.
+
+Recommended acceptance criteria
+
+- visit type entity exists
+- visit type belongs to agency
+- visit type can reference a service line
+- fields include:
+  - name
+  - code
+  - duration defaults
+  - billable flag
+  - status
+  - display_order
+- uniqueness is enforced within agency
+- visit type changes are audited
+
+========================================================================
+BE2-05 — Create caregiver skill catalog model
+Related Epic 2 features: caregiver skills/certifications
+Current status: NOT STARTED
+
+Story
+As the backend, I need a caregiver skill catalog so agencies can define reusable skill requirements across workforce and scheduling modules.
+
+Recommended acceptance criteria
+
+- caregiver skill entity exists
+- fields include:
+  - id
+  - agency_id
+  - name
+  - code
+  - description
+  - status
+- uniqueness is enforced within agency
+- active/inactive lifecycle is supported
+- changes are audited
+
+========================================================================
+BE2-06 — Create certification and credential catalog model
+Related Epic 2 features: caregiver skills/certifications
+Current status: NOT STARTED
+
+Story
+As the backend, I need a certification catalog so agencies can track standardized caregiver credentials for later staffing and compliance use.
+
+Recommended acceptance criteria
+
+- certification entity exists
+- fields include:
+  - id
+  - agency_id
+  - name
+  - code
+  - description
+  - expiration_required flag
+  - status
+- uniqueness is enforced within agency
+- changes are audited
+
+========================================================================
+BE2-07 — Create task template model
+Related Epic 2 features: task templates
+Current status: NOT STARTED
+
+Story
+As the backend, I need reusable task templates so agencies can standardize operational and clinical tasks later attached to visits and documentation.
+
+Recommended acceptance criteria
+
+- task template entity exists
+- fields include:
+  - id
+  - agency_id
+  - name
+  - code
+  - description
+  - category
+  - status
+  - display_order
+- optional linkage to service line and visit type is supported
+- changes are audited
+
+========================================================================
+BE2-08 — Create documentation template model
+Related Epic 2 features: documentation templates
+Current status: NOT STARTED
+
+Story
+As the backend, I need documentation templates so agencies can define reusable forms and note shells for later visit execution.
+
+Recommended acceptance criteria
+
+- documentation template entity exists
+- fields include:
+  - id
+  - agency_id
+  - name
+  - code
+  - template_type
+  - structured_definition or JSON payload
+  - status
+  - version
+- versioning strategy is defined
+- active vs draft lifecycle is supported
+- changes are audited
+
+========================================================================
+BE2-09 — Create branch policy model
+Related Epic 2 features: branch policies
+Current status: NOT STARTED
+
+Story
+As the backend, I need branch policy records so agencies can define branch-level operational rules without breaking tenant isolation.
+
+Recommended acceptance criteria
+
+- branch policy entity exists
+- policy belongs to agency and branch
+- policy supports:
+  - policy key/type
+  - effective settings payload
+  - active status
+  - effective dates if needed
+- fallback-to-agency-default behavior is defined
+- changes are audited
+
+========================================================================
+BE2-10 — Create alert rule model
+Related Epic 2 features: alert rules
+Current status: NOT STARTED
+
+Story
+As the backend, I need configurable alert rules so agencies can define operational alert behavior for later workflow modules.
+
+Recommended acceptance criteria
+
+- alert rule entity exists
+- fields include:
+  - id
+  - agency_id
+  - optional branch_id
+  - name
+  - rule_type
+  - threshold/config payload
+  - delivery mode flags
+  - status
+- rule precedence between agency-wide and branch-specific rules is defined
+- changes are audited
+
+========================================================================
+BE2-11 — Create mileage and pay setting model
+Related Epic 2 features: mileage/pay settings
+Current status: NOT STARTED
+
+Story
+As the backend, I need mileage and pay configuration so agencies can define reimbursement and pay-related defaults for later scheduling and payroll logic.
+
+Recommended acceptance criteria
+
+- mileage/pay settings entity exists
+- fields support:
+  - mileage reimbursement strategy
+  - mileage rate
+  - travel pay enablement
+  - visit-type-specific pay adjustments if in scope
+  - effective dates if needed
+- agency-wide defaults are supported
+- optional branch overrides are defined if needed
+- changes are audited
+
+========================================================================
+BE2-12 — Define configuration status and effective-date behavior
+Related Epic 2 features: all mutable configuration entities
+Current status: NOT STARTED
+
+Story
+As the platform, I need consistent lifecycle rules for configuration records so setup data behaves predictably across all Epic 2 modules.
+
+Recommended acceptance criteria
+
+- active/inactive/archive behavior is standardized
+- effective-date behavior is defined where settings should not change retroactively
+- deletion policy is defined:
+  - soft delete
+  - disallow delete with dependencies
+  - replace-with-inactive pattern
+- dependency-safe validation rules are documented and implemented
+
+========================================================================
+BE2-13 — Build agency profile public API
+Related Epic 2 features: agency profile
+Current status: NOT STARTED
+
+Story
+As the backend, I need agency profile APIs so authorized users can view and update operational agency setup from the web app.
+
+Recommended acceptance criteria
+
+- `GET /api/agency/profile` or equivalent exists
+- `PUT /api/agency/profile` or equivalent exists
+- only permitted roles can update
+- validation errors are returned clearly
+- changes are audited
+
+========================================================================
+BE2-14 — Build service line public APIs
+Related Epic 2 features: service lines
+Current status: NOT STARTED
+
+Story
+As the backend, I need service line APIs so the web app can manage agency program definitions.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- search and pagination exist where appropriate
+- uniqueness violations return controlled errors
+- unauthorized actions return `403`
+- tests cover CRUD and denial paths
+
+========================================================================
+BE2-15 — Build visit type public APIs
+Related Epic 2 features: visit types
+Current status: NOT STARTED
+
+Story
+As the backend, I need visit type APIs so the frontend can manage visit classifications and defaults.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- visit types can be filtered by service line and status
+- controlled validation exists for duplicate codes/names
+- changes are audited
+- tests cover CRUD and denial paths
+
+========================================================================
+BE2-16 — Build caregiver skill and certification public APIs
+Related Epic 2 features: caregiver skills/certifications
+Current status: NOT STARTED
+
+Story
+As the backend, I need APIs for skills and certifications so agencies can manage workforce capability catalogs from the UI.
+
+Recommended acceptance criteria
+
+- skill catalog CRUD endpoints exist
+- certification catalog CRUD endpoints exist
+- search and status filtering exist
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE2-17 — Build task template public APIs
+Related Epic 2 features: task templates
+Current status: NOT STARTED
+
+Story
+As the backend, I need task template APIs so agencies can manage reusable task definitions from the UI.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- filter by category, service line, and visit type where supported
+- controlled validation exists for malformed definitions
+- changes are audited
+
+========================================================================
+BE2-18 — Build documentation template public APIs
+Related Epic 2 features: documentation templates
+Current status: NOT STARTED
+
+Story
+As the backend, I need documentation template APIs so agencies can manage reusable documentation structures from the UI.
+
+Recommended acceptance criteria
+
+- list/create/update/version/publish endpoints exist
+- draft vs active versions are modeled clearly
+- malformed template payloads fail safely
+- changes are audited
+
+========================================================================
+BE2-19 — Build branch policy public APIs
+Related Epic 2 features: branch policies
+Current status: NOT STARTED
+
+Story
+As the backend, I need branch policy APIs so branch-level overrides can be configured safely from the UI.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- branch scoping is enforced
+- policy inheritance/fallback data is exposed clearly
+- unauthorized cross-branch access is denied
+- changes are audited
+
+========================================================================
+BE2-20 — Build alert rule public APIs
+Related Epic 2 features: alert rules
+Current status: NOT STARTED
+
+Story
+As the backend, I need alert rule APIs so agencies can manage operational alert thresholds and delivery behavior from the UI.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- agency-wide and branch-specific scopes are supported
+- validation exists for invalid rule payloads
+- changes are audited
+
+========================================================================
+BE2-21 — Build mileage and pay settings public APIs
+Related Epic 2 features: mileage/pay settings
+Current status: NOT STARTED
+
+Story
+As the backend, I need mileage and pay setting APIs so agencies can manage reimbursement and pay defaults from the UI.
+
+Recommended acceptance criteria
+
+- read/update endpoints exist
+- branch override support is explicit if implemented
+- effective settings shape is frontend-consumable
+- changes are audited
+
+========================================================================
+BE2-22 — Enforce Epic 2 RBAC and branch-aware authorization
+Related Epic 2 features: all admin configuration areas
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit permissions for agency configuration modules so only the right roles can view or change Epic 2 setup data.
+
+Recommended acceptance criteria
+
+- permission matrix is extended for Epic 2 configuration modules
+- service/controller authorization guards exist
+- branch-aware restrictions exist where branch policies or branch-scoped alert rules are used
+- denial paths return controlled `403`
+- tests cover key permission-denial paths
+
+========================================================================
+BE2-23 — Extend audit model and queries for Epic 2 configuration changes
+Related Epic 2 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need Epic 2 configuration changes to appear in audit logs so agency setup changes are reviewable.
+
+Recommended acceptance criteria
+
+- create/update/deactivate/publish events are audited
+- target types are meaningful for Epic 2 config entities
+- audit viewer/export can search Epic 2 action types
+- tests cover representative audit events
+
+========================================================================
+BE2-24 — Add dependency and referential-usage protections
+Related Epic 2 features: service lines, visit types, skills, certifications, task templates, documentation templates, branch policies
+Current status: NOT STARTED
+
+Story
+As the platform, I need safe dependency handling so configuration records already in use cannot be removed in a way that breaks future workflows.
+
+Recommended acceptance criteria
+
+- destructive operations detect active dependencies
+- API returns clear conflict responses where deletion/deactivation is unsafe
+- safe alternatives such as deactivate/archive are supported
+- tests cover conflict scenarios
+
+========================================================================
+BE2-25 — Add Epic 2 API regression and authorization tests
+Related Epic 2 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated tests for Epic 2 setup APIs so agency configuration behavior remains stable and secure.
+
+Recommended acceptance criteria
+
+- CRUD integration tests exist for each Epic 2 configuration module
+- authorization denial tests exist
+- branch-scope tests exist where applicable
+- audit assertions exist for representative changes
+- tests run in CI
+
+Recommended implementation order
+
+Phase A — shared configuration foundation
+
+- `BE2-01`
+- `BE2-12`
+- `BE2-22`
+- `BE2-23`
+
+Phase B — agency and catalog master data
+
+- `BE2-02`
+- `BE2-03`
+- `BE2-04`
+- `BE2-05`
+- `BE2-06`
+
+Phase C — templates and policy configuration
+
+- `BE2-07`
+- `BE2-08`
+- `BE2-09`
+- `BE2-10`
+- `BE2-11`
+
+Phase D — public API layer
+
+- `BE2-13`
+- `BE2-14`
+- `BE2-15`
+- `BE2-16`
+- `BE2-17`
+- `BE2-18`
+- `BE2-19`
+- `BE2-20`
+- `BE2-21`
+
+Phase E — hardening
+
+- `BE2-24`
+- `BE2-25`
+
+Definition of done for Epic 2 backend
+
+Epic 2 backend is done only when:
+
+- every Epic 2 configuration area has a stable public API
+- RBAC and branch-aware restrictions are enforced in backend
+- destructive configuration changes are dependency-safe
+- all important changes are audited
+- regression tests cover CRUD, denial, and conflict behavior

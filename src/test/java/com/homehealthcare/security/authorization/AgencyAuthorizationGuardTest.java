@@ -21,6 +21,8 @@ class AgencyAuthorizationGuardTest {
 
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_USER_DIRECTORY)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_AGENCY_MFA_POLICY)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_BRANCH_POLICY)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_AGENCY_CONFIGURATION)).isTrue();
     }
 
     @Test
@@ -29,6 +31,7 @@ class AgencyAuthorizationGuardTest {
 
         assertThat(AgencyPermission.MANAGE_USER_STATUS.isSensitive()).isTrue();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_USER_STATUS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_TEMPLATE_CONFIGURATION)).isFalse();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,
@@ -41,6 +44,16 @@ class AgencyAuthorizationGuardTest {
         AgencyMembership owner = membership(AgencyRole.AGENCY_OWNER, false);
 
         assertThat(guard.hasPermission(owner, AgencyPermission.INVITE_USER)).isFalse();
+        assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_ALERT_RULE)).isFalse();
+    }
+
+    @Test
+    void branchScopedEpic2PermissionsRemainUnavailableToAgencyWideReadOnlyRoles() {
+        AgencyMembership auditor = membership(AgencyRole.READ_ONLY_AUDITOR, true);
+
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_AUDIT_LOG)).isTrue();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_BRANCH_POLICY)).isFalse();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.MANAGE_COMPENSATION_SETTINGS)).isFalse();
     }
 
     private AgencyMembership membership(AgencyRole role, boolean active) {

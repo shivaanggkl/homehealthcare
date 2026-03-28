@@ -44,7 +44,7 @@
 <tr>
 <td>
 <div class="infoBox">
-<div class="counter">2</div>
+<div class="counter">3</div>
 <p>tests</p>
 </div>
 </td>
@@ -62,7 +62,7 @@
 </td>
 <td>
 <div class="infoBox duration">
-<div class="counter">0.122s</div>
+<div class="counter">0.103s</div>
 <p>duration</p>
 </div>
 </td>
@@ -93,13 +93,24 @@
 </thead>
 <tr>
 <td class="success">
+<a href="0TunRAyrues.html">auditApiCanFilterAndExportEpic2ConfigurationEvents()</a>
+</td>
+<td class="path" hidden="">auditApiCanFilterAndExportEpic2ConfigurationEvents()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.054s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
 <a href="_xwzjGxLKAg.html">caregiverCannotViewAuditEvents()</a>
 </td>
 <td class="path" hidden="">caregiverCannotViewAuditEvents()</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0.012s</td>
+<td>0.009s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
@@ -110,7 +121,7 @@
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0.076s</td>
+<td>0.018s</td>
 <td class="success">100%</td>
 </tr>
 </table>
@@ -119,16 +130,16 @@
 <div class="tab">
 <h2>standard output</h2>
 <span class="code">
-<pre id="root-0-test-stdout-com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest">2026-03-28T01:30:02.878-05:00  INFO 39243 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest]: AuditEventApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-28T01:30:02.879-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
-2026-03-28T01:30:02.881-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
-2026-03-28T01:30:02.898-05:00  INFO 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest
-2026-03-28T01:30:02.899-05:00  INFO 39243 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest]: AuditEventApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-28T01:30:02.899-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
-2026-03-28T01:30:02.900-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
-2026-03-28T01:30:02.900-05:00  INFO 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest
-2026-03-28T01:30:02.901-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [AuditEventApiIntegrationTest]: using SpringBootContextLoader
-2026-03-28T01:30:02.901-05:00 DEBUG 39243 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [AuditEventApiIntegrationTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, WithSecurityContextTestExecutionListener, EventPublishingTestExecutionListener, ReactorContextTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockitoResetTestExecutionListener]
+<pre id="root-0-test-stdout-com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest">2026-03-28T09:05:32.526-05:00  INFO 28810 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest]: AuditEventApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T09:05:32.527-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T09:05:32.528-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T09:05:32.541-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest
+2026-03-28T09:05:32.542-05:00  INFO 28810 --- [homehealthcare] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest]: AuditEventApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-28T09:05:32.542-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ImportsContextCustomizerFactory, PropertyMappingContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, SpringBootTestRandomPortContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-28T09:05:32.543-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [AuditEventApiIntegrationTest]: [WebDriverContextCustomizer, OnFailureConditionReportContextCustomizer, ImportsContextCustomizer, PropertyMappingContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, SpringBootTestRandomPortContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-28T09:05:32.543-05:00  INFO 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest
+2026-03-28T09:05:32.543-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [AuditEventApiIntegrationTest]: using SpringBootContextLoader
+2026-03-28T09:05:32.544-05:00 DEBUG 28810 --- [homehealthcare] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [AuditEventApiIntegrationTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, WithSecurityContextTestExecutionListener, EventPublishingTestExecutionListener, ReactorContextTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockitoResetTestExecutionListener]
 </pre>
 <button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest">Copy</button>
 </span>
@@ -143,7 +154,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 1:30:15 AM</p>
+<a href="https://www.gradle.org">Gradle 9.4.1</a> at Mar 28, 2026, 9:05:42 AM</p>
 </div>
 </div>
 </body>

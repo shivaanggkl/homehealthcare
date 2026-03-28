@@ -1,0 +1,371 @@
+Epic 2 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 2 from `Requirements.txt` into a frontend delivery backlog for the web application.
+
+Epic 2 title
+
+Agency setup and configuration
+
+Epic 2 feature scope from the requirements
+
+- agency profile
+- service lines
+- visit types
+- caregiver skills/certifications
+- task templates
+- documentation templates
+- branch policies
+- alert rules
+- mileage/pay settings
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete
+- Epic 2 is primarily an admin web experience
+- Epic 2 frontend depends on new public backend APIs for every module
+- Epic 2 should reuse Epic 1 shell, access control, audit patterns, and form handling patterns
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 2 backend APIs
+
+========================================================================
+FE2-01 — Agency setup navigation and information architecture
+Related Epic 2 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want a coherent setup area in the web app so configuration modules are easy to find and manage.
+
+Frontend acceptance criteria
+
+- a dedicated Epic 2 setup/configuration section exists in navigation
+- routes are grouped by configuration domain
+- role-based navigation visibility follows backend permissions
+- unauthorized deep links render controlled `403` states
+- setup modules share consistent page and table patterns
+
+========================================================================
+FE2-02 — Agency profile setup screen
+Related Epic 2 features: agency profile
+Backend status: BLOCKED
+
+Story
+As an agency owner, I want to manage my agency profile in the UI so operational details stay current.
+
+Frontend acceptance criteria
+
+- page loads agency profile from backend
+- form supports editing:
+  - agency name
+  - contact details
+  - address fields if provided by backend
+  - timezone and locale defaults
+- owner-only access is enforced in the UI
+- success and validation states are clear
+
+========================================================================
+FE2-03 — Service line management screen
+Related Epic 2 features: service lines
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage service lines so the agency’s service catalog is configurable from the UI.
+
+Frontend acceptance criteria
+
+- searchable list exists
+- create, edit, activate/deactivate actions exist
+- duplicate name/code conflicts are shown clearly
+- status and display-order fields are manageable if supported by backend
+- restricted users see controlled unauthorized states
+
+========================================================================
+FE2-04 — Visit type management screen
+Related Epic 2 features: visit types
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage visit types so visit classification and defaults can be configured in the UI.
+
+Frontend acceptance criteria
+
+- searchable/filterable list exists
+- create, edit, activate/deactivate actions exist
+- service line linkage is visible and editable
+- duration or billable defaults are editable if supported by backend
+- validation errors are shown inline
+
+========================================================================
+FE2-05 — Caregiver skill catalog screen
+Related Epic 2 features: caregiver skills/certifications
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage caregiver skill definitions so reusable workforce skills can be configured centrally.
+
+Frontend acceptance criteria
+
+- searchable list exists
+- create, edit, activate/deactivate actions exist
+- duplicate conflicts are surfaced clearly
+- catalog supports later reuse by caregiver profile and scheduling features
+
+========================================================================
+FE2-06 — Certification catalog screen
+Related Epic 2 features: caregiver skills/certifications
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage certifications and credentials so workforce requirements can be configured centrally.
+
+Frontend acceptance criteria
+
+- searchable list exists
+- create, edit, activate/deactivate actions exist
+- expiration-required behavior is editable if supported by backend
+- validation and conflict messages are shown clearly
+
+========================================================================
+FE2-07 — Task template management screen
+Related Epic 2 features: task templates
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage task templates so reusable operational and care tasks can be configured in one place.
+
+Frontend acceptance criteria
+
+- table/list screen exists
+- create and edit forms exist
+- service line and visit type associations are editable where supported
+- active/inactive state is visible and manageable
+- malformed template definitions are handled with controlled validation UX
+
+========================================================================
+FE2-08 — Documentation template management screen
+Related Epic 2 features: documentation templates
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage documentation templates so note and form structures can be configured before later modules consume them.
+
+Frontend acceptance criteria
+
+- template list screen exists
+- create/edit/versioning workflow exists
+- draft vs active state is visible
+- structured template payload editing has safe validation UX
+- publish/activate actions are clearly differentiated from save-draft actions
+
+========================================================================
+FE2-09 — Branch policy management screen
+Related Epic 2 features: branch policies
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage branch policies so branch-specific operational rules can be configured safely.
+
+Frontend acceptance criteria
+
+- branch selector and policy list exist
+- agency default vs branch override presentation is clear
+- create, edit, and deactivate actions exist
+- branch-scoped authorization failures are shown clearly
+- fallback behavior is understandable in the UI
+
+========================================================================
+FE2-10 — Alert rule management screen
+Related Epic 2 features: alert rules
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to configure alert rules so operational alerts can be tuned in the UI.
+
+Frontend acceptance criteria
+
+- searchable/filterable list exists
+- rule scope is visible:
+  - agency-wide
+  - branch-specific
+- create, edit, activate/deactivate actions exist
+- threshold/config inputs are validated clearly
+- later delivery integrations can attach to the same rule model
+
+========================================================================
+FE2-11 — Mileage and pay settings screen
+Related Epic 2 features: mileage/pay settings
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want to manage mileage and pay settings so reimbursement and operational pay defaults are configurable.
+
+Frontend acceptance criteria
+
+- settings screen exists
+- current effective values are shown clearly
+- update flow exists for supported fields
+- branch override behavior is visible if supported by backend
+- audit-sensitive change messaging is shown
+
+========================================================================
+FE2-12 — Shared configuration table and form framework
+Related Epic 2 features: service lines, visit types, skills, certifications, task templates, documentation templates, alert rules
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable admin CRUD patterns so Epic 2 screens stay consistent and efficient to build.
+
+Frontend acceptance criteria
+
+- reusable list/table component supports:
+  - search
+  - status filtering
+  - pagination
+  - action column
+- reusable create/edit form patterns exist
+- success, validation, conflict, and unauthorized states are consistent
+- modules can opt into read-only or owner-only behavior cleanly
+
+========================================================================
+FE2-13 — Dependency/conflict handling UX for configuration records
+Related Epic 2 features: all mutable configuration entities
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want clear conflict handling so I understand when a configuration record cannot be removed or deactivated.
+
+Frontend acceptance criteria
+
+- conflict responses from backend are shown with controlled UX
+- destructive actions require confirmation
+- in-use dependency restrictions are explained clearly
+- safe alternatives such as deactivate/archive are surfaced where supported
+
+========================================================================
+FE2-14 — Epic 2 permission-aware route and menu updates
+Related Epic 2 features: all
+Backend status: BLOCKED
+
+Story
+As the UI, I want Epic 2 setup modules to follow backend permissions so users only see configuration areas they can actually use.
+
+Frontend acceptance criteria
+
+- Epic 2 routes are permission-gated
+- menus are hidden or disabled based on permissions
+- owner-only modules are visually distinct
+- branch-limited modules respect backend scope and denial responses
+
+========================================================================
+FE2-15 — Configuration audit visibility and recent-change surfaces
+Related Epic 2 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want setup screens to reflect audit-sensitive changes so the UI reinforces that configuration updates are controlled operations.
+
+Frontend acceptance criteria
+
+- audit-sensitive messaging appears on mutation screens
+- success states indicate that changes are logged
+- where useful, screens can link out to filtered audit log views
+- no secret or internal-only metadata is exposed unnecessarily
+
+========================================================================
+FE2-16 — Agency setup dashboard or overview screen
+Related Epic 2 features: all
+Backend status: BLOCKED
+
+Story
+As an agency owner or admin, I want an overview of setup completion so I can understand what is configured and what still needs attention.
+
+Frontend acceptance criteria
+
+- setup overview screen exists
+- high-level counts or status cards summarize:
+  - service lines
+  - visit types
+  - skills/certifications
+  - templates
+  - policies
+  - alert rules
+  - mileage/pay settings
+- links route into detailed configuration modules
+- missing or incomplete configuration areas are visible
+
+========================================================================
+FE2-17 — Mobile-responsive configuration administration
+Related Epic 2 features: all web-admin screens
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want Epic 2 admin screens to remain usable on smaller screens so urgent configuration changes are still possible away from a desktop.
+
+Frontend acceptance criteria
+
+- list and form screens remain usable on tablet and small laptop widths
+- action buttons and destructive confirmations remain accessible
+- complex editors degrade gracefully on smaller screens
+- no critical Epic 2 configuration screen breaks the layout on mobile-sized viewports
+
+========================================================================
+FE2-18 — Frontend regression coverage for Epic 2 admin flows
+Related Epic 2 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 2 configuration screens so admin setup flows remain stable as modules expand.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 2 routes
+- happy-path interaction coverage exists for representative config modules
+- validation and conflict states are covered
+- unauthorized-state rendering is covered
+
+Recommended implementation order
+
+Phase A — shared UI foundation
+
+- `FE2-01`
+- `FE2-12`
+- `FE2-14`
+- `FE2-17`
+
+Phase B — core setup modules
+
+- `FE2-02`
+- `FE2-03`
+- `FE2-04`
+- `FE2-05`
+- `FE2-06`
+
+Phase C — advanced configuration modules
+
+- `FE2-07`
+- `FE2-08`
+- `FE2-09`
+- `FE2-10`
+- `FE2-11`
+
+Phase D — cross-cutting UX
+
+- `FE2-13`
+- `FE2-15`
+- `FE2-16`
+- `FE2-18`
+
+Definition of done for Epic 2 frontend
+
+Epic 2 frontend is done only when:
+
+- every Epic 2 configuration module is reachable from the app shell
+- setup modules use backend APIs rather than local-only placeholder state
+- create/edit/deactivate flows are usable and permission-aware
+- conflict and dependency errors are shown clearly
+- owner-only and admin-only restrictions are visible and consistent
+- core Epic 2 screens are regression-covered
