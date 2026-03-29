@@ -204,6 +204,37 @@ public class DocumentationService {
     }
 
     @Transactional
+    public DocumentationTemplate deactivateTemplate(@NotNull AgencyMembership actorMembership, @NotNull UUID templateId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES);
+        DocumentationTemplate template = resolveTemplate(actorMembership.getAgencyId(), templateId);
+        template.deactivate();
+        DocumentationTemplate saved = documentationTemplateRepository.saveAndFlush(template);
+        documentationAuditService.recordTemplateUpdated(
+                actorMembership,
+                saved.getTemplateType() == DocumentationTemplateType.CUSTOM_FORM
+                        ? Epic8DocumentationTargetType.FORM_TEMPLATE
+                        : Epic8DocumentationTargetType.VISIT_NOTE_TEMPLATE,
+                saved.getId(),
+                saved.getBranchId(),
+                "{\"status\":\"" + saved.getStatus().name() + "\"}");
+        return saved;
+    }
+
+    @Transactional
+    public TaskTemplate deactivateTaskLibraryItem(@NotNull AgencyMembership actorMembership, @NotNull UUID taskTemplateId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_DOCUMENTATION_TASK_LIBRARY);
+        TaskTemplate taskTemplate = resolveTaskTemplate(actorMembership.getAgencyId(), taskTemplateId);
+        taskTemplate.deactivate();
+        TaskTemplate saved = taskTemplateRepository.saveAndFlush(taskTemplate);
+        documentationAuditService.recordTaskLibraryUpdated(
+                actorMembership,
+                saved.getId(),
+                null,
+                "{\"status\":\"" + saved.getStatus().name() + "\"}");
+        return saved;
+    }
+
+    @Transactional
     public DocumentationAggregate createDocumentationRecord(
             @NotNull AgencyMembership actorMembership,
             @Valid CreateDocumentationRecordCommand command) {
@@ -367,6 +398,21 @@ public class DocumentationService {
     }
 
     @Transactional
+    public void unlinkAttachment(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID documentationRecordId,
+            @NotNull UUID attachmentLinkId) {
+        VisitDocumentationRecord record = resolveDocumentationRecord(actorMembership.getAgencyId(), documentationRecordId);
+        authorizeTemplateUse(actorMembership, record.getSelectedTemplate(), AgencyPermission.DRAFT_VISIT_DOCUMENTATION);
+        DocumentationAttachmentLink link = documentationAttachmentLinkRepository.findByIdAndAgency_Id(attachmentLinkId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new DocumentationEntityNotFoundException("DocumentationAttachmentLink", attachmentLinkId));
+        if (!Objects.equals(link.getDocumentationRecord().getId(), record.getId())) {
+            throw new DocumentationConflictException("Attachment link does not belong to the requested documentation record.");
+        }
+        documentationAttachmentLinkRepository.delete(link);
+    }
+
+    @Transactional
     public PrintableSummaryProjection generatePrintableSummary(@NotNull AgencyMembership actorMembership, @NotNull UUID documentationRecordId) {
         requirePermission(actorMembership, AgencyPermission.GENERATE_PRINTABLE_DOCUMENTATION_SUMMARY);
         VisitDocumentationRecord record = resolveDocumentationRecord(actorMembership.getAgencyId(), documentationRecordId);
@@ -419,6 +465,122 @@ public class DocumentationService {
     @Transactional(readOnly = true)
     public DocumentationAggregate getDocumentationAggregate(@NotNull AgencyMembership actorMembership, @NotNull UUID documentationRecordId) {
         VisitDocumentationRecord record = resolveDocumentationRecord(actorMembership.getAgencyId(), documentationRecordId);
+        authorizeTemplateUse(actorMembership, record.getSelectedTemplate(), AgencyPermission.VIEW_VISIT_DOCUMENTATION);
+        return aggregate(record);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DocumentationTemplate> listTemplates(
+            @NotNull AgencyMembership actorMembership,
+            String search,
+            ConfigurationStatus status,
+            DocumentationTemplateType templateType,
+            UUID branchId,
+            UUID visitTypeId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE);
+        return documentationTemplateRepository.findAllByAgency_IdOrderByDisplayOrderAscNameAsc(actorMembership.getAgencyId()).stream()
+                .filter(item -> status == null || item.getStatus() == status)
+                .filter(item -> templateType == null || item.getTemplateType() == templateType)
+                .filter(item -> branchId == null || Objects.equals(item.getBranchId(), branchId))
+                .filter(item -> visitTypeId == null || Objects.equals(item.getVisitTypeId(), visitTypeId))
+                .filter(item -> matchesSearch(search, item.getName(), item.getCode()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public TemplateAggregate getTemplateAggregate(@NotNull AgencyMembership actorMembership, @NotNull UUID templateId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE);
+        DocumentationTemplate template = resolveTemplate(actorMembership.getAgencyId(), templateId);
+        return new TemplateAggregate(
+                template,
+                documentationTemplateSectionRepository.findAllByDocumentationTemplate_IdOrderBySortOrderAscTitleAsc(templateId),
+                documentationTemplateFieldRepository.findAllByDocumentationTemplate_IdOrderBySortOrderAscLabelAsc(templateId),
+                documentationTemplateTaskRepository.findAllByDocumentationTemplate_IdOrderBySortOrderAscIdAsc(templateId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskTemplate> listTaskLibraryItems(
+            @NotNull AgencyMembership actorMembership,
+            String search,
+            ConfigurationStatus status,
+            TaskTemplateCategory category,
+            UUID serviceLineId,
+            UUID visitTypeId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE);
+        return taskTemplateRepository.findAllByAgency_IdOrderByDisplayOrderAscNameAsc(actorMembership.getAgencyId()).stream()
+                .filter(item -> status == null || item.getStatus() == status)
+                .filter(item -> category == null || item.getCategory() == category)
+                .filter(item -> serviceLineId == null || (item.getServiceLine() != null && Objects.equals(item.getServiceLine().getId(), serviceLineId)))
+                .filter(item -> visitTypeId == null || (item.getVisitType() != null && Objects.equals(item.getVisitType().getId(), visitTypeId)))
+                .filter(item -> matchesSearch(search, item.getName(), item.getCode()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public TaskTemplate getTaskLibraryItem(@NotNull AgencyMembership actorMembership, @NotNull UUID taskTemplateId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE);
+        return resolveTaskTemplate(actorMembership.getAgencyId(), taskTemplateId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DocumentationSummary> listDocumentation(
+            @NotNull AgencyMembership actorMembership,
+            OffsetDateTime from,
+            OffsetDateTime to,
+            UUID branchId,
+            UUID caregiverMembershipId,
+            UUID patientId,
+            DocumentationRecordStatus status,
+            UUID templateId,
+            UUID visitTypeId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_VISIT_DOCUMENTATION);
+        List<VisitDocumentationRecord> candidates = (from != null && to != null)
+                ? visitDocumentationRecordRepository.findAllByAgency_IdAndLastSavedAtBetweenOrderByLastSavedAtDesc(actorMembership.getAgencyId(), from, to)
+                : visitDocumentationRecordRepository.findAllByAgency_IdOrderByLastSavedAtDesc(actorMembership.getAgencyId());
+        return candidates.stream()
+                .filter(item -> branchId == null || Objects.equals(item.getBranchId(), branchId))
+                .filter(item -> caregiverMembershipId == null || Objects.equals(item.getAuthorMembership().getId(), caregiverMembershipId)
+                        || Objects.equals(item.getLastEditorMembership().getId(), caregiverMembershipId))
+                .filter(item -> patientId == null || Objects.equals(item.getPatientId(), patientId))
+                .filter(item -> status == null || item.getStatus() == status)
+                .filter(item -> templateId == null || Objects.equals(item.getSelectedTemplateId(), templateId))
+                .filter(item -> visitTypeId == null || Objects.equals(
+                        item.getSelectedTemplate().getVisitType() == null ? null : item.getSelectedTemplate().getVisitType().getId(),
+                        visitTypeId))
+                .sorted(Comparator.comparing(VisitDocumentationRecord::getLastSavedAt).reversed())
+                .map(item -> new DocumentationSummary(
+                        item.getId(),
+                        item.getVisitOccurrenceId(),
+                        item.getPatientId(),
+                        item.getPatient().getFirstName(),
+                        item.getPatient().getLastName(),
+                        item.getBranchId(),
+                        item.getBranch() == null ? null : item.getBranch().getName(),
+                        item.getSelectedTemplateId(),
+                        item.getSelectedTemplate().getName(),
+                        item.getStatus(),
+                        item.getLastSavedAt(),
+                        item.getSubmittedAt(),
+                        item.getAuthorMembership().getId(),
+                        item.getAuthorMembership().getUser().getEmail()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public DocumentationAggregate loadDocumentationForVisit(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID visitOccurrenceId,
+            UUID selectedTemplateId) {
+        requirePermission(actorMembership, AgencyPermission.VIEW_VISIT_DOCUMENTATION);
+        List<VisitDocumentationRecord> records = visitDocumentationRecordRepository.findAllByVisitOccurrence_IdOrderByLastSavedAtDesc(visitOccurrenceId).stream()
+                .filter(item -> Objects.equals(item.getAgencyId(), actorMembership.getAgencyId()))
+                .toList();
+        VisitDocumentationRecord record = selectedTemplateId == null
+                ? records.stream().findFirst().orElseThrow(() -> new DocumentationEntityNotFoundException("VisitDocumentationRecord", visitOccurrenceId))
+                : records.stream()
+                        .filter(item -> Objects.equals(item.getSelectedTemplateId(), selectedTemplateId))
+                        .findFirst()
+                        .orElseThrow(() -> new DocumentationEntityNotFoundException("VisitDocumentationRecord", selectedTemplateId));
         authorizeTemplateUse(actorMembership, record.getSelectedTemplate(), AgencyPermission.VIEW_VISIT_DOCUMENTATION);
         return aggregate(record);
     }
@@ -651,6 +813,19 @@ public class DocumentationService {
         return effectiveState == DocumentationResponseState.COMPLETED ? (completedAt == null ? fallbackNow : completedAt) : null;
     }
 
+    private static boolean matchesSearch(String search, String... values) {
+        if (search == null || search.isBlank()) {
+            return true;
+        }
+        String normalized = search.trim().toLowerCase();
+        for (String value : values) {
+            if (value != null && value.toLowerCase().contains(normalized)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static String patientDisplayName(com.homehealthcare.patient.domain.Patient patient) {
         String preferred = patient.getPreferredName();
         String first = preferred != null && !preferred.isBlank() ? preferred : patient.getFirstName();
@@ -760,6 +935,23 @@ public class DocumentationService {
             List<DocumentationFieldResponse> fieldResponses,
             List<DocumentationTaskResponse> taskResponses,
             List<DocumentationAttachmentLink> attachmentLinks) {
+    }
+
+    public record DocumentationSummary(
+            UUID id,
+            UUID visitOccurrenceId,
+            UUID patientId,
+            String patientFirstName,
+            String patientLastName,
+            UUID branchId,
+            String branchName,
+            UUID templateId,
+            String templateName,
+            DocumentationRecordStatus status,
+            OffsetDateTime lastSavedAt,
+            OffsetDateTime submittedAt,
+            UUID authorMembershipId,
+            String authorEmail) {
     }
 
     public record PrintableSummaryProjection(

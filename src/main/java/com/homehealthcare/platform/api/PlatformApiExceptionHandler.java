@@ -1,5 +1,9 @@
 package com.homehealthcare.platform.api;
 
+import com.homehealthcare.documentation.application.DocumentationConflictException;
+import com.homehealthcare.documentation.application.DocumentationEntityNotFoundException;
+import com.homehealthcare.documentation.application.DocumentationValidationException;
+import com.homehealthcare.documentation.application.UnauthorizedDocumentationActorException;
 import com.homehealthcare.evv.application.EvvConflictException;
 import com.homehealthcare.evv.application.EvvEntityNotFoundException;
 import com.homehealthcare.evv.application.UnauthorizedEvvActorException;
@@ -48,6 +52,33 @@ class PlatformApiExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     Map<String, String> handleMobileNotFound(MobileEntityNotFoundException exception) {
         return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(DocumentationConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    Map<String, String> handleDocumentationConflict(DocumentationConflictException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(DocumentationEntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Map<String, String> handleDocumentationNotFound(DocumentationEntityNotFoundException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedDocumentationActorException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    Map<String, String> handleUnauthorizedDocumentationActor(UnauthorizedDocumentationActorException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(DocumentationValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    Map<String, Object> handleDocumentationValidation(DocumentationValidationException exception) {
+        return Map.of(
+                "error", exception.getMessage(),
+                "fieldErrors", exception.getFieldErrors(),
+                "taskErrors", exception.getTaskErrors());
     }
 
     @ExceptionHandler(EvvConflictException.class)
