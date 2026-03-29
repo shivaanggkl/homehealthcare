@@ -1,0 +1,526 @@
+Epic 5 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 5 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 5 title
+
+Scheduling engine
+
+Epic 5 feature scope from the requirements
+
+- day/week/month schedule views
+- drag-and-drop assignment
+- caregiver-patient matching
+- conflict detection
+- overtime and overlap checks
+- travel-time awareness
+- recurring visits
+- open-shift pool
+- rescheduling workflow
+- cancellation workflow
+
+Planning assumptions
+
+- Epic 1 is complete and provides security, RBAC, tenancy, audit, branch scoping, and session foundations
+- Epic 2 is complete and provides reusable service-line, visit-type, branch-policy, alert-rule, and compensation configuration
+- Epic 3 is complete and provides patient records, payer/authorization context, and patient attachment patterns
+- Epic 4 is complete and provides caregiver workforce records, availability, unavailability, geography, and performance inputs
+- Epic 5 is an admin and coordinator scheduling engine, not a field-execution or EVV module
+- Epic 5 should stop short of mobile visit execution, GPS proof, signatures, and clock-in/out because those belong to Epics 6 and 7
+- schedule decisions are always agency-scoped and branch-aware when the selected patient, caregiver, or policy makes branch scoping relevant
+- scheduling should produce explicit visit, assignment, and exception records instead of implicit UI-only state
+
+Scope rule
+
+- Include only Epic 5 backend work
+- Cover domain model, rule evaluation, authorization, audit, public APIs, and tests
+- Do not include frontend-only tasks
+- Do not pull mobile execution, EVV, visit-note completion, or billing logic from later epics into Epic 5
+
+Status legend
+
+- NOT STARTED: no Epic 5 implementation exists yet
+
+========================================================================
+BE5-01 — Define scheduling domain architecture and lifecycle rules
+Related Epic 5 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent scheduling domain so all schedule, visit, assignment, and exception records follow consistent ownership and lifecycle rules.
+
+Recommended acceptance criteria
+
+- scheduling domain entities are defined explicitly, including:
+  - schedule view query model
+  - visit definition
+  - visit occurrence
+  - caregiver assignment
+  - recurring visit rule
+  - open shift
+  - reschedule request/history
+  - cancellation record
+  - schedule conflict/result
+- lifecycle states are defined for:
+  - planned visits
+  - assigned visits
+  - open shifts
+  - cancelled visits
+  - rescheduled visits
+- schedule ownership, branch scope, and patient/caregiver linkage expectations are documented
+- audit expectations are defined for all Epic 5 entities
+- extension points for visit execution, EVV, and revenue-readiness workflows are documented without implementing those later-epic behaviors
+
+========================================================================
+BE5-02 — Create visit and schedule occurrence model
+Related Epic 5 features: schedule views, assignment
+Current status: NOT STARTED
+
+Story
+As the backend, I need a visit and occurrence model so the scheduling engine has a durable source of truth for planned work.
+
+Recommended acceptance criteria
+
+- visit entity exists
+- visit occurrence model supports scheduled work on a specific date/time
+- visit records link to:
+  - agency
+  - branch when applicable
+  - patient
+  - service line optional
+  - visit type optional
+- fields include:
+  - planned_start_at
+  - planned_end_at
+  - timezone
+  - status
+  - priority optional
+  - source or creation_mode optional
+  - notes optional
+- visit lifecycle supports at least:
+  - planned
+  - assigned
+  - open
+  - rescheduled
+  - cancelled
+  - completed_later_epic_placeholder only if needed for forward compatibility
+- visit changes are audited
+
+========================================================================
+BE5-03 — Create recurring visit rule model and expansion contract
+Related Epic 5 features: recurring visits
+Current status: NOT STARTED
+
+Story
+As the backend, I need recurring visit rules so repeat schedules can be created and maintained consistently.
+
+Recommended acceptance criteria
+
+- recurring visit rule entity exists
+- recurring pattern supports product-approved cadence such as:
+  - daily
+  - selected weekdays
+  - weekly
+  - biweekly if approved
+- rule links to a patient and planned visit template fields
+- effective_start and effective_end behavior is defined
+- generated occurrences remain traceable to the originating recurrence rule
+- recurring expansion behavior is deterministic and test-covered
+- recurrence changes are audited
+
+========================================================================
+BE5-04 — Create caregiver assignment model
+Related Epic 5 features: drag-and-drop assignment, assignment workflow
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit assignment records so caregiver-to-visit decisions are durable and auditable.
+
+Recommended acceptance criteria
+
+- caregiver assignment model exists
+- assignment links:
+  - visit occurrence
+  - caregiver profile
+  - branch when applicable
+- fields include:
+  - assigned_at
+  - assigned_by
+  - assignment_status
+  - assignment_source optional
+  - notes optional
+- visit supports zero or one active primary assignment unless product explicitly allows more
+- assignment activation/deactivation behavior is defined
+- assignment changes are audited
+
+========================================================================
+BE5-05 — Create open-shift pool model
+Related Epic 5 features: open-shift pool
+Current status: NOT STARTED
+
+Story
+As the backend, I need open-shift records so unassigned visits can be surfaced and managed explicitly.
+
+Recommended acceptance criteria
+
+- open-shift representation exists for visits without an active caregiver assignment
+- open shift carries enough context for filtering and matching, including:
+  - branch
+  - patient
+  - visit type optional
+  - planned time window
+  - urgency or priority optional
+- open-shift state supports at least:
+  - open
+  - claimed_or_assigned
+  - cancelled
+  - expired optional
+- open-shift creation and closure are audited
+
+========================================================================
+BE5-06 — Create caregiver-patient matching contract
+Related Epic 5 features: caregiver-patient matching
+Current status: NOT STARTED
+
+Story
+As the backend, I need a structured match-evaluation contract so the UI can show why a caregiver is or is not a good scheduling option.
+
+Recommended acceptance criteria
+
+- match result contract exists for a given visit or open shift
+- scoring or ranking factors are explicit and inspectable, such as:
+  - branch compatibility
+  - service-line or visit-type fit
+  - caregiver skills
+  - language alignment optional
+  - geography/travel fit
+  - availability fit
+  - active credential status
+- hard-block vs warning distinctions are supported
+- internal-only raw algorithm metadata is not exposed through public APIs
+- match evaluation is test-covered
+
+========================================================================
+BE5-07 — Implement schedule conflict detection engine
+Related Epic 5 features: conflict detection
+Current status: NOT STARTED
+
+Story
+As the backend, I need conflict detection so invalid scheduling decisions are blocked or flagged before they become operational errors.
+
+Recommended acceptance criteria
+
+- conflict engine evaluates scheduling actions for at least:
+  - caregiver overlap
+  - caregiver unavailability conflict
+  - patient visit overlap if product-approved
+  - branch mismatch when branch scoping matters
+  - missing required skill or credential
+  - assignment to inactive caregiver
+- conflict result distinguishes:
+  - blocking conflicts
+  - non-blocking warnings
+- conflict reasons are structured and public-API-safe
+- conflict detection is reusable across create, assign, reschedule, and drag-and-drop flows
+
+========================================================================
+BE5-08 — Implement overtime and overlap rule evaluation
+Related Epic 5 features: overtime and overlap checks
+Current status: NOT STARTED
+
+Story
+As the backend, I need overtime and overlap checks so schedule decisions respect workforce and policy constraints.
+
+Recommended acceptance criteria
+
+- overlap check is enforced for active caregiver assignments
+- overtime evaluation contract exists using product-approved thresholds
+- threshold inputs are configurable or policy-backed where Epic 2/branch policy data supports it
+- result distinguishes block vs warning if product-approved
+- overtime and overlap outcomes are reusable in assignment and rescheduling flows
+- rule results are test-covered
+
+========================================================================
+BE5-09 — Implement travel-time awareness contract
+Related Epic 5 features: travel-time awareness
+Current status: NOT STARTED
+
+Story
+As the backend, I need travel-time awareness so schedule decisions can reflect practical route constraints.
+
+Recommended acceptance criteria
+
+- travel-awareness contract exists for adjacent visits or a proposed assignment
+- result can use approved heuristics if full route optimization is deferred
+- inputs can include:
+  - patient address
+  - caregiver geography preference anchor optional
+  - prior and next scheduled visit windows
+  - configured travel assumptions if route engine is not yet present
+- output distinguishes:
+  - feasible
+  - tight
+  - infeasible optional
+- raw third-party routing internals are not required for the public contract
+
+========================================================================
+BE5-10 — Create rescheduling workflow model
+Related Epic 5 features: rescheduling workflow
+Current status: NOT STARTED
+
+Story
+As the backend, I need a formal rescheduling workflow so schedule changes remain traceable instead of overwriting history silently.
+
+Recommended acceptance criteria
+
+- reschedule action creates schedule history
+- prior visit window and new visit window are preserved
+- prior caregiver assignment and new caregiver assignment are preserved when changed
+- reschedule reason optional is supported
+- reschedule action reruns conflict checks
+- reschedule actions are audited
+
+========================================================================
+BE5-11 — Create cancellation workflow model
+Related Epic 5 features: cancellation workflow
+Current status: NOT STARTED
+
+Story
+As the backend, I need a formal cancellation model so cancelled visits remain visible in history and later workflows can react safely.
+
+Recommended acceptance criteria
+
+- visit cancellation updates visit lifecycle cleanly
+- cancellation reason and actor are recorded
+- patient-side vs caregiver-side vs admin-side cancellation reason optional is supported if approved
+- cancelled visits are excluded from active schedule views while remaining queryable in history
+- cancellation actions are audited
+
+========================================================================
+BE5-12 — Define scheduling permissions and audit matrix
+Related Epic 5 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit permissions and audit actions for scheduling so sensitive workforce and patient operations remain controlled.
+
+Recommended acceptance criteria
+
+- backend permissions are defined for:
+  - viewing schedule workspace
+  - managing visits
+  - assigning caregivers
+  - managing open shifts
+  - rescheduling visits
+  - cancelling visits
+  - viewing schedule conflicts
+- scheduling audit actions are defined for:
+  - visit created
+  - visit updated
+  - caregiver assigned
+  - assignment removed
+  - open shift created/closed
+  - visit rescheduled
+  - visit cancelled
+  - conflict flagged
+- permission and audit mapping is test-covered
+
+========================================================================
+BE5-13 — Implement schedule board query API
+Related Epic 5 features: day/week/month schedule views
+Current status: NOT STARTED
+
+Story
+As the backend, I need schedule board query APIs so the frontend can render day, week, and month scheduling views from real data.
+
+Recommended acceptance criteria
+
+- API exists for day/week/month schedule windows
+- API supports filters such as:
+  - branch
+  - caregiver
+  - patient
+  - visit status
+  - open shifts only optional
+- response shape supports schedule-board rendering without leaking internal entities directly
+- active visits, open shifts, and cancelled/rescheduled visibility rules are defined
+- tenant and branch isolation are enforced
+
+========================================================================
+BE5-14 — Implement visit create and update APIs
+Related Epic 5 features: schedule views, recurring visits
+Current status: NOT STARTED
+
+Story
+As the backend, I need visit create and update APIs so coordinators can create planned work and adjust schedule details safely.
+
+Recommended acceptance criteria
+
+- create visit API exists
+- update visit API exists
+- request supports patient, time window, branch, visit type, service line, and notes fields as approved
+- recurring-rule-backed create behavior is supported separately or through an explicit recurrence path
+- validation and conflict outcomes are returned clearly
+- create and update actions are audited
+
+========================================================================
+BE5-15 — Implement assignment and open-shift action APIs
+Related Epic 5 features: drag-and-drop assignment, open-shift pool
+Current status: NOT STARTED
+
+Story
+As the backend, I need assignment and open-shift APIs so the schedule board can perform real staffing actions.
+
+Recommended acceptance criteria
+
+- assign caregiver to visit API exists
+- unassign caregiver from visit API exists
+- convert visit to open shift if appropriate
+- assign from open-shift pool API exists
+- drag-and-drop-compatible mutation semantics are supported
+- conflict and warning outcomes are returned in a structured way
+- actions are audited
+
+========================================================================
+BE5-16 — Implement matching and conflict preview APIs
+Related Epic 5 features: caregiver-patient matching, conflict detection, travel-time awareness
+Current status: NOT STARTED
+
+Story
+As the backend, I need matching and preview APIs so the UI can show candidate caregivers and explain scheduling blockers before committing changes.
+
+Recommended acceptance criteria
+
+- caregiver match list API exists for a visit or open shift
+- conflict preview API exists for a proposed assignment or move
+- travel-awareness and overtime/overlap outcomes are included where supported
+- response distinguishes hard blocks from warnings
+- response is suitable for drag-and-drop preview and side-panel workflows
+
+========================================================================
+BE5-17 — Implement recurring visit management APIs
+Related Epic 5 features: recurring visits
+Current status: NOT STARTED
+
+Story
+As the backend, I need recurring visit management APIs so coordinators can create and maintain repeating schedules safely.
+
+Recommended acceptance criteria
+
+- create recurring rule API exists
+- update recurring rule API exists
+- deactivate recurring rule API exists
+- future occurrence regeneration behavior is explicit
+- historical generated occurrences are preserved safely
+- recurrence changes are audited
+
+========================================================================
+BE5-18 — Implement reschedule and cancellation APIs
+Related Epic 5 features: rescheduling workflow, cancellation workflow
+Current status: NOT STARTED
+
+Story
+As the backend, I need reschedule and cancellation APIs so the schedule board can support operational changes without silent data loss.
+
+Recommended acceptance criteria
+
+- reschedule visit API exists
+- cancel visit API exists
+- reschedule captures before/after state
+- cancel captures reason and actor
+- APIs return updated visit lifecycle and any resulting open-shift or assignment effects
+- actions are audited
+
+========================================================================
+BE5-19 — Harden scheduling rule enforcement and cross-module consistency
+Related Epic 5 features: all scheduling actions
+Current status: NOT STARTED
+
+Story
+As the backend, I need scheduling actions hardened so invalid cross-module state does not leak into later workflows.
+
+Recommended acceptance criteria
+
+- cancelled visits cannot remain actively assigned
+- inactive caregivers cannot receive active assignments
+- patient/caregiver/branch cross-tenant leakage is blocked
+- branch-isolated users cannot mutate out-of-scope schedule records
+- recurring, assignment, open-shift, reschedule, and cancellation actions respect one consistent lifecycle model
+- hardening rules are regression-covered
+
+========================================================================
+BE5-20 — Add regression and CI coverage for Epic 5 scheduling flows
+Related Epic 5 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for the scheduling engine so future mobile, EVV, and billing work does not destabilize core scheduling.
+
+Recommended acceptance criteria
+
+- representative CRUD and workflow integration tests exist for:
+  - visit create/update
+  - assignment/unassignment
+  - open shift actions
+  - recurring visit rules
+  - reschedule
+  - cancel
+- authorization denial coverage exists
+- conflict and warning-path coverage exists
+- travel/overtime/overlap evaluation is test-covered where implemented
+- Epic 5 regression suite is runnable in CI
+
+========================================================================
+Implementation phases
+
+Phase A — scheduling domain foundation
+
+- `BE5-01`
+- `BE5-09`
+- `BE5-12`
+
+Phase B — core schedule record model
+
+- `BE5-02`
+- `BE5-03`
+- `BE5-04`
+- `BE5-05`
+- `BE5-10`
+- `BE5-11`
+
+Phase C — scheduling rules and matching
+
+- `BE5-06`
+- `BE5-07`
+- `BE5-08`
+- `BE5-19`
+
+Phase D — public API layer
+
+- `BE5-13`
+- `BE5-14`
+- `BE5-15`
+- `BE5-16`
+- `BE5-17`
+- `BE5-18`
+
+Phase E — hardening
+
+- `BE5-20`
+
+========================================================================
+Definition of done for Epic 5 backend
+
+Epic 5 backend is done only when:
+
+- schedule, visit, assignment, recurrence, open-shift, reschedule, and cancellation domain models exist with clear lifecycle rules
+- day/week/month schedule APIs are available for real board-style queries
+- caregiver assignment, open-shift, rescheduling, and cancellation actions are implemented through audited APIs
+- conflict, overtime/overlap, and travel-awareness outcomes are available through structured backend contracts
+- caregiver-patient matching is exposed through a public API suitable for scheduling UX
+- branch-aware authorization and tenant isolation are enforced for schedule data and actions
+- recurring visits are supported with explicit rule and occurrence behavior
+- core Epic 5 scheduling flows are regression-covered

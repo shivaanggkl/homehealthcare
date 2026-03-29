@@ -1,0 +1,24 @@
+package com.homehealthcare.scheduling.foundation;
+
+public enum Epic5SchedulingAuditAction {
+    VISIT_CREATED("SCHEDULE_VISIT_CREATED"),
+    VISIT_UPDATED("SCHEDULE_VISIT_UPDATED"),
+    CAREGIVER_ASSIGNED("SCHEDULE_CAREGIVER_ASSIGNED"),
+    ASSIGNMENT_REMOVED("SCHEDULE_ASSIGNMENT_REMOVED"),
+    OPEN_SHIFT_CREATED("SCHEDULE_OPEN_SHIFT_CREATED"),
+    OPEN_SHIFT_CLOSED("SCHEDULE_OPEN_SHIFT_CLOSED"),
+    VISIT_RESCHEDULED("SCHEDULE_VISIT_RESCHEDULED"),
+    VISIT_CANCELLED("SCHEDULE_VISIT_CANCELLED"),
+    CONFLICT_FLAGGED("SCHEDULE_CONFLICT_FLAGGED"),
+    TRAVEL_EVALUATED("SCHEDULE_TRAVEL_EVALUATED");
+
+    private final String actionType;
+
+    Epic5SchedulingAuditAction(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String actionType() {
+        return actionType;
+    }
+}

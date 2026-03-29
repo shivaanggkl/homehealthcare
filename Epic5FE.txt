@@ -1,0 +1,397 @@
+Epic 5 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 5 from `Requirements.txt` into a frontend delivery backlog for the web application.
+
+Epic 5 title
+
+Scheduling engine
+
+Epic 5 feature scope from the requirements
+
+- day/week/month schedule views
+- drag-and-drop assignment
+- caregiver-patient matching
+- conflict detection
+- overtime and overlap checks
+- travel-time awareness
+- recurring visits
+- open-shift pool
+- rescheduling workflow
+- cancellation workflow
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide the app shell, permissions, navigation, audit viewer, and protected-route patterns
+- Epic 2 setup data is available and reusable where schedule screens need visit types, service lines, branch policies, alert rules, or mileage/travel assumptions
+- Epic 3 patient workflows are complete and provide patient records that schedule items can link back to
+- Epic 4 workforce workflows are complete and provide caregiver availability, unavailability, geography, skills, credentials, and performance signals for scheduling inputs
+- Epic 5 is primarily an admin and coordinator scheduling-board experience in the web application
+- Epic 5 should not absorb mobile field execution, GPS proof, signatures, or EVV workflows because those belong to Epics 6 and 7
+- scheduling UI should surface explanations for assignment decisions and conflicts rather than opaque pass/fail outcomes
+- schedule interactions must degrade gracefully when some advanced backend rule engines are available only as warnings or preview contracts
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 5 backend APIs
+
+========================================================================
+FE5-01 — Scheduling workspace navigation and information architecture
+Related Epic 5 features: all
+Backend status: BLOCKED
+
+Story
+As an agency scheduler, I want a coherent scheduling workspace so calendar, open-shift, and assignment flows are easy to find and operate.
+
+Frontend acceptance criteria
+
+- a dedicated scheduling workspace exists in navigation
+- routes are grouped by scheduling domain
+- role-based navigation visibility follows backend permissions
+- unauthorized deep links render controlled `403` states
+- board, drawer, side-panel, and workflow patterns are consistent across scheduling screens
+
+========================================================================
+FE5-02 — Day, week, and month schedule board views
+Related Epic 5 features: day/week/month schedule views
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want day, week, and month schedule views so I can plan staffing at different time horizons.
+
+Frontend acceptance criteria
+
+- day view exists
+- week view exists
+- month view exists
+- schedule items are rendered from backend board APIs
+- active, open, rescheduled, and cancelled states are visually distinct
+- the current date range is clear and easy to change
+
+========================================================================
+FE5-03 — Schedule filters and board navigation controls
+Related Epic 5 features: schedule views
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want filtering and board navigation controls so I can narrow the schedule to the right operational slice quickly.
+
+Frontend acceptance criteria
+
+- date navigation controls exist
+- branch filtering exists if supported
+- caregiver filtering exists if supported
+- patient filtering exists if supported
+- visit status or open-shift filtering exists if supported
+- filter state is reflected consistently across board refreshes
+
+========================================================================
+FE5-04 — Visit card and schedule detail drawer
+Related Epic 5 features: schedule views
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want a visit detail surface so I can inspect schedule context without losing my place on the board.
+
+Frontend acceptance criteria
+
+- visit cards or board items are clickable
+- a detail drawer, panel, or modal exists
+- patient, caregiver, branch, time window, visit type, and notes are visible if supported
+- open-shift state is obvious
+- actions route into assignment, reschedule, and cancellation workflows cleanly
+
+========================================================================
+FE5-05 — Visit create and edit scheduling workflow
+Related Epic 5 features: schedule views, recurring visits
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want to create and edit scheduled visits so planned work can be maintained directly from the scheduling workspace.
+
+Frontend acceptance criteria
+
+- create visit workflow exists
+- edit visit workflow exists
+- required scheduling fields are validated inline
+- backend conflict or validation responses are shown clearly
+- recurring vs one-time visit behavior is understandable in the UI
+
+========================================================================
+FE5-06 — Drag-and-drop caregiver assignment UX
+Related Epic 5 features: drag-and-drop assignment
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want drag-and-drop assignment so I can staff visits quickly from the board.
+
+Frontend acceptance criteria
+
+- drag source and drop target interactions exist
+- assignment intent is visually clear before drop commit
+- optimistic UI is controlled and reversible
+- blocked drops show clear conflict messaging
+- successful assignment updates the board without a full manual refresh
+
+========================================================================
+FE5-07 — Caregiver-patient matching panel
+Related Epic 5 features: caregiver-patient matching
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want a caregiver match panel so I can understand the best assignment options for a visit or open shift.
+
+Frontend acceptance criteria
+
+- match list exists for a selected visit or open shift
+- top candidate ordering is visible
+- explanatory factors are understandable in the UI
+- hard blocks vs warnings are distinguished visually
+- internal-only algorithm metadata is not exposed
+
+========================================================================
+FE5-08 — Conflict, overlap, and overtime guidance UX
+Related Epic 5 features: conflict detection, overtime and overlap checks
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want conflict guidance in the board and action flows so I do not create invalid schedules accidentally.
+
+Frontend acceptance criteria
+
+- conflict states are visible on relevant schedule actions
+- blocking conflicts are visually distinct from warnings
+- overlap and overtime outcomes are understandable in plain language
+- assignment and reschedule flows can show previewed conflicts before commit
+- unauthorized and backend-denied states are handled clearly
+
+========================================================================
+FE5-09 — Travel-time awareness indicators
+Related Epic 5 features: travel-time awareness
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want travel-time indicators so I can avoid unrealistic caregiver routes.
+
+Frontend acceptance criteria
+
+- travel-feasibility or route-tightness indicators are visible where supported
+- indicators appear in assignment preview or matching surfaces
+- travel warnings are understandable without exposing raw routing internals
+- missing travel data degrades cleanly
+
+========================================================================
+FE5-10 — Recurring visit management workflow
+Related Epic 5 features: recurring visits
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want recurring visit workflows so repeat schedules are easy to create and maintain.
+
+Frontend acceptance criteria
+
+- recurring visit create flow exists
+- recurring visit edit flow exists
+- cadence, weekdays, and effective window are understandable in the UI
+- scope of change is clear when updating future occurrences
+- recurrence validation errors are shown clearly
+
+========================================================================
+FE5-11 — Open-shift pool workspace
+Related Epic 5 features: open-shift pool
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want an open-shift pool so I can see and resolve unassigned work quickly.
+
+Frontend acceptance criteria
+
+- open-shift list or board lane exists
+- open shifts are clearly distinguishable from assigned visits
+- filter or sort controls exist where supported
+- actions exist to assign from the pool or inspect match candidates
+- empty-state UX exists when there are no open shifts
+
+========================================================================
+FE5-12 — Rescheduling workflow UX
+Related Epic 5 features: rescheduling workflow
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want a rescheduling workflow so I can move visits safely without losing historical context.
+
+Frontend acceptance criteria
+
+- reschedule workflow exists from the board or visit detail
+- before vs after schedule context is understandable
+- assignment changes are shown if impacted
+- previewed conflicts and warnings are visible before commit
+- successful reschedule updates the board and detail surfaces cleanly
+
+========================================================================
+FE5-13 — Cancellation workflow UX
+Related Epic 5 features: cancellation workflow
+Backend status: BLOCKED
+
+Story
+As a scheduler, I want a cancellation workflow so I can cancel scheduled work with clear reasons and visible downstream effects.
+
+Frontend acceptance criteria
+
+- cancellation workflow exists
+- cancellation reason is captured if supported
+- cancelled state is reflected clearly in board and detail surfaces
+- cancellation effects on assignment or open-shift state are understandable
+- destructive confirmation UX exists
+
+========================================================================
+FE5-14 — Shared schedule board layout and interaction framework
+Related Epic 5 features: day/week/month views, drag-and-drop assignment, open-shift pool
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable schedule board patterns so Epic 5 remains maintainable as the scheduling engine grows.
+
+Frontend acceptance criteria
+
+- reusable board layout exists
+- reusable board item/card rendering exists
+- reusable detail drawer or side panel exists
+- loading, empty, validation, and unauthorized states are standardized
+- board modules can opt into read-only vs editable behavior cleanly
+
+========================================================================
+FE5-15 — Shared scheduling mutation framework
+Related Epic 5 features: assignment, reschedule, cancellation, recurring visits
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable scheduling mutation patterns so Epic 5 actions remain consistent and safe.
+
+Frontend acceptance criteria
+
+- reusable mutation pattern exists for create, assign, reschedule, cancel, and close-open-shift actions
+- inline validation placement is consistent
+- blocking conflicts and warnings share one presentation pattern
+- optimistic or immediate board refresh behavior is standardized
+- destructive actions use consistent confirmation UX
+
+========================================================================
+FE5-16 — Scheduling overview and quick-entry dashboard
+Related Epic 5 features: schedule views, open-shift pool
+Backend status: BLOCKED
+
+Story
+As an agency scheduler, I want a scheduling overview so I can understand current workload and jump into common actions quickly.
+
+Frontend acceptance criteria
+
+- overview cards exist for supported operational counts such as:
+  - today’s scheduled visits
+  - open shifts
+  - conflict-flagged visits
+  - unassigned visits if distinct
+- quick-entry paths exist for:
+  - new visit
+  - open-shift review
+  - recurring visit creation
+- links route into board and workflow modules cleanly
+
+========================================================================
+FE5-17 — Scheduling audit visibility and mutation-sensitive UX
+Related Epic 5 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want scheduling screens to reinforce that assignment and schedule mutations are controlled operations.
+
+Frontend acceptance criteria
+
+- audit-sensitive messaging appears on schedule mutation screens
+- success states indicate that changes are logged
+- where useful, screens can link out to filtered audit log views
+- no internal-only scheduling metadata is exposed unnecessarily
+
+========================================================================
+FE5-18 — Mobile-responsive scheduling administration
+Related Epic 5 features: all web-admin Epic 5 screens
+Backend status: BLOCKED
+
+Story
+As an agency user, I want the scheduling workspace to remain usable on smaller screens so urgent staffing actions remain possible away from a desktop.
+
+Frontend acceptance criteria
+
+- schedule board and list views remain usable on tablet and small laptop widths
+- section navigation and filters stay accessible
+- detail drawers, assignment controls, and mutation actions remain usable on smaller viewports
+- no critical Epic 5 screen breaks layout on mobile-sized viewports
+
+========================================================================
+FE5-19 — Frontend regression coverage for Epic 5 scheduling flows
+Related Epic 5 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 5 scheduling screens so later visit-execution and billing work does not destabilize core scheduling.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 5 routes
+- happy-path interaction coverage exists for representative scheduling modules
+- validation and conflict states are covered
+- unauthorized-state rendering is covered
+- assignment or reschedule failure states are covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared scheduling UI foundation
+
+- `FE5-01`
+- `FE5-04`
+- `FE5-14`
+- `FE5-15`
+
+Phase B — board and core scheduling modules
+
+- `FE5-02`
+- `FE5-03`
+- `FE5-05`
+- `FE5-11`
+- `FE5-16`
+
+Phase C — assignment and decision-support workflows
+
+- `FE5-06`
+- `FE5-07`
+- `FE5-08`
+- `FE5-09`
+- `FE5-10`
+- `FE5-12`
+- `FE5-13`
+
+Phase D — audit-aware UX
+
+- `FE5-17`
+
+Phase E — hardening
+
+- `FE5-18`
+- `FE5-19`
+
+========================================================================
+Definition of done for Epic 5 frontend
+
+Epic 5 frontend is done only when:
+
+- scheduling records are reachable from the app shell through a dedicated scheduling workspace
+- Epic 5 screens use backend APIs rather than placeholder local state
+- day, week, and month schedule views are usable and permission-aware
+- visit create/edit, assignment, open-shift, recurring, reschedule, and cancellation workflows are usable and permission-aware
+- conflict, warning, validation, and unauthorized states are shown clearly
+- schedule board navigation, detail surfaces, and mutation patterns are coherent and reusable
+- audit-sensitive schedule changes are reflected in the UI
+- core Epic 5 screens are regression-covered
