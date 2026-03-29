@@ -31,6 +31,7 @@ public class PatientRecordService {
     public Patient create(@NotNull AgencyMembership actorMembership, @Valid ManagePatientCommand command) {
         requireManageDemographics(actorMembership);
         Agency agency = actorMembership.getAgency();
+        assertNoLikelyDuplicate(actorMembership.getAgencyId(), command.firstName(), command.lastName(), command.dateOfBirth(), null);
 
         Patient saved = patientRepository.saveAndFlush(Patient.create(
                 agency,
@@ -56,6 +57,7 @@ public class PatientRecordService {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new PatientEntityNotFoundException("Patient", patientId));
         assertSameAgency(actorMembership.getAgencyId(), patient.getAgencyId(), "Patient", patientId);
+        assertNoLikelyDuplicate(actorMembership.getAgencyId(), command.firstName(), command.lastName(), command.dateOfBirth(), patientId);
 
         patient.updateDetails(
                 command.externalReference(),
@@ -92,6 +94,20 @@ public class PatientRecordService {
                 actorMembership,
                 AgencyPermission.MANAGE_PATIENT_DEMOGRAPHICS,
                 UnauthorizedPatientActorException::new);
+    }
+
+    private void assertNoLikelyDuplicate(UUID agencyId, String firstName, String lastName, LocalDate dateOfBirth, UUID existingId) {
+        boolean duplicate = existingId == null
+                ? patientRepository.existsByAgency_IdAndFirstNameAndLastNameAndDateOfBirth(agencyId, firstName.trim(), lastName.trim(), dateOfBirth)
+                : patientRepository.existsByAgency_IdAndFirstNameAndLastNameAndDateOfBirthAndIdNot(
+                        agencyId,
+                        firstName.trim(),
+                        lastName.trim(),
+                        dateOfBirth,
+                        existingId);
+        if (duplicate) {
+            throw new LikelyDuplicatePatientException(agencyId, firstName.trim(), lastName.trim(), dateOfBirth);
+        }
     }
 
     private static void assertSameAgency(UUID expectedAgencyId, UUID actualAgencyId, String entityType, UUID entityId) {
