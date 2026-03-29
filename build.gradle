@@ -83,3 +83,22 @@ tasks.register('epic2ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.mileagepay.api.MileagePaySettingIntegrationTest'
 	}
 }
+
+tasks.register('epic3ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 3 patient API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.patient.api.PatientApiIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.patient.api.PatientSupportingApisIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.patientattachment.api.PatientAttachmentIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.patient.foundation.PatientAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.patient.foundation.PhaseBPatientRepositoryTest'
+		includeTestsMatching 'com.homehealthcare.patient.foundation.PhaseBPatientServiceTest'
+		includeTestsMatching 'com.homehealthcare.patient.foundation.PhaseCPatientFinancialRepositoryTest'
+		includeTestsMatching 'com.homehealthcare.patient.foundation.PhaseCPatientFinancialServiceTest'
+	}
+}

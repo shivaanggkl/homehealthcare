@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.patient.foundation.PatientAuditServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-29T04:04:08.802Z" hostname="Shivangs-MacBook-Pro.local" time="0.245">
+  <properties/>
+  <testcase name="attachmentDownloadAuditDefaultsBlankMetadataToEmptyJson()" classname="com.homehealthcare.patient.foundation.PatientAuditServiceTest" time="0.243"/>
+  <testcase name="patientCreateAuditUsesStandardizedEpic3ActionAndTargetType()" classname="com.homehealthcare.patient.foundation.PatientAuditServiceTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

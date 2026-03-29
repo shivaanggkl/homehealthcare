@@ -15,11 +15,14 @@ import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.patient.domain.Patient;
 import com.homehealthcare.patient.domain.PatientRepository;
+import com.homehealthcare.platform.audit.domain.AuditEvent;
+import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.testsupport.TestTenantAuthentications;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,7 @@ class PatientApiIntegrationTest {
     @Autowired private UserRepository userRepository;
     @Autowired private AgencyMembershipRepository agencyMembershipRepository;
     @Autowired private PatientRepository patientRepository;
+    @Autowired private AuditEventRepository auditEventRepository;
 
     @Test
     void patientCrudSearchAndUnauthorizedFlowWork() throws Exception {
@@ -81,6 +85,14 @@ class PatientApiIntegrationTest {
                         .with(authentication(TestTenantAuthentications.authenticationFor(scheduler))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("INACTIVE"));
+
+        List<AuditEvent> events = auditEventRepository.findAllByAgencyIdOrderByOccurredAtAsc(agency.getId());
+        org.assertj.core.api.Assertions.assertThat(events)
+                .extracting(AuditEvent::getTargetType)
+                .contains("PATIENT");
+        org.assertj.core.api.Assertions.assertThat(events)
+                .extracting(AuditEvent::getActionType)
+                .contains("PATIENT_RECORD_CREATED", "PATIENT_RECORD_UPDATED", "PATIENT_RECORD_DEACTIVATED");
 
         mockMvc.perform(get("/api/patients")
                         .with(authentication(TestTenantAuthentications.authenticationFor(caregiver))))
