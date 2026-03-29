@@ -134,3 +134,18 @@ tasks.register('epic5ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.scheduling.foundation.PhaseCSchedulingRulesServiceTest'
 	}
 }
+
+tasks.register('epic6ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 6 mobile execution API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.mobile.foundation.MobileAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.mobile.foundation.PhaseBMobileExecutionServiceTest'
+		includeTestsMatching 'com.homehealthcare.mobile.foundation.PhaseCMobileSupportServiceTest'
+		includeTestsMatching 'com.homehealthcare.mobile.api.MobileExecutionApiIntegrationTest'
+	}
+}

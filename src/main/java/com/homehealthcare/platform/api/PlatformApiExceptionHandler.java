@@ -1,5 +1,7 @@
 package com.homehealthcare.platform.api;
 
+import com.homehealthcare.mobile.application.MobileConflictException;
+import com.homehealthcare.mobile.application.MobileEntityNotFoundException;
 import java.time.DateTimeException;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -31,5 +33,17 @@ class PlatformApiExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .orElse("Request validation failed");
         return Map.of("error", message);
+    }
+
+    @ExceptionHandler(MobileConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    Map<String, String> handleMobileConflict(MobileConflictException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(MobileEntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Map<String, String> handleMobileNotFound(MobileEntityNotFoundException exception) {
+        return Map.of("error", exception.getMessage());
     }
 }

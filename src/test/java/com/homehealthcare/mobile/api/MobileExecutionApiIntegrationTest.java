@@ -321,6 +321,66 @@ class MobileExecutionApiIntegrationTest {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    void mobileApisRejectDuplicateStartAndInvalidArtifactUploadClearly() throws Exception {
+        TestFixture fixture = createFixture();
+
+        String startPayload = """
+                {
+                  "startedAt":"2026-04-20T09:02:00-05:00",
+                  "startSource":"mobile_app"
+                }
+                """;
+        mockMvc.perform(post("/api/mobile/visits/{visitId}/execution/start", fixture.visitId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(startPayload)
+                        .with(authentication(TestTenantAuthentications.authenticationFor(fixture.caregiverMembership()))))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/api/mobile/visits/{visitId}/execution/start", fixture.visitId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(startPayload)
+                        .with(authentication(TestTenantAuthentications.authenticationFor(fixture.caregiverMembership()))))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.error").value("An in-progress mobile execution session already exists for this visit."));
+
+        TestFixture forbiddenFixture = createSecondFixture(fixture);
+        mockMvc.perform(post("/api/mobile/visits/{visitId}/execution/start", fixture.visitId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "startedAt":"2026-04-20T11:02:00-05:00",
+                                  "startSource":"mobile_app"
+                                }
+                                """)
+                        .with(authentication(TestTenantAuthentications.authenticationFor(forbiddenFixture.caregiverMembership()))))
+                .andExpect(status().isForbidden());
+
+        MockMultipartFile invalidFile = new MockMultipartFile(
+                "file",
+                "capture.exe",
+                "application/octet-stream",
+                new byte[] {1, 2, 3});
+        TestFixture nextDayFixture = createNextDayFixture(fixture);
+        UUID sessionId = extractUuid(mockMvc.perform(post("/api/mobile/visits/{visitId}/execution/start", nextDayFixture.visitId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "startedAt":"2026-04-21T09:02:00-05:00",
+                                  "startSource":"mobile_app"
+                                }
+                                """)
+                        .with(authentication(TestTenantAuthentications.authenticationFor(nextDayFixture.caregiverMembership()))))
+                .andReturn().getResponse().getContentAsString(), "id");
+
+        mockMvc.perform(multipart("/api/mobile/execution-sessions/{executionSessionId}/artifacts", sessionId)
+                        .file(invalidFile)
+                        .param("artifactType", MobileFieldArtifactType.PHOTO.name())
+                        .with(authentication(TestTenantAuthentications.authenticationFor(nextDayFixture.caregiverMembership()))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Artifact content type is not allowed"));
+    }
+
     private TestFixture createFixture() {
         Agency agency = agencyRepository.saveAndFlush(
                 Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
@@ -393,6 +453,67 @@ class MobileExecutionApiIntegrationTest {
             AgencyMembership caregiverMembership,
             UUID visitId,
             UUID taskTemplateId) {
+    }
+
+    private TestFixture createSecondFixture(TestFixture original) {
+        AgencyMembership caregiverMembership = createMembership(original.agency(), AgencyRole.CAREGIVER, "other-start@example.com");
+        caregiverProfileRepository.saveAndFlush(CaregiverProfile.create(
+                caregiverMembership,
+                original.branch(),
+                "CG-200",
+                "Other Start",
+                "Part Time",
+                LocalDate.of(2026, 1, 1),
+                null,
+                null));
+        return new TestFixture(original.agency(), original.branch(), caregiverMembership, original.visitId(), original.taskTemplateId());
+    }
+
+    private TestFixture createNextDayFixture(TestFixture original) {
+        AgencyMembership ownerMembership = createMembership(original.agency(), AgencyRole.AGENCY_OWNER, "owner-nextday@example.com");
+        AgencyMembership caregiverMembership = createMembership(original.agency(), AgencyRole.CAREGIVER, "nextday@example.com");
+        CaregiverProfile caregiverProfile = caregiverProfileRepository.saveAndFlush(CaregiverProfile.create(
+                caregiverMembership,
+                original.branch(),
+                "CG-201",
+                "Next Day",
+                "Full Time",
+                LocalDate.of(2026, 1, 1),
+                null,
+                null));
+        Patient patient = patientRepository.saveAndFlush(Patient.create(
+                original.agency(),
+                "PAT-501",
+                "Nina",
+                null,
+                "Patient",
+                null,
+                LocalDate.of(1953, 2, 11),
+                "F",
+                null,
+                null,
+                null,
+                "en-US",
+                null));
+        ServiceLine serviceLine = serviceLineRepository.findAll().stream().findFirst().orElseThrow();
+        VisitType visitType = visitTypeRepository.findAll().stream().findFirst().orElseThrow();
+        var visit = schedulingRecordService.createVisit(ownerMembership, new ManageVisitCommand(
+                patient.getId(),
+                original.branch().getId(),
+                serviceLine.getId(),
+                visitType.getId(),
+                OffsetDateTime.parse("2026-04-21T09:00:00-05:00"),
+                OffsetDateTime.parse("2026-04-21T10:00:00-05:00"),
+                "America/Chicago",
+                null,
+                null,
+                null));
+        schedulingRecordService.assignCaregiver(ownerMembership, visit.getId(), new AssignCaregiverCommand(
+                caregiverProfile.getId(),
+                original.branch().getId(),
+                "board",
+                null));
+        return new TestFixture(original.agency(), original.branch(), caregiverMembership, visit.getId(), original.taskTemplateId());
     }
 
     private static UUID extractUuid(String json, String field) {
