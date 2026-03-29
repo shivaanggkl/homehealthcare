@@ -3,6 +3,7 @@ package com.homehealthcare.user.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,9 @@ class UserSelfProfileApiIntegrationTest {
 
     @Autowired
     private AgencyMembershipRepository agencyMembershipRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void userCanReadAndUpdateOwnProfile() throws Exception {
@@ -100,6 +105,59 @@ class UserSelfProfileApiIntegrationTest {
                                 }
                                 """))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void userCanUpdateOwnProfileThroughAuthenticatedSessionTokenFlow() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        User user = userRepository.saveAndFlush(User.invite("Alicia", "Owner", "alicia.owner+" + UUID.randomUUID() + "@northstar.example", "555-111-2222"));
+        user.activateWithCredentials(passwordEncoder.encode("StartPassword1!"));
+        userRepository.saveAndFlush(user);
+        agencyMembershipRepository.saveAndFlush(AgencyMembership.grant(user, agency, AgencyRole.AGENCY_OWNER));
+
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "%s",
+                                  "password": "StartPassword1!"
+                                }
+                                """.formatted(user.getEmail())))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String accessToken = extractJsonString(loginResponse, "accessToken");
+        String sessionId = extractJsonString(loginResponse, "sessionId");
+
+        mockMvc.perform(put("/api/me/profile")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .header("X-Session-Id", sessionId)
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "firstName": "Shivaangg",
+                                  "lastName": "Kl",
+                                  "phone": "1231231234",
+                                  "preferredLanguage": "en-US",
+                                  "timeZone": "America/Chicago"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("Shivaangg"))
+                .andExpect(jsonPath("$.timeZone").value("America/Chicago"));
+    }
+
+    private static String extractJsonString(String json, String fieldName) {
+        java.util.regex.Matcher matcher = java.util.regex.Pattern
+                .compile("\"" + java.util.regex.Pattern.quote(fieldName) + "\"\\s*:\\s*\"([^\"]+)\"")
+                .matcher(json);
+        if (!matcher.find()) {
+            throw new AssertionError("Could not extract field '" + fieldName + "' from payload: " + json);
+        }
+        return matcher.group(1);
     }
 
     private static UsernamePasswordAuthenticationToken authenticationFor(AgencyMembership membership) {

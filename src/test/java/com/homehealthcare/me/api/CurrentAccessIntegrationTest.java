@@ -1,6 +1,7 @@
 package com.homehealthcare.me.api;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,8 +27,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,6 +54,9 @@ class CurrentAccessIntegrationTest {
 
     @Autowired
     private BranchAssignmentRepository branchAssignmentRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void returnsCurrentRolePermissionsAndAssignedBranches() throws Exception {
@@ -89,6 +95,52 @@ class CurrentAccessIntegrationTest {
                 .andExpect(jsonPath("$.assignedBranchIds").isArray())
                 .andExpect(jsonPath("$.permissions").value(org.hamcrest.Matchers.hasItem("VIEW_USER_DIRECTORY")))
                 .andExpect(jsonPath("$.permissions").value(org.hamcrest.Matchers.hasItem("INVITE_USER")));
+    }
+
+    @Test
+    void returnsCurrentAccessForAuthenticatedSessionTokenFlow() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        User owner = userRepository.saveAndFlush(User.invite("Alicia", "Owner", "alicia.owner+" + UUID.randomUUID() + "@northstar.example", null));
+        owner.activateWithCredentials(passwordEncoder.encode("StartPassword1!"));
+        userRepository.saveAndFlush(owner);
+        AgencyMembership membership = agencyMembershipRepository.saveAndFlush(AgencyMembership.grant(owner, agency, AgencyRole.AGENCY_OWNER));
+
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "%s",
+                                  "password": "StartPassword1!"
+                                }
+                                """.formatted(owner.getEmail())))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String accessToken = extractJsonString(loginResponse, "accessToken");
+        String sessionId = extractJsonString(loginResponse, "sessionId");
+
+        mockMvc.perform(get("/api/me/access")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .header("X-Session-Id", sessionId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(owner.getId().toString()))
+                .andExpect(jsonPath("$.agencyId").value(agency.getId().toString()))
+                .andExpect(jsonPath("$.membershipId").value(membership.getId().toString()))
+                .andExpect(jsonPath("$.role").value("AGENCY_OWNER"))
+                .andExpect(jsonPath("$.branchScope").value("AGENCY_WIDE"));
+    }
+
+    private static String extractJsonString(String json, String fieldName) {
+        java.util.regex.Matcher matcher = java.util.regex.Pattern
+                .compile("\"" + java.util.regex.Pattern.quote(fieldName) + "\"\\s*:\\s*\"([^\"]+)\"")
+                .matcher(json);
+        if (!matcher.find()) {
+            throw new AssertionError("Could not extract field '" + fieldName + "' from payload: " + json);
+        }
+        return matcher.group(1);
     }
 
     private static UsernamePasswordAuthenticationToken authenticationFor(AgencyMembership membership) {

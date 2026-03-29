@@ -1,6 +1,7 @@
 package com.homehealthcare.security.config;
 
 import com.homehealthcare.security.tenant.TenantContextFilter;
+import com.homehealthcare.security.tenant.SessionTenantAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(
             HttpSecurity http,
+            SessionTenantAuthenticationFilter sessionTenantAuthenticationFilter,
             TenantContextFilter tenantContextFilter,
             WebSecurityProperties webSecurityProperties) throws Exception {
         CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
@@ -53,7 +55,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(formLogin -> formLogin.disable())
-                .addFilterAfter(tenantContextFilter, AnonymousAuthenticationFilter.class);
+                .addFilterBefore(sessionTenantAuthenticationFilter, AnonymousAuthenticationFilter.class)
+                .addFilterAfter(tenantContextFilter, SessionTenantAuthenticationFilter.class);
 
         return http.build();
     }

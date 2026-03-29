@@ -5,6 +5,7 @@ import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.security.tenant.CurrentTenant;
 import com.homehealthcare.user.application.UserSelfProfileService;
 import com.homehealthcare.user.domain.User;
+import com.homehealthcare.user.domain.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +20,17 @@ class UserSelfProfileController {
 
     private final CurrentTenant currentTenant;
     private final AgencyMembershipRepository agencyMembershipRepository;
+    private final UserRepository userRepository;
     private final UserSelfProfileService userSelfProfileService;
 
     UserSelfProfileController(
             CurrentTenant currentTenant,
             AgencyMembershipRepository agencyMembershipRepository,
+            UserRepository userRepository,
             UserSelfProfileService userSelfProfileService) {
         this.currentTenant = currentTenant;
         this.agencyMembershipRepository = agencyMembershipRepository;
+        this.userRepository = userRepository;
         this.userSelfProfileService = userSelfProfileService;
     }
 
@@ -67,7 +71,8 @@ class UserSelfProfileController {
     private User currentUser() {
         AgencyMembership membership = agencyMembershipRepository.findById(currentTenant.requireMembershipId())
                 .orElseThrow(() -> new IllegalStateException("Current membership was not found"));
-        return membership.getUser();
+        return userRepository.findById(membership.getUserId())
+                .orElseThrow(() -> new IllegalStateException("Current user was not found"));
     }
 
     record UpdateSelfProfileRequest(

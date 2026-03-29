@@ -25,4 +25,8 @@
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.
 - `docs/reviews/epic-1-security-readiness-review.md` records the pre-production security checklist, resolved high-risk findings, and Epic 1 sign-off for `E1-S48`.
 
+## Testing
+
+- `docs/testing/epic-1-2-manual-e2e-guide.md` is the step-by-step manual validation guide for Epic 1 and Epic 2 across frontend and backend behavior.
+
 These files are the source of truth for Epic 1 design decisions until implementation starts.
