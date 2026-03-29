@@ -1,0 +1,12 @@
+package com.homehealthcare.patient.foundation;
+
+public enum Epic3PatientTargetType {
+    PATIENT,
+    PATIENT_CONTACT,
+    PATIENT_ADDRESS,
+    PATIENT_SERVICE_ELIGIBILITY,
+    PATIENT_DIAGNOSIS,
+    PATIENT_PAYER_LINK,
+    PATIENT_EPISODE_AUTHORIZATION,
+    PATIENT_ATTACHMENT
+}

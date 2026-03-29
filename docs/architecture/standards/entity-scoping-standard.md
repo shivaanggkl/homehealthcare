@@ -24,6 +24,12 @@ Use this pattern for:
 
 - agency configuration
 - patient records
+- patient contacts
+- patient addresses
+- patient diagnoses
+- patient payer links
+- patient authorizations
+- patient attachment metadata
 - caregivers
 - service lines
 - task templates
@@ -71,7 +77,7 @@ Use this pattern for:
 
 ### Agency-scoped entity base class
 
-Use [AgencyScopedEntity](/Users/shiva/Documents/Java%20Projects/HomeHealthCare/src/main/java/com/homehealthcare/shared/persistence/AgencyScopedEntity.java) for tenant-owned JPA models.
+Use [AgencyScopedEntity](/Users/shiva/Documents/GitHub/homehealthcare/src/main/java/com/homehealthcare/shared/persistence/AgencyScopedEntity.java) for tenant-owned JPA models.
 
 Expectations:
 
@@ -81,7 +87,7 @@ Expectations:
 
 ### Branch-scoped entity base class
 
-Use [BranchScopedEntity](/Users/shiva/Documents/Java%20Projects/HomeHealthCare/src/main/java/com/homehealthcare/shared/persistence/BranchScopedEntity.java) for entities that belong to both an agency and a branch.
+Use [BranchScopedEntity](/Users/shiva/Documents/GitHub/homehealthcare/src/main/java/com/homehealthcare/shared/persistence/BranchScopedEntity.java) for entities that belong to both an agency and a branch.
 
 Expectations:
 

@@ -1,0 +1,418 @@
+Epic 3 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 3 from `Requirements.txt` into a frontend delivery backlog for the web application.
+
+Epic 3 title
+
+Patient / client management
+
+Epic 3 feature scope from the requirements
+
+- patient demographics
+- contacts and emergency contacts
+- address and geo-location
+- service eligibility
+- diagnoses / conditions
+- payer linkage
+- allergies / medications later phase
+- episode / service authorization tracking
+- document attachments
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete
+- Epic 2 setup data is available and reusable where Epic 3 screens need service lines, visit types, or branch context
+- Epic 3 is primarily an admin and coordinator web experience in this phase
+- patient attachments are managed through secure backend APIs, not direct unaudited storage access
+- allergies and medications are intentionally later-phase and are out of scope for this Epic 3 frontend backlog
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 3 backend APIs
+
+========================================================================
+FE3-01 — Patient workspace navigation and information architecture
+Related Epic 3 features: all
+Backend status: BLOCKED
+
+Story
+As an agency user, I want a coherent patient management area in the app so client records are easy to find and manage.
+
+Frontend acceptance criteria
+
+- a dedicated patient/client section exists in navigation
+- routes are grouped by patient management domain
+- role-based navigation visibility follows backend permissions
+- unauthorized deep links render controlled `403` states
+- patient screens share consistent detail, list, and form patterns
+
+========================================================================
+FE3-02 — Patient directory and search screen
+Related Epic 3 features: patient demographics
+Backend status: BLOCKED
+
+Story
+As an agency admin or coordinator, I want a searchable patient directory so I can find and open client records quickly.
+
+Frontend acceptance criteria
+
+- searchable list exists
+- pagination exists
+- status filtering exists
+- key identity columns are visible
+- row click or action opens a patient detail workspace
+- duplicate/conflict or unauthorized states are handled clearly
+
+========================================================================
+FE3-03 — Patient create and edit demographics screen
+Related Epic 3 features: patient demographics
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to create and update patient demographic records so client identity data stays current.
+
+Frontend acceptance criteria
+
+- create form exists
+- edit form exists
+- fields support the backend-approved demographic model
+- validation errors are shown inline
+- duplicate-patient conflicts are surfaced clearly
+- status changes are shown with controlled confirmation UX if supported
+
+========================================================================
+FE3-04 — Patient detail workspace shell
+Related Epic 3 features: all
+Backend status: BLOCKED
+
+Story
+As an agency user, I want a patient detail workspace so all patient-related modules are reachable from one organized surface.
+
+Frontend acceptance criteria
+
+- patient detail header exists
+- tabs or secondary navigation organize:
+  - demographics
+  - contacts
+  - address
+  - eligibility
+  - diagnoses
+  - payer
+  - authorizations
+  - attachments
+- unauthorized or unavailable sections degrade gracefully
+- loading and empty states are consistent
+
+========================================================================
+FE3-05 — Patient contacts and emergency contacts screen
+Related Epic 3 features: contacts and emergency contacts
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage patient contacts so emergency and family information is reliable.
+
+Frontend acceptance criteria
+
+- contact list exists
+- create and edit forms exist
+- primary and emergency contact states are visible
+- relationship and responsible-party information is editable if supported
+- clear empty-state UX exists when no contacts are present
+
+========================================================================
+FE3-06 — Patient address and service location screen
+Related Epic 3 features: address and geo-location
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage patient address and service location information so scheduling and service delivery can rely on accurate location data.
+
+Frontend acceptance criteria
+
+- address form exists
+- optional geo details are shown if returned by backend
+- location notes are visible and editable if supported
+- invalid address or coordinate validation appears clearly
+- timezone and service-location details are understandable in the UI
+
+========================================================================
+FE3-07 — Service eligibility management screen
+Related Epic 3 features: service eligibility
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage service eligibility records so I can see what services a patient is currently eligible for.
+
+Frontend acceptance criteria
+
+- eligibility list exists
+- create and edit forms exist
+- active vs historical eligibility is visible
+- service-line linkage is visible if supported
+- invalid date windows or overlap conflicts are shown clearly
+
+========================================================================
+FE3-08 — Diagnosis and condition management screen
+Related Epic 3 features: diagnoses / conditions
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage diagnoses and conditions so patient clinical context is visible and maintained.
+
+Frontend acceptance criteria
+
+- diagnosis list exists
+- add/edit workflow exists
+- primary vs secondary status is visible if supported
+- active vs resolved history is visible
+- validation and conflict states are shown clearly
+
+========================================================================
+FE3-09 — Payer linkage screen
+Related Epic 3 features: payer linkage
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage payer linkage so patient coverage context is visible and accurate.
+
+Frontend acceptance criteria
+
+- payer linkage list exists
+- create and edit forms exist
+- primary payer is visible
+- effective dates are visible and editable
+- overlap or validation conflicts are shown clearly
+
+========================================================================
+FE3-10 — Episode and authorization tracking screen
+Related Epic 3 features: episode / service authorization tracking
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to track service authorizations and episodes so I can understand active service windows and remaining authorization usage.
+
+Frontend acceptance criteria
+
+- authorization or episode list exists
+- current vs expired vs exhausted state is visible
+- create and edit workflow exists
+- usage fields are visible if returned by backend
+- invalid date or status transitions are shown clearly
+
+========================================================================
+FE3-11 — Patient attachments screen
+Related Epic 3 features: document attachments
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to upload and review patient documents so important files stay attached to the client record.
+
+Frontend acceptance criteria
+
+- attachment list exists
+- upload workflow exists
+- file metadata is visible
+- download action exists where authorized
+- file size/type validation failures are shown clearly
+- no raw storage secrets or provider internals are exposed in the UI
+
+========================================================================
+FE3-12 — Shared patient detail layout and record-side navigation
+Related Epic 3 features: all patient detail modules
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable patient workspace patterns so Epic 3 record screens stay consistent and efficient to build.
+
+Frontend acceptance criteria
+
+- reusable patient header/detail shell exists
+- reusable section navigation exists
+- loading, empty, validation, and unauthorized states are standardized
+- modules can opt into read-only or editable behavior cleanly
+
+========================================================================
+FE3-13 — Patient create/edit form framework
+Related Epic 3 features: demographics, contacts, address, diagnoses, payer, authorization
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable patient forms so Epic 3 data-entry screens remain consistent and maintainable.
+
+Frontend acceptance criteria
+
+- shared form primitives support:
+  - inline validation
+  - submit success feedback
+  - conflict handling
+  - destructive confirmation
+- date-range patterns are reusable
+- primary/active flag patterns are reusable
+- form-level API errors are shown consistently
+
+========================================================================
+FE3-14 — Patient permission-aware routes and menu updates
+Related Epic 3 features: all
+Backend status: BLOCKED
+
+Story
+As the UI, I want Epic 3 patient routes to follow backend permissions so users only see patient management areas they can actually use.
+
+Frontend acceptance criteria
+
+- Epic 3 routes are permission-gated
+- menus are hidden or disabled based on permissions
+- sensitive modules such as attachments follow backend denial responses
+- unauthorized deep links render controlled `403` states
+
+========================================================================
+FE3-15 — Patient timeline and summary card surfaces
+Related Epic 3 features: demographics, contacts, eligibility, diagnoses, payer, authorizations, attachments
+Backend status: BLOCKED
+
+Story
+As an agency user, I want a concise patient summary surface so I can understand the most important patient context quickly.
+
+Frontend acceptance criteria
+
+- patient summary cards exist in the detail workspace
+- key highlights are visible:
+  - contact summary
+  - address summary
+  - active eligibility
+  - primary diagnosis if supported
+  - primary payer if supported
+  - current authorization status if supported
+- empty or missing data is shown clearly without visual clutter
+
+========================================================================
+FE3-16 — Attachment upload, download, and failure-state UX
+Related Epic 3 features: document attachments
+Backend status: BLOCKED
+
+Story
+As an agency user, I want safe attachment UX so document handling failures are understandable and sensitive files stay protected.
+
+Frontend acceptance criteria
+
+- upload progress or pending state is visible
+- unsupported file type and size failures are shown clearly
+- unauthorized download failures are controlled
+- file metadata is shown without exposing internal storage details
+- destructive attachment actions require confirmation if supported
+
+========================================================================
+FE3-17 — Patient audit visibility and recent-change surfaces
+Related Epic 3 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want patient record screens to reflect audit-sensitive changes so the UI reinforces that client changes are controlled operations.
+
+Frontend acceptance criteria
+
+- audit-sensitive messaging appears on mutation screens
+- success states indicate that changes are logged
+- where useful, screens can link out to filtered audit log views
+- no internal-only metadata is exposed unnecessarily
+
+========================================================================
+FE3-18 — Patient overview dashboard and quick-entry flows
+Related Epic 3 features: patient demographics, contacts, eligibility, authorization
+Backend status: BLOCKED
+
+Story
+As an agency owner or coordinator, I want a patient management overview so I can see whether critical client setup data is complete.
+
+Frontend acceptance criteria
+
+- patient overview screen exists or directory summary supports:
+  - active patient count
+  - incomplete records count if supported
+  - expiring or exhausted authorizations count if supported
+  - missing contact or address indicators if supported
+- quick-entry paths exist for common add actions
+- links route into patient detail modules
+
+========================================================================
+FE3-19 — Mobile-responsive patient administration
+Related Epic 3 features: all web-admin Epic 3 screens
+Backend status: BLOCKED
+
+Story
+As an agency user, I want patient administration screens to remain usable on smaller screens so urgent record changes are still possible away from a desktop.
+
+Frontend acceptance criteria
+
+- patient list and detail screens remain usable on tablet and small laptop widths
+- section navigation stays accessible
+- forms and attachment actions remain usable on smaller viewports
+- no critical Epic 3 screen breaks the layout on mobile-sized viewports
+
+========================================================================
+FE3-20 — Frontend regression coverage for Epic 3 patient flows
+Related Epic 3 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 3 patient screens so patient-management flows remain stable as more operational modules are added.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 3 routes
+- happy-path interaction coverage exists for representative patient modules
+- validation and conflict states are covered
+- unauthorized-state rendering is covered
+- attachment failure states are covered where practical
+
+Recommended implementation order
+
+Phase A — shared patient UI foundation
+
+- `FE3-01`
+- `FE3-04`
+- `FE3-12`
+- `FE3-13`
+- `FE3-14`
+
+Phase B — core patient record modules
+
+- `FE3-02`
+- `FE3-03`
+- `FE3-05`
+- `FE3-06`
+- `FE3-15`
+
+Phase C — service and financial context
+
+- `FE3-07`
+- `FE3-08`
+- `FE3-09`
+- `FE3-10`
+- `FE3-18`
+
+Phase D — document handling and audit-aware UX
+
+- `FE3-11`
+- `FE3-16`
+- `FE3-17`
+
+Phase E — hardening
+
+- `FE3-19`
+- `FE3-20`
+
+Definition of done for Epic 3 frontend
+
+Epic 3 frontend is done only when:
+
+- patient/client records are reachable from the app shell through a dedicated patient workspace
+- Epic 3 screens use backend APIs rather than placeholder local state
+- create/edit flows for demographics, contacts, address, eligibility, diagnoses, payer links, authorizations, and attachments are usable and permission-aware
+- conflict, validation, and unauthorized errors are shown clearly
+- patient detail navigation is coherent and reusable
+- attachment UX is secure and controlled
+- core Epic 3 screens are regression-covered

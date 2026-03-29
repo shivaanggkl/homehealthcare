@@ -1,0 +1,8 @@
+package com.homehealthcare.patient.foundation;
+
+public enum PatientOperationGuardrail {
+    NO_HARD_DELETE_WITH_ACTIVE_REFERENCES,
+    ARCHIVE_REQUIRES_RECORD_RETENTION,
+    DUPLICATE_MERGE_REQUIRES_AUDIT,
+    ATTACHMENT_ACCESS_REQUIRES_EXPLICIT_PERMISSION
+}

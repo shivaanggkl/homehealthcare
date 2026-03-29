@@ -1,0 +1,553 @@
+Epic 3 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 3 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 3 title
+
+Patient / client management
+
+Epic 3 feature scope from the requirements
+
+- patient demographics
+- contacts and emergency contacts
+- address and geo-location
+- service eligibility
+- diagnoses / conditions
+- payer linkage
+- allergies / medications later phase
+- episode / service authorization tracking
+- document attachments
+
+Planning assumptions
+
+- Epic 1 is complete and available as the security, tenancy, RBAC, audit, and session foundation
+- Epic 2 is complete and provides reusable agency setup data such as service lines, visit types, templates, and branch policies
+- Epic 3 data is agency-scoped by default, with branch association supported only where the operating model clearly requires it
+- patient records are long-lived business entities and must be audit-sensitive from day one
+- attachments require metadata, storage abstraction, and authorization controls, not just file upload
+- allergies and medications are explicitly later-phase and should not be treated as MVP scope for Epic 3
+
+Scope rule
+
+- Include only Epic 3 backend work
+- Cover domain model, public APIs, validation, authorization, audit, storage contracts, and tests
+- Do not include frontend-only tasks
+
+Status legend
+
+- NOT STARTED: no Epic 3 implementation exists yet
+
+========================================================================
+BE3-01 — Define patient domain architecture and lifecycle rules
+Related Epic 3 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent patient domain model so all Epic 3 records follow consistent ownership, status, and history rules.
+
+Recommended acceptance criteria
+
+- patient/client records are classified as:
+  - core identity and demographics
+  - contacts and relationships
+  - address and geo data
+  - clinical or operational qualifiers
+  - payer and authorization links
+  - document attachments
+- patient lifecycle states are defined
+- merge, deactivate, and duplicate-handling policy is defined
+- audit expectations are defined for all Epic 3 entities
+- future extension points for allergies, medications, and care-plan linkage are documented
+
+========================================================================
+BE3-02 — Create patient core demographics model
+Related Epic 3 features: patient demographics
+Current status: NOT STARTED
+
+Story
+As the backend, I need a patient core record so agencies can maintain a single source of truth for client identity and demographic data.
+
+Recommended acceptance criteria
+
+- patient entity exists
+- fields include:
+  - id
+  - agency_id
+  - status
+  - external_reference if needed
+  - first_name
+  - middle_name optional
+  - last_name
+  - preferred_name optional
+  - date_of_birth
+  - sex or gender marker as product-approved
+  - primary_phone optional
+  - secondary_phone optional
+  - email optional
+  - language optional
+  - notes_summary optional
+- uniqueness and duplicate detection strategy is defined within agency
+- active/inactive lifecycle is supported
+- patient changes are audited
+
+========================================================================
+BE3-03 — Create patient contact and emergency contact model
+Related Epic 3 features: contacts and emergency contacts
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured patient contacts so agencies can manage family, responsible parties, and emergency contacts cleanly.
+
+Recommended acceptance criteria
+
+- patient contact entity exists
+- a patient can have multiple contacts
+- fields include:
+  - relationship type
+  - full name
+  - phone
+  - email optional
+  - address optional
+  - emergency_contact flag
+  - primary_contact flag
+  - legal_or_responsible_party flag if needed
+  - notes optional
+- ordering or preferred-contact behavior is defined
+- contact changes are audited
+
+========================================================================
+BE3-04 — Create patient address and geo-location model
+Related Epic 3 features: address and geo-location
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient address and geo data so future scheduling, EVV, and routing flows have reliable location inputs.
+
+Recommended acceptance criteria
+
+- patient address fields are modeled explicitly
+- fields include:
+  - address_line_1
+  - address_line_2 optional
+  - city
+  - state
+  - postal_code
+  - country default if needed
+  - latitude optional
+  - longitude optional
+  - geocode_status optional
+  - timezone optional
+  - location_notes optional
+- geocode data can be absent without breaking patient creation
+- address changes are audited
+
+========================================================================
+BE3-05 — Create service eligibility model
+Related Epic 3 features: service eligibility
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient service eligibility records so agencies can track whether a client is eligible for specific services or lines of care.
+
+Recommended acceptance criteria
+
+- eligibility entity exists
+- eligibility is linked to patient and agency
+- optional linkage to service line is supported
+- fields include:
+  - status
+  - effective_from
+  - effective_to optional
+  - reason or notes optional
+  - source or verification method optional
+- multiple eligibility records over time are supported
+- eligibility changes are audited
+
+========================================================================
+BE3-06 — Create diagnosis and condition model
+Related Epic 3 features: diagnoses / conditions
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured diagnosis or condition records so patient clinical context can be tracked consistently for later scheduling and documentation workflows.
+
+Recommended acceptance criteria
+
+- diagnosis or condition entity exists
+- fields include:
+  - patient_id
+  - code optional
+  - description
+  - type or category optional
+  - primary flag
+  - onset_date optional
+  - resolved_date optional
+  - status
+  - notes optional
+- multiple diagnoses are supported
+- active vs historical state is supported
+- changes are audited
+
+========================================================================
+BE3-07 — Create payer linkage model
+Related Epic 3 features: payer linkage
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient-payer linkage so agencies can associate clients with the financial coverage context used by later authorization and revenue workflows.
+
+Recommended acceptance criteria
+
+- patient payer linkage entity exists
+- linkage can reference payer definitions when available
+- fields include:
+  - payer_name or payer_id
+  - member_or_policy_number optional
+  - group_number optional
+  - effective_from
+  - effective_to optional
+  - primary_payer flag
+  - status
+  - notes optional
+- a patient can have multiple payer links over time
+- changes are audited
+
+========================================================================
+BE3-08 — Create episode and service authorization tracking model
+Related Epic 3 features: episode / service authorization tracking
+Current status: NOT STARTED
+
+Story
+As the backend, I need episode and authorization records so agencies can track service windows and authorized utilization for each patient.
+
+Recommended acceptance criteria
+
+- episode or authorization entity exists
+- model supports:
+  - patient linkage
+  - payer linkage if applicable
+  - service line linkage if applicable
+  - authorization number optional
+  - start_date
+  - end_date
+  - authorized units or visits optional
+  - used units or visits optional
+  - status
+  - notes
+- active vs expired vs exhausted states are defined
+- later linkage to scheduling and revenue flows is possible without reshaping the model
+- changes are audited
+
+========================================================================
+BE3-09 — Create patient attachment metadata model and storage abstraction
+Related Epic 3 features: document attachments
+Current status: NOT STARTED
+
+Story
+As the backend, I need attachment metadata and a storage abstraction so patient documents can be uploaded securely and referenced without binding business logic to a specific storage provider.
+
+Recommended acceptance criteria
+
+- patient attachment entity exists
+- storage abstraction exists for file content handling
+- metadata includes:
+  - patient_id
+  - file_name
+  - content_type
+  - size
+  - storage_key or provider reference
+  - category or attachment type
+  - uploaded_by
+  - uploaded_at
+  - status
+  - optional description
+- download access requires authorization
+- attachment metadata changes are audited
+
+========================================================================
+BE3-10 — Define patient status, archival, and duplicate-handling behavior
+Related Epic 3 features: all mutable Epic 3 entities
+Current status: NOT STARTED
+
+Story
+As the platform, I need predictable patient lifecycle behavior so agencies can deactivate, archive, or resolve duplicates safely.
+
+Recommended acceptance criteria
+
+- patient active/inactive/archive behavior is standardized
+- duplicate-handling policy is defined
+- destructive deletion policy is defined
+- archival rules do not break existing audit or downstream references
+- conflict behavior is defined where a patient has active episodes, authorizations, or attachments
+
+========================================================================
+BE3-11 — Build patient public APIs
+Related Epic 3 features: patient demographics
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient CRUD APIs so the web app can manage patient identity and demographic records.
+
+Recommended acceptance criteria
+
+- list/create/read/update endpoints exist
+- search and pagination exist
+- status filtering exists
+- duplicate or validation conflicts return controlled errors
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-12 — Build patient contact public APIs
+Related Epic 3 features: contacts and emergency contacts
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient contact APIs so the UI can manage family and emergency contacts cleanly.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- contact ordering or primary/emergency flags are exposed clearly
+- validation exists for contact requirements
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-13 — Build patient address and geo public APIs
+Related Epic 3 features: address and geo-location
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient address APIs so the frontend can manage service locations and geo metadata safely.
+
+Recommended acceptance criteria
+
+- read/update endpoints exist
+- optional geocode data can be read and updated
+- validation exists for address fields and coordinate ranges if provided
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-14 — Build service eligibility public APIs
+Related Epic 3 features: service eligibility
+Current status: NOT STARTED
+
+Story
+As the backend, I need service eligibility APIs so the frontend can manage patient eligibility windows and statuses.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- filtering by status and service line exists where appropriate
+- overlapping or invalid date windows fail safely
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-15 — Build diagnosis and condition public APIs
+Related Epic 3 features: diagnoses / conditions
+Current status: NOT STARTED
+
+Story
+As the backend, I need diagnosis APIs so the frontend can manage patient clinical condition records consistently.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- active and historical diagnoses are distinguishable
+- primary-condition behavior is validated if supported
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-16 — Build payer linkage public APIs
+Related Epic 3 features: payer linkage
+Current status: NOT STARTED
+
+Story
+As the backend, I need payer linkage APIs so the frontend can associate and maintain patient coverage data.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- primary-payer behavior is defined and validated
+- effective date overlap rules are handled safely
+- unauthorized actions return `403`
+- changes are audited
+
+========================================================================
+BE3-17 — Build episode and authorization public APIs
+Related Epic 3 features: episode / service authorization tracking
+Current status: NOT STARTED
+
+Story
+As the backend, I need episode and authorization APIs so agencies can manage service windows and authorized utilization from the web app.
+
+Recommended acceptance criteria
+
+- list/create/update/deactivate endpoints exist
+- filters exist for:
+  - patient
+  - status
+  - active/current window
+  - payer or service line where applicable
+- authorization-usage fields are exposed in a frontend-consumable shape
+- invalid date windows or exhausted-state inconsistencies fail safely
+- changes are audited
+
+========================================================================
+BE3-18 — Build patient attachment upload and retrieval APIs
+Related Epic 3 features: document attachments
+Current status: NOT STARTED
+
+Story
+As the backend, I need patient attachment APIs so agencies can upload, list, download, and manage client documents securely.
+
+Recommended acceptance criteria
+
+- upload endpoint exists
+- list endpoint exists
+- metadata update endpoint exists if supported
+- download endpoint exists with authorization enforced
+- file type and size validation are controlled
+- secret storage keys or provider internals are not exposed to the frontend
+- attachment actions are audited
+
+========================================================================
+BE3-19 — Enforce Epic 3 RBAC and patient-scope authorization
+Related Epic 3 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit permissions for patient management so only the right roles can view or mutate client records.
+
+Recommended acceptance criteria
+
+- permission matrix is extended for patient modules
+- service/controller authorization guards exist
+- patient attachment and sensitive demographic access are permission-aware
+- denial paths return controlled `403`
+- tests cover key permission-denial paths
+
+========================================================================
+BE3-20 — Extend audit model and queries for patient changes
+Related Epic 3 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need Epic 3 patient changes to appear in audit logs so critical client record changes are reviewable.
+
+Recommended acceptance criteria
+
+- create/update/deactivate/upload events are audited
+- target types are meaningful for Epic 3 patient entities
+- patient-facing admin changes are searchable in the audit viewer/export
+- tests cover representative audit events
+
+========================================================================
+BE3-21 — Add patient search, duplicate, and validation safeguards
+Related Epic 3 features: patient demographics, contacts, payer linkage, authorizations
+Current status: NOT STARTED
+
+Story
+As the platform, I need strong validation and duplicate-handling safeguards so agencies do not create broken or conflicting patient records.
+
+Recommended acceptance criteria
+
+- duplicate detection strategy exists for patient create/update
+- controlled conflict responses exist for likely duplicate patients
+- date-window conflicts are handled safely for payer and authorization records
+- invalid status transitions fail clearly
+- tests cover representative conflict scenarios
+
+========================================================================
+BE3-22 — Add attachment security and download hardening
+Related Epic 3 features: document attachments
+Current status: NOT STARTED
+
+Story
+As the platform, I need patient attachments to be secured so sensitive documents are not exposed through weak upload or download behavior.
+
+Recommended acceptance criteria
+
+- upload content type and size allowlist rules exist
+- download authorization is enforced server-side
+- filenames and metadata are sanitized as needed
+- storage references are never exposed directly if the design uses signed retrieval or proxy download
+- tests cover unauthorized download denial paths
+
+========================================================================
+BE3-23 — Add Epic 3 API regression and authorization tests
+Related Epic 3 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated tests for Epic 3 patient APIs so client-management behavior remains stable and secure.
+
+Recommended acceptance criteria
+
+- CRUD integration tests exist for each Epic 3 module
+- authorization denial tests exist
+- attachment tests cover upload and download restrictions
+- audit assertions exist for representative changes
+- tests run in CI
+
+Recommended implementation order
+
+Phase A — patient domain foundation
+
+- `BE3-01`
+- `BE3-10`
+- `BE3-19`
+- `BE3-20`
+
+Phase B — core patient record model
+
+- `BE3-02`
+- `BE3-03`
+- `BE3-04`
+- `BE3-05`
+- `BE3-06`
+
+Phase C — financial and service tracking
+
+- `BE3-07`
+- `BE3-08`
+- `BE3-21`
+
+Phase D — attachment and storage support
+
+- `BE3-09`
+- `BE3-18`
+- `BE3-22`
+
+Phase E — public API layer
+
+- `BE3-11`
+- `BE3-12`
+- `BE3-13`
+- `BE3-14`
+- `BE3-15`
+- `BE3-16`
+- `BE3-17`
+
+Phase F — hardening
+
+- `BE3-23`
+
+Definition of done for Epic 3 backend
+
+Epic 3 backend is done only when:
+
+- patient/client data is modeled with clear lifecycle and tenancy rules
+- every Epic 3 feature area has a public API where the frontend needs one
+- RBAC is enforced for patient records, contacts, eligibility, payer links, authorizations, and attachments
+- attachment upload and download are secured and auditable
+- duplicate, conflict, and invalid-state behavior returns controlled errors
+- patient-related audit events are visible through the existing audit surfaces
+- automated tests cover CRUD, denial, conflict, and attachment security paths
