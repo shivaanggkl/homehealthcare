@@ -1,0 +1,428 @@
+Epic 7 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 7 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 7 title
+
+Visit execution and EVV
+
+Epic 7 feature scope from the requirements
+
+- clock-in / clock-out
+- GPS + timestamp verification
+- device metadata
+- geofence tolerance rules
+- patient/caregiver signature
+- missed-visit workflow
+- exception reason capture
+- supervisor notification
+- order/escalation creation on exceptions
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 is complete and provides patient records, addresses, contacts, and patient-level context needed for visit verification and missed-visit follow-up
+- Epic 4 is complete and provides caregiver profiles and branch-aware workforce context
+- Epic 5 is complete and provides visit, assignment, schedule status, open-shift, and recurrence models
+- Epic 6 is complete and provides caregiver mobile execution, start/end visit sessions, field artifact support, message center, and offline sync contracts
+- Epic 7 extends Epic 6 from general mobile execution into compliance-sensitive EVV and exception workflows
+- Epic 7 should not pull in the broader structured notes/forms scope of Epic 8 or the generalized messaging scope of Epic 9
+- Epic 7 should not implement the later QA/review workspace of Epic 10 beyond creating the statuses, exception records, and hooks that Epic 10 will consume
+- geofence and visit-verification rules should be configurable enough for real agencies without becoming a full external maps/routing product
+
+Scope rule
+
+- Include only Epic 7 backend work
+- Cover EVV verification, location/time/device proof, geofence evaluation, exception/missed-visit workflows, notifications, escalation hooks, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull full note-template/form, generalized coordination/messaging, QA queue workspace, or billing workflow scope from later epics into Epic 7
+
+Status legend
+
+- NOT STARTED: no Epic 7 implementation exists yet
+
+========================================================================
+BE7-01 — Define EVV and exception domain architecture and lifecycle rules
+Related Epic 7 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent EVV and visit-exception domain so proof-of-visit, missed-visit, and escalation workflows follow consistent state and audit rules.
+
+Recommended acceptance criteria
+
+- Epic 7 domain entities are defined explicitly, including:
+  - EVV verification session or aggregate
+  - location verification event
+  - device metadata snapshot
+  - geofence evaluation result
+  - signature verification artifact linkage
+  - missed-visit record
+  - visit exception record
+  - supervisor notification event
+  - escalation or order-creation request hook
+- lifecycle states are defined for at least:
+  - pending_verification
+  - verified
+  - verified_with_warning
+  - exception_open
+  - exception_acknowledged
+  - missed_visit_reported
+  - escalated
+  - resolved
+- ownership and linkage rules are documented across visit, caregiver, patient, branch, and schedule assignment
+- extension points for Epic 10 QA review and Epic 12 revenue-readiness workflows are documented without implementing those later-epic workspaces
+- audit expectations are documented for every EVV-sensitive mutation
+
+========================================================================
+BE7-02 — Create durable visit verification and clock event model
+Related Epic 7 features: clock-in / clock-out, GPS + timestamp verification
+Current status: NOT STARTED
+
+Story
+As the backend, I need a durable visit-verification model so clock-in and clock-out produce compliance-relevant proof instead of only generic mobile execution records.
+
+Recommended acceptance criteria
+
+- EVV-focused clock event model exists
+- each event links to:
+  - visit occurrence
+  - caregiver profile or membership
+  - branch
+  - patient
+  - underlying Epic 6 execution session when applicable
+- fields include:
+  - event type start/end
+  - captured_at
+  - captured_latitude optional
+  - captured_longitude optional
+  - timezone
+  - device platform summary optional
+  - device identifier or fingerprint hash optional
+  - capture source
+  - verification status
+- duplicate or conflicting clock events are handled explicitly
+- the model is auditable and test-covered
+
+========================================================================
+BE7-03 — Create device metadata and verification snapshot model
+Related Epic 7 features: device metadata
+Current status: NOT STARTED
+
+Story
+As the backend, I need a device-verification snapshot so visit proof includes the minimum trustworthy device context required for later review.
+
+Recommended acceptance criteria
+
+- device metadata snapshot model exists for EVV events
+- snapshot can include:
+  - platform summary
+  - app version optional
+  - browser or device class optional
+  - timezone offset
+  - user-agent hash or normalized summary
+  - secure device/session identifier if supported
+- privacy-sensitive device data is minimized and normalized
+- internal raw device identifiers are not exposed directly to ordinary frontend consumers
+- snapshot retention and audit behavior are defined
+
+========================================================================
+BE7-04 — Create geofence tolerance rule and evaluation engine
+Related Epic 7 features: geofence tolerance rules, GPS + timestamp verification
+Current status: NOT STARTED
+
+Story
+As an agency operator, I need configurable geofence evaluation so visit verification can distinguish acceptable field presence from suspicious or out-of-range starts and ends.
+
+Recommended acceptance criteria
+
+- geofence tolerance rule model exists
+- rules can be defined at least at agency level and optionally branch level
+- a visit-verification evaluation engine exists
+- the engine can compare captured location against patient visit address coordinates or a normalized service location
+- evaluation result includes:
+  - within_tolerance true/false
+  - distance_from_expected optional
+  - tolerance_used
+  - blocking vs warning outcome
+  - reason code
+- missing-address or missing-coordinate scenarios are handled explicitly
+- the evaluation engine is test-covered
+
+========================================================================
+BE7-05 — Create signature verification linkage for patient and caregiver confirmation
+Related Epic 7 features: patient/caregiver signature
+Current status: NOT STARTED
+
+Story
+As the backend, I need signature verification linkage so EVV completion can reference who signed and whether required confirmations are present.
+
+Recommended acceptance criteria
+
+- Epic 7 can link EVV completion to signature artifacts produced by Epic 6
+- signature role is explicit, including:
+  - patient
+  - caregiver
+  - representative optional
+- verification status records whether expected signatures are present, missing, refused, or not applicable
+- signature requirements can vary by visit type or service policy where configured
+- the contract is auditable and test-covered
+
+========================================================================
+BE7-06 — Create missed-visit and visit-exception domain model
+Related Epic 7 features: missed-visit workflow, exception reason capture
+Current status: NOT STARTED
+
+Story
+As operations, I need explicit missed-visit and exception records so incomplete or problematic visits do not disappear inside generic schedule state.
+
+Recommended acceptance criteria
+
+- missed-visit record exists
+- visit-exception record exists
+- records link to visit, caregiver, patient, branch, and schedule context
+- exception categories support at least:
+  - late_start
+  - geofence_out_of_range
+  - missing_signature
+  - no_show optional
+  - patient_refused optional
+  - caregiver_unavailable optional
+  - documentation_gap optional
+- reason capture and free-text narrative are both supported
+- exception status lifecycle is explicit
+- missed-visit and exception creation are audited
+
+========================================================================
+BE7-07 — Create missed-visit submission and supervisor notification workflow
+Related Epic 7 features: missed-visit workflow, supervisor notification
+Current status: NOT STARTED
+
+Story
+As a supervisor, I need missed-visit submission to notify the right operational owners so follow-up begins immediately.
+
+Recommended acceptance criteria
+
+- missed-visit submission workflow exists
+- submission captures:
+  - reason code
+  - narrative
+  - reporter
+  - reported_at
+  - related visit
+- supervisor or coordinator notification events are generated
+- notification targeting is branch-aware
+- repeated submissions for the same visit are de-duplicated or versioned explicitly
+- workflow is test-covered
+
+========================================================================
+BE7-08 — Create escalation and downstream order-creation hook model
+Related Epic 7 features: order/escalation creation on exceptions
+Current status: NOT STARTED
+
+Story
+As operations leadership, I need structured escalation hooks so serious EVV and missed-visit exceptions can create follow-up work instead of remaining passive records.
+
+Recommended acceptance criteria
+
+- escalation request model exists for exception-driven follow-up
+- escalation can reference:
+  - exception or missed-visit record
+  - patient
+  - caregiver
+  - branch
+  - target owner or role
+- downstream order/task creation hook is defined for later epics
+- severity and SLA metadata can be stored
+- no full orders workspace is required in Epic 7
+- escalation creation is audited and test-covered
+
+========================================================================
+BE7-09 — Create EVV compliance outcome and readiness projection
+Related Epic 7 features: clock-in / clock-out, GPS + timestamp verification, patient/caregiver signature
+Current status: NOT STARTED
+
+Story
+As downstream QA and billing workflows, I need a summarized EVV compliance projection so visits can be classified as verified, warning, or blocked for later operational and revenue workflows.
+
+Recommended acceptance criteria
+
+- EVV readiness or compliance projection exists per visit
+- projection includes at least:
+  - start event present
+  - end event present
+  - location verification result
+  - signature completeness result
+  - open exception count
+  - missed-visit status
+  - overall readiness outcome
+- projection is queryable without exposing raw internal policy logic unnecessarily
+- projection is test-covered
+
+========================================================================
+BE7-10 — Create Epic 7 authorization matrix and audit taxonomy
+Related Epic 7 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need Epic 7 permissions and audit taxonomy so EVV-sensitive actions are authorized and reviewable correctly.
+
+Recommended acceptance criteria
+
+- agency permissions exist for at least:
+  - view_own_evv
+  - submit_own_evv
+  - manage_evv_exceptions
+  - view_missed_visits
+  - resolve_missed_visits
+  - receive_evv_notifications
+- audit action types exist for:
+  - clock_in
+  - clock_out
+  - geofence_evaluated
+  - signature_status_recorded
+  - missed_visit_reported
+  - exception_logged
+  - supervisor_notified
+  - escalation_created
+- tenant and branch isolation rules are enforced for EVV data
+
+========================================================================
+BE7-11 — Create clock-in / clock-out public API layer
+Related Epic 7 features: clock-in / clock-out, GPS + timestamp verification, device metadata
+Current status: NOT STARTED
+
+Story
+As a caregiver mobile client, I need audited public APIs for clock-in and clock-out so visit proof can be submitted through controlled contracts.
+
+Recommended acceptance criteria
+
+- public clock-in API exists
+- public clock-out API exists
+- APIs accept:
+  - visit identifier
+  - timestamp
+  - location optional subject to permission/device state
+  - device metadata snapshot optional
+  - capture source
+- APIs return structured verification outcome including warnings or blocking reasons
+- APIs are authorization-checked, audited, and integration-tested
+
+========================================================================
+BE7-12 — Create missed-visit and exception public API layer
+Related Epic 7 features: missed-visit workflow, exception reason capture, supervisor notification
+Current status: NOT STARTED
+
+Story
+As mobile and operations clients, I need APIs for exception reporting so missed visits and EVV issues can be recorded consistently.
+
+Recommended acceptance criteria
+
+- missed-visit submission API exists
+- exception create/list/detail/update-status APIs exist
+- payloads support structured reason codes plus narrative
+- APIs can surface open vs resolved exception states
+- supervisor-notification side effects are triggered where appropriate
+- APIs are authorization-checked, audited, and integration-tested
+
+========================================================================
+BE7-13 — Create EVV verification summary and readiness APIs
+Related Epic 7 features: GPS + timestamp verification, geofence tolerance rules, patient/caregiver signature
+Current status: NOT STARTED
+
+Story
+As mobile, admin, and later QA clients, I need summary APIs so visit verification readiness can be displayed without exposing raw backend internals.
+
+Recommended acceptance criteria
+
+- visit-level EVV summary API exists
+- caregiver-scoped own-visit EVV summary API exists
+- schedule/admin-scoped EVV readiness query exists for later workspaces
+- response includes verification status, warnings, blockers, signature completeness, and open exceptions
+- API shapes are suitable for frontend decision support
+- APIs are integration-tested
+
+========================================================================
+BE7-14 — Create supervisor notification and escalation APIs or service hooks
+Related Epic 7 features: supervisor notification, order/escalation creation on exceptions
+Current status: NOT STARTED
+
+Story
+As operations integrations, I need explicit service hooks for notification and escalation so exception workflows are actionable.
+
+Recommended acceptance criteria
+
+- supervisor notification service hook exists
+- escalation creation service hook exists
+- triggering rules are explicit for:
+  - missed visit
+  - repeated geofence failure optional
+  - missing required signature
+  - unresolved critical exception
+- hooks can be invoked from Epic 7 APIs and stored for later queue/workspace processing
+- hook outcomes are audited and test-covered
+
+========================================================================
+BE7-15 — Hardening, regression coverage, and CI support for Epic 7
+Related Epic 7 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need regression coverage for EVV and exception workflows so later QA, compliance, and billing epics do not destabilize proof-of-visit behavior.
+
+Recommended acceptance criteria
+
+- CRUD and workflow tests exist for representative Epic 7 APIs
+- geofence evaluation tests exist for pass, warning, and fail outcomes
+- authorization denial coverage exists
+- missed-visit and exception workflows are integration-tested
+- audit assertions exist for representative EVV mutations
+- a dedicated Epic 7 regression task or CI job exists
+
+========================================================================
+Implementation phases
+
+Phase A — EVV domain foundation
+
+- `BE7-01`
+- `BE7-09`
+- `BE7-10`
+
+Phase B — core EVV and exception record model
+
+- `BE7-02`
+- `BE7-03`
+- `BE7-04`
+- `BE7-05`
+- `BE7-06`
+- `BE7-07`
+- `BE7-08`
+
+Phase C — public API layer
+
+- `BE7-11`
+- `BE7-12`
+- `BE7-13`
+- `BE7-14`
+
+Phase D — hardening
+
+- `BE7-15`
+
+========================================================================
+Definition of done for Epic 7 backend
+
+Epic 7 backend is done only when:
+
+- EVV, geofence, signature-verification, missed-visit, exception, notification, and escalation models exist with clear lifecycle rules
+- clock-in / clock-out APIs are available through real audited backend contracts
+- GPS/time/device verification outcomes are evaluated and returned through structured contracts
+- geofence tolerance behavior is configurable and test-covered
+- missed-visit and exception workflows produce durable records and branch-aware notifications
+- escalation or downstream order-creation hooks exist for exception-driven follow-up
+- EVV readiness/compliance projections are available for frontend and later QA/revenue workflows
+- branch-aware authorization and tenant isolation are enforced for EVV data and actions
+- core Epic 7 workflows are regression-covered

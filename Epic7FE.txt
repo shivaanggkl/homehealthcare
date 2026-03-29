@@ -1,0 +1,333 @@
+Epic 7 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 7 from `Requirements.txt` into a frontend delivery backlog for EVV and visit-exception workflows.
+
+Epic 7 title
+
+Visit execution and EVV
+
+Epic 7 feature scope from the requirements
+
+- clock-in / clock-out
+- GPS + timestamp verification
+- device metadata
+- geofence tolerance rules
+- patient/caregiver signature
+- missed-visit workflow
+- exception reason capture
+- supervisor notification
+- order/escalation creation on exceptions
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 5 scheduling workflows are complete and provide visit context and assignment state
+- Epic 6 frontend and backend are complete and provide the caregiver mobile shell, visit detail, execution basics, offline sync patterns, signature upload, and field artifacts
+- Epic 7 frontend extends the caregiver mobile execution experience with compliance-sensitive EVV proof and exception handling
+- Epic 7 may also require limited admin or coordinator-facing review surfaces, but it should stop short of the broader QA workspace that belongs to Epic 10
+- Epic 7 should remain focused on proof-of-visit and exception routing, not general note-template/form work from Epic 8 or generalized messaging expansion from Epic 9
+- mobile EVV flows should stay caregiver-friendly while still making warning, blocking, and exception states explicit
+- privacy-sensitive patient and device data should be minimized in the UI and never expose internal-only metadata unnecessarily
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 7 backend APIs
+
+========================================================================
+FE7-01 — EVV navigation and caregiver information architecture
+Related Epic 7 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want EVV actions and exception workflows to fit naturally into the mobile visit flow so proof-of-visit work is easy to complete correctly.
+
+Frontend acceptance criteria
+
+- EVV actions are reachable from the mobile visit workflow
+- caregiver-facing routes distinguish:
+  - normal visit execution
+  - EVV verification
+  - missed-visit reporting
+  - exception follow-up
+- unsupported or unauthorized EVV routes render controlled states
+- EVV status is visible without overwhelming the caregiver with admin detail
+
+========================================================================
+FE7-02 — Clock-in / clock-out verification UX
+Related Epic 7 features: clock-in / clock-out, GPS + timestamp verification
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want explicit clock-in and clock-out actions so visit verification is clear and trustworthy.
+
+Frontend acceptance criteria
+
+- clock-in UX exists
+- clock-out UX exists
+- the UI shows timestamp and location-capture state clearly
+- success, warning, and blocked outcomes are visually distinct
+- the visit screen updates immediately after successful verification
+
+========================================================================
+FE7-03 — GPS and geofence feedback UX
+Related Epic 7 features: GPS + timestamp verification, geofence tolerance rules
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want clear location-verification feedback so I know whether the visit proof is acceptable or needs follow-up.
+
+Frontend acceptance criteria
+
+- location-capture state is visible before and after submission
+- geofence pass, warning, and failure outcomes are understandable
+- the UI communicates when a tolerance rule was exceeded without exposing raw internal rule formulas
+- retry and continue-with-exception paths are clear where supported
+- missing permission or missing location states are handled clearly
+
+========================================================================
+FE7-04 — Device and visit-proof status presentation
+Related Epic 7 features: device metadata, GPS + timestamp verification
+Backend status: BLOCKED
+
+Story
+As a caregiver and admin reviewer, I want the UI to present visit-proof status clearly so trust issues can be understood without dumping raw backend metadata.
+
+Frontend acceptance criteria
+
+- visit-proof summary exists
+- the UI can show that device/time/location proof was captured
+- internal-only device metadata is not rendered directly to standard caregivers
+- admin or reviewer surfaces can show normalized proof context if authorized
+- missing-proof states are explicit
+
+========================================================================
+FE7-05 — Signature completion and verification UX
+Related Epic 7 features: patient/caregiver signature
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want signature requirements to be visible so I know whether visit verification is complete.
+
+Frontend acceptance criteria
+
+- the UI shows whether required patient/caregiver signatures are present
+- missing, refused, optional, and complete signature states are distinguishable
+- existing Epic 6 signature capture flow is integrated into EVV completion status
+- the caregiver can tell when missing signatures block completion vs only create a warning
+- signature-related failure states are shown clearly
+
+========================================================================
+FE7-06 — Missed-visit reporting workflow
+Related Epic 7 features: missed-visit workflow, exception reason capture
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a missed-visit flow so I can report when a scheduled visit did not happen instead of leaving the schedule ambiguous.
+
+Frontend acceptance criteria
+
+- missed-visit reporting form exists
+- reason-code and narrative capture are both supported
+- the workflow is accessible from relevant visit states
+- submitted missed-visit state is visible after success
+- duplicate-report or blocked-report states are handled clearly
+
+========================================================================
+FE7-07 — Visit exception capture and resolution-state UX
+Related Epic 7 features: exception reason capture
+Backend status: BLOCKED
+
+Story
+As a caregiver or coordinator, I want visit exceptions to be recorded clearly so operational issues can be followed up consistently.
+
+Frontend acceptance criteria
+
+- exception creation flow exists
+- reason code, severity, and narrative capture are understandable
+- open, acknowledged, escalated, and resolved states are visible where authorized
+- warning vs blocking exceptions are visually distinct
+- exception update or acknowledgment actions exist for authorized users if in scope
+
+========================================================================
+FE7-08 — Supervisor notification and escalation feedback UX
+Related Epic 7 features: supervisor notification, order/escalation creation on exceptions
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want the app to confirm when a serious issue has been routed so I know follow-up will happen.
+
+Frontend acceptance criteria
+
+- the UI confirms when supervisor notification was triggered
+- escalation-created vs notification-only outcomes are distinguishable
+- the user can see whether further follow-up is pending
+- downstream order/escalation hooks are represented as controlled outcomes, not editable ad hoc UI state
+- failure to notify or escalate is shown clearly
+
+========================================================================
+FE7-09 — EVV readiness and compliance-status summary
+Related Epic 7 features: clock-in / clock-out, GPS + timestamp verification, patient/caregiver signature
+Backend status: BLOCKED
+
+Story
+As a caregiver and later reviewer, I want a summary of EVV readiness so I can tell whether the visit is compliant, warning-only, or blocked.
+
+Frontend acceptance criteria
+
+- EVV readiness summary exists on relevant visit screens
+- summary can show:
+  - start captured
+  - end captured
+  - location verified
+  - signature complete
+  - open exceptions
+  - missed-visit status
+  - overall readiness outcome
+- summary is readable on mobile and small tablet widths
+- internal-only policy metadata is not exposed directly
+
+========================================================================
+FE7-10 — Shared EVV workflow and exception framework
+Related Epic 7 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one EVV interaction framework so proof-of-visit and exception screens behave consistently.
+
+Frontend acceptance criteria
+
+- reusable EVV action pattern exists for clock-in, clock-out, missed-visit submit, and exception submit
+- reusable warning/blocking/result state components exist
+- geofence, signature, and exception states share one presentation language
+- modules can opt into caregiver-only vs reviewer-capable behavior cleanly
+- loading, sync, validation, and unauthorized states are standardized
+
+========================================================================
+FE7-11 — Shared mobile-sensitive mutation and retry UX for EVV
+Related Epic 7 features: clock-in / clock-out, missed-visit workflow, exception reason capture
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want a consistent retry and sync model for EVV-sensitive mutations so poor connectivity does not create confusing proof-of-visit behavior.
+
+Frontend acceptance criteria
+
+- EVV mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- offline handling is explicit where supported
+- risky actions avoid misleading optimistic states
+- failed EVV submissions remain visible until resolved or retried
+
+========================================================================
+FE7-12 — Coordinator or reviewer-facing EVV issue list
+Related Epic 7 features: missed-visit workflow, exception reason capture, supervisor notification
+Backend status: BLOCKED
+
+Story
+As a coordinator or supervisor, I want a focused EVV issue list so I can see open missed visits and verification exceptions without waiting for the full QA workspace.
+
+Frontend acceptance criteria
+
+- authorized admin/reviewer screen exists for open EVV issues
+- list can show missed visits and open exceptions
+- branch and status filters exist if backend supports them
+- item detail links into the relevant visit or issue context
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE7-13 — Audit-sensitive and privacy-aware EVV UX
+Related Epic 7 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin and caregiver, I want EVV workflows to feel controlled and privacy-aware so compliance-sensitive actions remain trustworthy.
+
+Frontend acceptance criteria
+
+- sensitive EVV mutations communicate that they are controlled operations
+- success states indicate that key verification and exception actions are logged where appropriate
+- privacy-sensitive patient and device data is not shown more broadly than needed
+- internal-only backend metadata is not exposed unnecessarily
+- where useful, audit-aware messaging can point admins to later review activity without cluttering caregiver workflows
+
+========================================================================
+FE7-14 — Mobile and tablet hardening for EVV workflows
+Related Epic 7 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want EVV workflows to remain usable on real phones and small tablets so proof-of-visit actions are reliable in the field.
+
+Frontend acceptance criteria
+
+- core EVV screens work on common phone widths
+- touch targets remain usable for verification, signature, and exception workflows
+- keyboard and form interactions do not break critical screens
+- warning and blocking states remain readable on smaller devices
+- no critical Epic 7 screen breaks layout on mobile-sized viewports
+
+========================================================================
+FE7-15 — Frontend regression coverage for Epic 7 EVV flows
+Related Epic 7 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for EVV flows so later QA, compliance, and revenue features do not destabilize proof-of-visit behavior.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 7 routes
+- happy-path interaction coverage exists for representative EVV modules
+- warning, blocking, validation, and unauthorized states are covered
+- offline or retry behavior is covered where practical
+- missed-visit and exception failure states are covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared EVV UI foundation
+
+- `FE7-01`
+- `FE7-09`
+- `FE7-10`
+- `FE7-11`
+
+Phase B — core caregiver EVV workflows
+
+- `FE7-02`
+- `FE7-03`
+- `FE7-04`
+- `FE7-05`
+- `FE7-06`
+- `FE7-07`
+- `FE7-08`
+
+Phase C — coordinator-facing issue visibility
+
+- `FE7-12`
+
+Phase D — audit-aware UX
+
+- `FE7-13`
+
+Phase E — hardening
+
+- `FE7-14`
+- `FE7-15`
+
+========================================================================
+Definition of done for Epic 7 frontend
+
+Epic 7 frontend is done only when:
+
+- EVV and missed-visit workflows are reachable through coherent caregiver mobile routes
+- clock-in, clock-out, missed-visit, exception, and signature-completion states use real backend APIs rather than placeholder local state
+- GPS/time/geofence outcomes are shown clearly with understandable warning vs blocking states
+- caregivers can tell when visit verification is complete, incomplete, warning-only, or blocked
+- supervisor notification and escalation outcomes are reflected clearly in the UI where supported
+- privacy-sensitive patient and device information is minimized appropriately
+- coordinator or reviewer EVV issue visibility exists for authorized users
+- core Epic 7 screens are mobile-safe and regression-covered

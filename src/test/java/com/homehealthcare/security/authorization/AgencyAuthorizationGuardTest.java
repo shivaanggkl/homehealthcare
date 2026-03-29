@@ -51,6 +51,12 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(caregiver, AgencyPermission.CREATE_MOBILE_INCIDENTS)).isTrue();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_MOBILE_MESSAGES)).isTrue();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.SEND_MOBILE_MESSAGES)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_OWN_EVV)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SUBMIT_OWN_EVV)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_EVV_EXCEPTIONS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_MISSED_VISITS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.RESOLVE_MISSED_VISITS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.RECEIVE_EVV_NOTIFICATIONS)).isFalse();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,
@@ -66,6 +72,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_ALERT_RULE)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_PATIENT_DEMOGRAPHICS)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_SCHEDULE_VISITS)).isFalse();
+        assertThat(guard.hasPermission(owner, AgencyPermission.RESOLVE_MISSED_VISITS)).isFalse();
     }
 
     @Test
@@ -79,6 +86,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_PATIENT_ATTACHMENTS)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_WORKFORCE_DIRECTORY)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_SCHEDULE_CONFLICTS)).isFalse();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_MISSED_VISITS)).isFalse();
     }
 
     private AgencyMembership membership(AgencyRole role, boolean active) {

@@ -42,6 +42,17 @@ Use this pattern for:
 - task templates
 - payer configuration
 - memberships
+- EVV verification sessions
+- EVV clock events
+- device metadata snapshots
+- geofence tolerance rules
+- geofence evaluations
+- signature verification links
+- missed-visit records
+- visit exception records
+- supervisor notification events
+- escalation requests
+- EVV compliance projections
 
 Standard:
 

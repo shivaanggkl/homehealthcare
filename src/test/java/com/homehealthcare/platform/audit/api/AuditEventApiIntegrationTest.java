@@ -20,6 +20,8 @@ import com.homehealthcare.scheduling.foundation.Epic5SchedulingAuditAction;
 import com.homehealthcare.scheduling.foundation.Epic5SchedulingTargetType;
 import com.homehealthcare.mobile.foundation.Epic6MobileAuditAction;
 import com.homehealthcare.mobile.foundation.Epic6MobileTargetType;
+import com.homehealthcare.evv.foundation.Epic7EvvAuditAction;
+import com.homehealthcare.evv.foundation.Epic7EvvTargetType;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.security.tenant.TenantAccessPrincipal;
 import com.homehealthcare.security.tenant.TenantMembership;
@@ -275,6 +277,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic6MobileTargetType.MOBILE_DEVICE_SESSION.name())))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic7EvvEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID clockEventId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType(),
+                Epic7EvvTargetType.EVV_CLOCK_EVENT.name(),
+                clockEventId,
+                agency.getId(),
+                null,
+                "{\"verificationStatus\":\"PENDING_VERIFICATION\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic7EvvTargetType.EVV_CLOCK_EVENT.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic7EvvTargetType.EVV_CLOCK_EVENT.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType())));
     }
 
     @Test
