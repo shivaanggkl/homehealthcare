@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.homehealthcare.workforce.foundation.WorkforceAuditServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-29T05:05:18.352Z" hostname="Shivangs-MacBook-Pro.local" time="0.265">
-  <properties/>
-  <testcase name="workforceCreateAuditUsesStandardizedEpic4ActionAndTargetType()" classname="com.homehealthcare.workforce.foundation.WorkforceAuditServiceTest" time="0.258"/>
-  <testcase name="workforcePerformanceRefreshDefaultsBlankMetadataToEmptyJson()" classname="com.homehealthcare.workforce.foundation.WorkforceAuditServiceTest" time="0.003"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
