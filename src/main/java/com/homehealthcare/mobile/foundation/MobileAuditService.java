@@ -64,6 +64,30 @@ public class MobileAuditService {
         record(actorMembership, Epic6MobileAuditAction.INCIDENT_FLAGGED, Epic6MobileTargetType.INCIDENT_REPORT, targetId, branchId, metadataJson);
     }
 
+    public void recordPhotoUploaded(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic6MobileAuditAction.PHOTO_UPLOADED, Epic6MobileTargetType.FIELD_PHOTO_ARTIFACT, targetId, branchId, metadataJson);
+    }
+
+    public void recordSignatureCaptured(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic6MobileAuditAction.SIGNATURE_CAPTURED, Epic6MobileTargetType.FIELD_SIGNATURE_ARTIFACT, targetId, branchId, metadataJson);
+    }
+
+    public void recordMessageSent(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic6MobileAuditAction.MESSAGE_SENT, Epic6MobileTargetType.MESSAGE_THREAD, targetId, branchId, metadataJson);
+    }
+
     public void recordOfflineSyncAccepted(
             AgencyMembership actorMembership,
             UUID targetId,

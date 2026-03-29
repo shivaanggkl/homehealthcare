@@ -292,7 +292,14 @@ public class MobileExecutionService {
         return saved;
     }
 
-    private CaregiverProfile resolveActorCaregiverProfile(AgencyMembership actorMembership) {
+    @Transactional(readOnly = true)
+    MobileVisitExecutionSession resolveOwnedSessionContext(@NotNull AgencyMembership actorMembership, @NotNull UUID executionSessionId) {
+        CaregiverProfile caregiverProfile = resolveActorCaregiverProfile(actorMembership);
+        return resolveOwnedSession(actorMembership, caregiverProfile, executionSessionId);
+    }
+
+    @Transactional(readOnly = true)
+    public CaregiverProfile resolveActorCaregiverProfile(AgencyMembership actorMembership) {
         return caregiverProfileRepository.findFirstByAgency_IdAndAgencyMembership_Id(actorMembership.getAgencyId(), actorMembership.getId())
                 .orElseThrow(() -> new UnauthorizedMobileActorException(actorMembership.getId()));
     }
