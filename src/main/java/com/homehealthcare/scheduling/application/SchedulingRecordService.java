@@ -5,7 +5,6 @@ import com.homehealthcare.branch.domain.BranchRepository;
 import com.homehealthcare.caregiverprofile.domain.CaregiverProfile;
 import com.homehealthcare.caregiverprofile.domain.CaregiverProfileRepository;
 import com.homehealthcare.membership.domain.AgencyMembership;
-import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.patient.domain.Patient;
 import com.homehealthcare.patient.domain.PatientRepository;
 import com.homehealthcare.patient.foundation.PatientLifecycleStatus;
@@ -63,7 +62,6 @@ public class SchedulingRecordService {
     private final BranchRepository branchRepository;
     private final ServiceLineRepository serviceLineRepository;
     private final VisitTypeRepository visitTypeRepository;
-    private final AgencyMembershipRepository agencyMembershipRepository;
     private final CaregiverProfileRepository caregiverProfileRepository;
     private final RecurringVisitRuleRepository recurringVisitRuleRepository;
     private final VisitOccurrenceRepository visitOccurrenceRepository;
@@ -73,6 +71,7 @@ public class SchedulingRecordService {
     private final VisitCancellationEventRepository visitCancellationEventRepository;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
     private final SchedulingAuditService schedulingAuditService;
+    private final SchedulingRulesService schedulingRulesService;
 
     @Transactional
     public VisitOccurrence createVisit(@NotNull AgencyMembership actorMembership, @Valid ManageVisitCommand command) {
@@ -105,7 +104,19 @@ public class SchedulingRecordService {
                 .findFirstByVisitOccurrence_IdAndAssignmentStatusOrderByAssignedAtDesc(visit.getId(), CaregiverAssignmentStatus.ACTIVE)
                 .orElse(null);
         if (activeAssignment != null) {
-            assertNoCaregiverOverlap(activeAssignment.getCaregiverProfileId(), command.plannedStartAt(), command.plannedEndAt(), visit.getId());
+            VisitOccurrence proposal = VisitOccurrence.create(
+                    visit.getPatient(),
+                    resolveBranch(actorMembership.getAgencyId(), command.branchId()),
+                    resolveServiceLine(actorMembership.getAgencyId(), command.serviceLineId()),
+                    resolveVisitType(actorMembership.getAgencyId(), command.visitTypeId()),
+                    visit.getRecurringVisitRule(),
+                    command.plannedStartAt(),
+                    command.plannedEndAt(),
+                    command.timezone(),
+                    command.priority(),
+                    command.creationMode(),
+                    command.notes());
+            schedulingRulesService.assertAssignmentAllowed(proposal, activeAssignment.getCaregiverProfile());
         }
         visit.updateDetails(
                 resolveBranch(actorMembership.getAgencyId(), command.branchId()),
@@ -220,8 +231,7 @@ public class SchedulingRecordService {
         requirePermission(actorMembership, AgencyPermission.ASSIGN_CAREGIVERS);
         VisitOccurrence visit = resolveVisit(actorMembership.getAgencyId(), visitOccurrenceId);
         CaregiverProfile caregiverProfile = resolveCaregiverProfile(actorMembership.getAgencyId(), command.caregiverProfileId());
-        assertAssignableCaregiver(caregiverProfile);
-        assertNoCaregiverOverlap(caregiverProfile.getId(), visit.getPlannedStartAt(), visit.getPlannedEndAt(), visit.getId());
+        schedulingRulesService.assertAssignmentAllowed(visit, caregiverProfile);
 
         CaregiverVisitAssignment existingActive = caregiverVisitAssignmentRepository
                 .findFirstByVisitOccurrence_IdAndAssignmentStatusOrderByAssignedAtDesc(visit.getId(), CaregiverAssignmentStatus.ACTIVE)
@@ -286,8 +296,19 @@ public class SchedulingRecordService {
                 ? previousCaregiver
                 : resolveCaregiverProfile(actorMembership.getAgencyId(), command.newCaregiverProfileId());
         if (nextCaregiver != null) {
-            assertAssignableCaregiver(nextCaregiver);
-            assertNoCaregiverOverlap(nextCaregiver.getId(), command.newPlannedStartAt(), command.newPlannedEndAt(), visit.getId());
+            VisitOccurrence proposal = VisitOccurrence.create(
+                    visit.getPatient(),
+                    resolveBranch(actorMembership.getAgencyId(), command.branchId() == null ? visit.getBranchId() : command.branchId()),
+                    visit.getServiceLine(),
+                    visit.getVisitType(),
+                    visit.getRecurringVisitRule(),
+                    command.newPlannedStartAt(),
+                    command.newPlannedEndAt(),
+                    command.timezone(),
+                    visit.getPriority(),
+                    visit.getCreationMode(),
+                    visit.getNotes());
+            schedulingRulesService.assertAssignmentAllowed(proposal, nextCaregiver);
         }
 
         OffsetDateTime previousStart = visit.getPlannedStartAt();
@@ -469,28 +490,6 @@ public class SchedulingRecordService {
     private CaregiverProfile resolveCaregiverProfile(UUID agencyId, UUID caregiverProfileId) {
         return caregiverProfileRepository.findByIdAndAgency_Id(caregiverProfileId, agencyId)
                 .orElseThrow(() -> new SchedulingEntityNotFoundException("CaregiverProfile", caregiverProfileId));
-    }
-
-    private void assertAssignableCaregiver(CaregiverProfile caregiverProfile) {
-        if (caregiverProfile.getStatus() != WorkforceLifecycleStatus.ACTIVE) {
-            throw new SchedulingConflictException("Only active caregivers can receive active assignments.");
-        }
-    }
-
-    private void assertNoCaregiverOverlap(
-            UUID caregiverProfileId,
-            OffsetDateTime plannedStartAt,
-            OffsetDateTime plannedEndAt,
-            UUID excludeVisitOccurrenceId) {
-        boolean overlap = caregiverVisitAssignmentRepository.existsActiveOverlap(
-                caregiverProfileId,
-                plannedStartAt,
-                plannedEndAt,
-                excludeVisitOccurrenceId,
-                CaregiverAssignmentStatus.ACTIVE);
-        if (overlap) {
-            throw new SchedulingConflictException("Caregiver already has an overlapping active visit assignment.");
-        }
     }
 
     private static String visitMetadata(VisitOccurrence visit) {

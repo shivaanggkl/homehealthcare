@@ -14,6 +14,8 @@ public interface CaregiverVisitAssignmentRepository extends JpaRepository<Caregi
 
     List<CaregiverVisitAssignment> findAllByVisitOccurrence_IdOrderByAssignedAtAsc(UUID visitOccurrenceId);
 
+    List<CaregiverVisitAssignment> findAllByCaregiverProfile_IdOrderByAssignedAtAsc(UUID caregiverProfileId);
+
     Optional<CaregiverVisitAssignment> findFirstByVisitOccurrence_IdAndAssignmentStatusOrderByAssignedAtDesc(
             UUID visitOccurrenceId,
             CaregiverAssignmentStatus assignmentStatus);
