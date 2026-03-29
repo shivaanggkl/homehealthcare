@@ -145,6 +145,14 @@ public class CaregiverCredential extends AgencyScopedEntity {
         this.status = CaregiverCredentialStatus.ARCHIVED;
     }
 
+    public UUID getCaregiverProfileId() {
+        return caregiverProfile == null ? null : caregiverProfile.getId();
+    }
+
+    public UUID getCertificationId() {
+        return certification == null ? null : certification.getId();
+    }
+
     private void assignProfile(CaregiverProfile caregiverProfile) {
         this.caregiverProfile = Objects.requireNonNull(caregiverProfile, "caregiverProfile must not be null");
         assignAgency(caregiverProfile.getAgency());

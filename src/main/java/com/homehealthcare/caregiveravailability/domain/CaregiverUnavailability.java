@@ -124,6 +124,10 @@ public class CaregiverUnavailability extends AgencyScopedEntity {
         this.status = WorkforceLifecycleStatus.INACTIVE;
     }
 
+    public UUID getCaregiverProfileId() {
+        return caregiverProfile == null ? null : caregiverProfile.getId();
+    }
+
     public boolean overlaps(CaregiverUnavailability other) {
         return startsAt.isBefore(other.endsAt) && other.startsAt.isBefore(endsAt);
     }

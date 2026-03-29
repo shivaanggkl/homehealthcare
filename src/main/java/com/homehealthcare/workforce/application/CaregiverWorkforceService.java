@@ -44,6 +44,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -98,6 +99,34 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverProfile updateProfile(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID caregiverProfileId,
+            @Valid ManageCaregiverProfileCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
+        if (!profile.getAgencyMembershipId().equals(command.agencyMembershipId())) {
+            throw new WorkforceConflictException("Caregiver profile membership cannot be changed.");
+        }
+        profile.updateDetails(
+                findBranch(actorMembership.getAgencyId(), command.primaryBranchId()),
+                command.caregiverCode(),
+                command.displayName(),
+                command.employmentType(),
+                command.startDate(),
+                command.endDate(),
+                command.notes());
+        CaregiverProfile saved = caregiverProfileRepository.saveAndFlush(profile);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_PROFILE,
+                saved.getId(),
+                saved.getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverCredential createCredential(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId, @Valid ManageCaregiverCredentialCommand command) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_CREDENTIALS);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
@@ -125,18 +154,111 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverCredential updateCredential(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID credentialId,
+            @Valid ManageCaregiverCredentialCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_CREDENTIALS);
+        CaregiverCredential credential = findCredential(actorMembership.getAgencyId(), credentialId);
+        CaregiverProfile profile = credential.getCaregiverProfile();
+        String normalizedLicense = normalizeNullable(command.licenseNumber());
+        if (normalizedLicense != null
+                && caregiverCredentialRepository.existsByCaregiverProfile_IdAndCredentialTypeIgnoreCaseAndLicenseNumberAndIdNot(
+                        profile.getId(),
+                        command.credentialType(),
+                        normalizedLicense,
+                        credential.getId())) {
+            throw new WorkforceConflictException("A caregiver credential with the same type and license number already exists.");
+        }
+        credential.updateDetails(
+                findCertification(actorMembership.getAgencyId(), command.certificationId()),
+                command.credentialType(),
+                command.licenseNumber(),
+                command.issuingAuthority(),
+                command.issuedOn(),
+                command.expiresOn(),
+                command.status(),
+                command.verificationStatus(),
+                command.notes());
+        CaregiverCredential saved = caregiverCredentialRepository.saveAndFlush(credential);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_CREDENTIAL,
+                saved.getId(),
+                profile.getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverCredential deactivateCredential(@NotNull AgencyMembership actorMembership, @NotNull UUID credentialId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_CREDENTIALS);
+        CaregiverCredential credential = findCredential(actorMembership.getAgencyId(), credentialId);
+        credential.deactivate();
+        CaregiverCredential saved = caregiverCredentialRepository.saveAndFlush(credential);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_CREDENTIAL,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverLanguageProfile createLanguage(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId, @Valid ManageCaregiverLanguageCommand command) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
-        if (caregiverLanguageProfileRepository.existsByCaregiverProfile_IdAndLanguageCode(profile.getId(), command.languageCode().trim())) {
+        String normalizedLanguageCode = normalizeLanguageCode(command.languageCode());
+        if (caregiverLanguageProfileRepository.existsByCaregiverProfile_IdAndLanguageCode(profile.getId(), normalizedLanguageCode)) {
             throw new WorkforceConflictException("That caregiver language is already assigned.");
         }
         CaregiverLanguageProfile saved = caregiverLanguageProfileRepository.saveAndFlush(CaregiverLanguageProfile.create(
                 profile,
-                command.languageCode(),
+                normalizedLanguageCode,
                 command.proficiencyLevel(),
                 command.primaryLanguage()));
         workforceAuditService.recordCreated(actorMembership, Epic4WorkforceTargetType.CAREGIVER_LANGUAGE, saved.getId(), profile.getPrimaryBranchId(), metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverLanguageProfile updateLanguage(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID languageId,
+            @Valid ManageCaregiverLanguageCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverLanguageProfile language = findLanguage(actorMembership.getAgencyId(), languageId);
+        String normalizedLanguageCode = normalizeLanguageCode(command.languageCode());
+        if (caregiverLanguageProfileRepository.existsByCaregiverProfile_IdAndLanguageCodeAndIdNot(
+                language.getCaregiverProfileId(),
+                normalizedLanguageCode,
+                language.getId())) {
+            throw new WorkforceConflictException("That caregiver language is already assigned.");
+        }
+        language.updateDetails(normalizedLanguageCode, command.proficiencyLevel(), command.primaryLanguage());
+        CaregiverLanguageProfile saved = caregiverLanguageProfileRepository.saveAndFlush(language);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_LANGUAGE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverLanguageProfile deactivateLanguage(@NotNull AgencyMembership actorMembership, @NotNull UUID languageId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverLanguageProfile language = findLanguage(actorMembership.getAgencyId(), languageId);
+        language.deactivate();
+        CaregiverLanguageProfile saved = caregiverLanguageProfileRepository.saveAndFlush(language);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_LANGUAGE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
         return saved;
     }
 
@@ -161,6 +283,48 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverSkillProfile updateSkill(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID caregiverSkillProfileId,
+            @Valid ManageCaregiverSkillCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverSkillProfile caregiverSkillProfile = findSkillProfile(actorMembership.getAgencyId(), caregiverSkillProfileId);
+        if (caregiverSkillProfileRepository.existsByCaregiverProfile_IdAndSkill_IdAndIdNot(
+                caregiverSkillProfile.getCaregiverProfileId(),
+                command.skillId(),
+                caregiverSkillProfile.getId())) {
+            throw new WorkforceConflictException("That caregiver skill is already assigned.");
+        }
+        CaregiverSkill skill = caregiverSkillRepository.findById(command.skillId())
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverSkill", command.skillId()));
+        assertSameAgency(actorMembership.getAgencyId(), skill.getAgencyId(), "CaregiverSkill", command.skillId());
+        caregiverSkillProfile.updateDetails(skill, command.proficiencyLevel(), command.verified(), command.notes());
+        CaregiverSkillProfile saved = caregiverSkillProfileRepository.saveAndFlush(caregiverSkillProfile);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_SKILL,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverSkillProfile deactivateSkill(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverSkillProfileId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverSkillProfile caregiverSkillProfile = findSkillProfile(actorMembership.getAgencyId(), caregiverSkillProfileId);
+        caregiverSkillProfile.deactivate();
+        CaregiverSkillProfile saved = caregiverSkillProfileRepository.saveAndFlush(caregiverSkillProfile);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_SKILL,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverGeographyPreference createGeographyPreference(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId, @Valid ManageCaregiverGeographyPreferenceCommand command) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
@@ -181,6 +345,49 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverGeographyPreference updateGeographyPreference(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID geographyPreferenceId,
+            @Valid ManageCaregiverGeographyPreferenceCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverGeographyPreference geographyPreference = findGeographyPreference(actorMembership.getAgencyId(), geographyPreferenceId);
+        geographyPreference.updateDetails(
+                findBranch(actorMembership.getAgencyId(), command.branchId()),
+                command.preferenceType(),
+                command.postalCode(),
+                command.city(),
+                command.state(),
+                command.anchorLatitude(),
+                command.anchorLongitude(),
+                command.radiusMiles(),
+                command.priorityRank(),
+                command.notes());
+        CaregiverGeographyPreference saved = caregiverGeographyPreferenceRepository.saveAndFlush(geographyPreference);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_GEOGRAPHY_PREFERENCE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverGeographyPreference deactivateGeographyPreference(@NotNull AgencyMembership actorMembership, @NotNull UUID geographyPreferenceId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverGeographyPreference geographyPreference = findGeographyPreference(actorMembership.getAgencyId(), geographyPreferenceId);
+        geographyPreference.deactivate();
+        CaregiverGeographyPreference saved = caregiverGeographyPreferenceRepository.saveAndFlush(geographyPreference);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_GEOGRAPHY_PREFERENCE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverShiftPreference createShiftPreference(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId, @Valid ManageCaregiverShiftPreferenceCommand command) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
@@ -194,6 +401,46 @@ public class CaregiverWorkforceService {
                 command.preferenceStrength(),
                 command.notes()));
         workforceAuditService.recordCreated(actorMembership, Epic4WorkforceTargetType.CAREGIVER_SHIFT_PREFERENCE, saved.getId(), profile.getPrimaryBranchId(), metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverShiftPreference updateShiftPreference(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID shiftPreferenceId,
+            @Valid ManageCaregiverShiftPreferenceCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverShiftPreference shiftPreference = findShiftPreference(actorMembership.getAgencyId(), shiftPreferenceId);
+        shiftPreference.updateDetails(
+                command.dayOfWeek(),
+                command.preferredStartTime(),
+                command.preferredEndTime(),
+                command.preferredShiftLengthMinutes(),
+                command.preferredVisitTypes(),
+                command.preferenceStrength(),
+                command.notes());
+        CaregiverShiftPreference saved = caregiverShiftPreferenceRepository.saveAndFlush(shiftPreference);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_SHIFT_PREFERENCE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverShiftPreference deactivateShiftPreference(@NotNull AgencyMembership actorMembership, @NotNull UUID shiftPreferenceId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
+        CaregiverShiftPreference shiftPreference = findShiftPreference(actorMembership.getAgencyId(), shiftPreferenceId);
+        shiftPreference.deactivate();
+        CaregiverShiftPreference saved = caregiverShiftPreferenceRepository.saveAndFlush(shiftPreference);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_SHIFT_PREFERENCE,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
         return saved;
     }
 
@@ -223,6 +470,55 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverAvailability updateAvailability(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID availabilityId,
+            @Valid ManageCaregiverAvailabilityCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_AVAILABILITY);
+        CaregiverAvailability availability = findAvailability(actorMembership.getAgencyId(), availabilityId);
+        availability.updateDetails(
+                findBranch(actorMembership.getAgencyId(), command.branchId()),
+                command.availabilityType(),
+                command.startsAt(),
+                command.endsAt(),
+                command.dayOfWeek(),
+                command.startTime(),
+                command.endTime(),
+                command.effectiveFrom(),
+                command.effectiveTo(),
+                command.notes());
+        List<CaregiverAvailability> existing = caregiverAvailabilityRepository.findAllByCaregiverProfile_IdOrderByCreatedAtAsc(availability.getCaregiverProfileId());
+        if (existing.stream()
+                .filter(item -> !item.getId().equals(availability.getId()) && item.getStatus() == WorkforceLifecycleStatus.ACTIVE)
+                .anyMatch(item -> item.overlaps(availability))) {
+            throw new WorkforceConflictException("Availability overlaps an existing active availability window.");
+        }
+        CaregiverAvailability saved = caregiverAvailabilityRepository.saveAndFlush(availability);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_AVAILABILITY,
+                saved.getId(),
+                saved.getBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverAvailability deactivateAvailability(@NotNull AgencyMembership actorMembership, @NotNull UUID availabilityId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_AVAILABILITY);
+        CaregiverAvailability availability = findAvailability(actorMembership.getAgencyId(), availabilityId);
+        availability.deactivate();
+        CaregiverAvailability saved = caregiverAvailabilityRepository.saveAndFlush(availability);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_AVAILABILITY,
+                saved.getId(),
+                saved.getBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverUnavailability createUnavailability(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId, @Valid ManageCaregiverUnavailabilityCommand command) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_UNAVAILABILITY);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
@@ -244,6 +540,51 @@ public class CaregiverWorkforceService {
     }
 
     @Transactional
+    public CaregiverUnavailability updateUnavailability(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID unavailabilityId,
+            @Valid ManageCaregiverUnavailabilityCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_UNAVAILABILITY);
+        CaregiverUnavailability unavailability = findUnavailability(actorMembership.getAgencyId(), unavailabilityId);
+        unavailability.updateDetails(
+                command.reasonType(),
+                command.startsAt(),
+                command.endsAt(),
+                command.allDay(),
+                command.approvalStatus(),
+                command.notes());
+        List<CaregiverUnavailability> existing = caregiverUnavailabilityRepository.findAllByCaregiverProfile_IdOrderByCreatedAtAsc(unavailability.getCaregiverProfileId());
+        if (existing.stream()
+                .filter(item -> !item.getId().equals(unavailability.getId()) && item.getStatus() == WorkforceLifecycleStatus.ACTIVE)
+                .anyMatch(item -> item.overlaps(unavailability))) {
+            throw new WorkforceConflictException("Unavailability overlaps an existing active unavailability window.");
+        }
+        CaregiverUnavailability saved = caregiverUnavailabilityRepository.saveAndFlush(unavailability);
+        workforceAuditService.recordUpdated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_UNAVAILABILITY,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverUnavailability deactivateUnavailability(@NotNull AgencyMembership actorMembership, @NotNull UUID unavailabilityId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_UNAVAILABILITY);
+        CaregiverUnavailability unavailability = findUnavailability(actorMembership.getAgencyId(), unavailabilityId);
+        unavailability.deactivate();
+        CaregiverUnavailability saved = caregiverUnavailabilityRepository.saveAndFlush(unavailability);
+        workforceAuditService.recordDeactivated(
+                actorMembership,
+                Epic4WorkforceTargetType.CAREGIVER_UNAVAILABILITY,
+                saved.getId(),
+                saved.getCaregiverProfile().getPrimaryBranchId(),
+                metadata(saved.getStatus().name()));
+        return saved;
+    }
+
+    @Transactional
     public CaregiverProfile deactivateProfile(@NotNull AgencyMembership actorMembership, @NotNull UUID caregiverProfileId) {
         requirePermission(actorMembership, AgencyPermission.MANAGE_CAREGIVER_PROFILES);
         CaregiverProfile profile = findProfile(actorMembership.getAgencyId(), caregiverProfileId);
@@ -260,6 +601,41 @@ public class CaregiverWorkforceService {
     private CaregiverProfile findProfile(UUID agencyId, UUID caregiverProfileId) {
         return caregiverProfileRepository.findByIdAndAgency_Id(caregiverProfileId, agencyId)
                 .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverProfile", caregiverProfileId));
+    }
+
+    private CaregiverCredential findCredential(UUID agencyId, UUID credentialId) {
+        return caregiverCredentialRepository.findByIdAndAgency_Id(credentialId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverCredential", credentialId));
+    }
+
+    private CaregiverLanguageProfile findLanguage(UUID agencyId, UUID languageId) {
+        return caregiverLanguageProfileRepository.findByIdAndAgency_Id(languageId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverLanguage", languageId));
+    }
+
+    private CaregiverSkillProfile findSkillProfile(UUID agencyId, UUID caregiverSkillProfileId) {
+        return caregiverSkillProfileRepository.findByIdAndAgency_Id(caregiverSkillProfileId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverSkillProfile", caregiverSkillProfileId));
+    }
+
+    private CaregiverGeographyPreference findGeographyPreference(UUID agencyId, UUID geographyPreferenceId) {
+        return caregiverGeographyPreferenceRepository.findByIdAndAgency_Id(geographyPreferenceId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverGeographyPreference", geographyPreferenceId));
+    }
+
+    private CaregiverShiftPreference findShiftPreference(UUID agencyId, UUID shiftPreferenceId) {
+        return caregiverShiftPreferenceRepository.findByIdAndAgency_Id(shiftPreferenceId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverShiftPreference", shiftPreferenceId));
+    }
+
+    private CaregiverAvailability findAvailability(UUID agencyId, UUID availabilityId) {
+        return caregiverAvailabilityRepository.findByIdAndAgency_Id(availabilityId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverAvailability", availabilityId));
+    }
+
+    private CaregiverUnavailability findUnavailability(UUID agencyId, UUID unavailabilityId) {
+        return caregiverUnavailabilityRepository.findByIdAndAgency_Id(unavailabilityId, agencyId)
+                .orElseThrow(() -> new WorkforceEntityNotFoundException("CaregiverUnavailability", unavailabilityId));
     }
 
     private Branch findBranch(UUID agencyId, UUID branchId) {
@@ -292,6 +668,17 @@ public class CaregiverWorkforceService {
         }
         String normalized = value.trim();
         return normalized.isBlank() ? null : normalized;
+    }
+
+    private static String normalizeLanguageCode(String value) {
+        String normalized = normalizeNullable(value);
+        if (normalized == null) {
+            throw new IllegalArgumentException("languageCode must not be blank");
+        }
+        if (!normalized.matches("(?i)^[a-z]{2,3}(-[a-z]{2})?$")) {
+            throw new IllegalArgumentException("Invalid caregiver language tag");
+        }
+        return Locale.forLanguageTag(normalized).toLanguageTag();
     }
 
     private static String metadata(String status) {

@@ -90,6 +90,10 @@ public class CaregiverLanguageProfile extends AgencyScopedEntity {
         this.status = WorkforceLifecycleStatus.INACTIVE;
     }
 
+    public UUID getCaregiverProfileId() {
+        return caregiverProfile == null ? null : caregiverProfile.getId();
+    }
+
     private void assignProfile(CaregiverProfile caregiverProfile) {
         this.caregiverProfile = Objects.requireNonNull(caregiverProfile, "caregiverProfile must not be null");
         assignAgency(caregiverProfile.getAgency());
