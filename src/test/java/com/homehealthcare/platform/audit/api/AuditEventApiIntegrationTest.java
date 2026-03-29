@@ -21,6 +21,8 @@ import com.homehealthcare.security.tenant.TenantAccessPrincipal;
 import com.homehealthcare.security.tenant.TenantMembership;
 import com.homehealthcare.user.domain.User;
 import com.homehealthcare.user.domain.UserRepository;
+import com.homehealthcare.workforce.foundation.Epic4WorkforceAuditAction;
+import com.homehealthcare.workforce.foundation.Epic4WorkforceTargetType;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
@@ -167,6 +169,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic3PatientTargetType.PATIENT.name())))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic3PatientAuditAction.CREATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic4WorkforceEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID caregiverProfileId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic4WorkforceAuditAction.CREATED.actionType(),
+                Epic4WorkforceTargetType.CAREGIVER_PROFILE.name(),
+                caregiverProfileId,
+                agency.getId(),
+                null,
+                "{\"status\":\"ACTIVE\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic4WorkforceAuditAction.CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic4WorkforceAuditAction.CREATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic4WorkforceTargetType.CAREGIVER_PROFILE.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic4WorkforceAuditAction.CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic4WorkforceTargetType.CAREGIVER_PROFILE.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic4WorkforceAuditAction.CREATED.actionType())));
     }
 
     @Test

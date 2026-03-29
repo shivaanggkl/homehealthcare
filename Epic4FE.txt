@@ -1,0 +1,397 @@
+Epic 4 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 4 from `Requirements.txt` into a frontend delivery backlog for the web application.
+
+Epic 4 title
+
+Caregiver workforce management
+
+Epic 4 feature scope from the requirements
+
+- caregiver profile
+- credentials / licensure
+- availability
+- preferred geography
+- language
+- skills
+- shift preferences
+- PTO / unavailability
+- performance indicators
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide the app shell, permissions, navigation, and audit viewer
+- Epic 2 setup data is available and reusable where Epic 4 screens need branch data, skills, certifications, or service-line context
+- Epic 3 patient workflows are complete, but Epic 4 remains workforce-scoped rather than scheduling-board-scoped
+- Epic 4 is primarily an admin and coordinator web experience in this phase
+- Epic 4 should not absorb drag-and-drop scheduling or visit-assignment behavior because those belong to Epic 5
+- workforce performance indicators in Epic 4 are profile and directory surfaces, not full dashboard analytics
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 4 backend APIs
+
+========================================================================
+FE4-01 — Workforce workspace navigation and information architecture
+Related Epic 4 features: all
+Backend status: BLOCKED
+
+Story
+As an agency user, I want a coherent caregiver workforce area in the app so staff records are easy to find and manage.
+
+Frontend acceptance criteria
+
+- a dedicated caregiver or workforce section exists in navigation
+- routes are grouped by workforce management domain
+- role-based navigation visibility follows backend permissions
+- unauthorized deep links render controlled `403` states
+- workforce screens share consistent list, detail, and form patterns
+
+========================================================================
+FE4-02 — Caregiver directory and search screen
+Related Epic 4 features: caregiver profile
+Backend status: BLOCKED
+
+Story
+As an agency admin or coordinator, I want a searchable caregiver directory so I can find and open workforce records quickly.
+
+Frontend acceptance criteria
+
+- searchable list exists
+- pagination exists
+- status filtering exists
+- branch filtering exists if supported
+- key identity columns are visible
+- row click or action opens a caregiver detail workspace
+- duplicate, conflict, or unauthorized states are handled clearly
+
+========================================================================
+FE4-03 — Caregiver profile create and edit screen
+Related Epic 4 features: caregiver profile
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to create and update caregiver workforce profiles so operational staff data stays current.
+
+Frontend acceptance criteria
+
+- create form exists
+- edit form exists
+- fields support the backend-approved caregiver profile model
+- validation errors are shown inline
+- status changes are shown with controlled confirmation UX if supported
+- profile conflicts are surfaced clearly
+
+========================================================================
+FE4-04 — Caregiver detail workspace shell
+Related Epic 4 features: all
+Backend status: BLOCKED
+
+Story
+As an agency user, I want a caregiver detail workspace so all workforce-related modules are reachable from one organized surface.
+
+Frontend acceptance criteria
+
+- caregiver detail header exists
+- tabs or secondary navigation organize:
+  - profile
+  - credentials
+  - skills and languages
+  - geography
+  - shift preferences
+  - availability
+  - PTO / unavailability
+  - performance
+- unauthorized or unavailable sections degrade gracefully
+- loading and empty states are consistent
+
+========================================================================
+FE4-05 — Credentials and licensure management screen
+Related Epic 4 features: credentials / licensure
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver credentials so workforce qualification data remains accurate.
+
+Frontend acceptance criteria
+
+- credential list exists
+- create and edit workflow exists
+- expiration and status are visible
+- invalid date windows or duplicate conflicts are shown clearly
+- empty-state UX exists when no credentials are present
+
+========================================================================
+FE4-06 — Language and communication attributes screen
+Related Epic 4 features: language
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver language attributes so workforce communication capabilities stay visible.
+
+Frontend acceptance criteria
+
+- language list exists
+- add and edit workflow exists
+- primary language and proficiency states are visible if supported
+- duplicate language conflicts are shown clearly
+
+========================================================================
+FE4-07 — Skill profile management screen
+Related Epic 4 features: skills
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver skills so workforce capabilities are visible for later scheduling and matching flows.
+
+Frontend acceptance criteria
+
+- skill list exists
+- create and edit workflow exists
+- configured skill catalog linkage is visible if supported
+- proficiency or verification state is visible if supported
+- duplicate or validation conflicts are shown clearly
+
+========================================================================
+FE4-08 — Preferred geography screen
+Related Epic 4 features: preferred geography
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver geography preferences so travel expectations are recorded clearly.
+
+Frontend acceptance criteria
+
+- geography preference list exists
+- create and edit workflow exists
+- area, branch, or radius representation is understandable in the UI
+- ordering or priority is visible if supported
+- invalid geography payloads are shown clearly
+
+========================================================================
+FE4-09 — Shift preferences screen
+Related Epic 4 features: shift preferences
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver shift preferences so work pattern preferences stay visible.
+
+Frontend acceptance criteria
+
+- shift preference list exists
+- create and edit workflow exists
+- day, time window, and preferred pattern data are understandable in the UI
+- recurring preference behavior is visible if supported
+- validation and overlap conflicts are shown clearly
+
+========================================================================
+FE4-10 — Availability management screen
+Related Epic 4 features: availability
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver availability so future scheduling flows have accurate workforce inputs.
+
+Frontend acceptance criteria
+
+- availability list or calendar-style representation exists
+- create and edit workflow exists
+- recurring and date-specific availability are distinguishable if supported
+- active vs historical windows are visible
+- overlap or invalid-window conflicts are shown clearly
+
+========================================================================
+FE4-11 — PTO and unavailability screen
+Related Epic 4 features: PTO / unavailability
+Backend status: BLOCKED
+
+Story
+As an agency user, I want to manage caregiver PTO and blocked time so schedulability is easy to understand.
+
+Frontend acceptance criteria
+
+- PTO or unavailability list exists
+- create and edit workflow exists
+- reason, date window, and approval state are visible if supported
+- overlap conflicts are shown clearly
+- clear empty-state UX exists when no blocked-time records are present
+
+========================================================================
+FE4-12 — Performance indicator screen
+Related Epic 4 features: performance indicators
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want a concise caregiver performance view so I can understand operational quality signals quickly.
+
+Frontend acceptance criteria
+
+- performance summary cards or table exists
+- supported indicators are visible without visual clutter
+- time-window or filter selection is shown if supported
+- unavailable metrics degrade cleanly
+- no internal-only analytics metadata is exposed
+
+========================================================================
+FE4-13 — Shared caregiver detail layout and record-side navigation
+Related Epic 4 features: all caregiver detail modules
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable caregiver workspace patterns so Epic 4 record screens stay consistent and efficient to build.
+
+Frontend acceptance criteria
+
+- reusable caregiver header/detail shell exists
+- reusable section navigation exists
+- loading, empty, validation, and unauthorized states are standardized
+- modules can opt into read-only or editable behavior cleanly
+
+========================================================================
+FE4-14 — Caregiver create/edit form framework
+Related Epic 4 features: caregiver profile, credentials, skills, geography, shift preferences, availability, PTO / unavailability
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable caregiver forms so Epic 4 data-entry screens remain consistent and maintainable.
+
+Frontend acceptance criteria
+
+- shared form primitives support:
+  - inline validation
+  - submit success feedback
+  - conflict handling
+  - destructive confirmation
+- date-range patterns are reusable
+- flag and preference patterns are reusable
+- form-level API errors are shown consistently
+
+========================================================================
+FE4-15 — Workforce permission-aware routes and menu updates
+Related Epic 4 features: all
+Backend status: BLOCKED
+
+Story
+As the UI, I want Epic 4 workforce routes to follow backend permissions so users only see workforce areas they can actually use.
+
+Frontend acceptance criteria
+
+- Epic 4 routes are permission-gated
+- menus are hidden or disabled based on permissions
+- read-only roles are handled cleanly if supported
+- unauthorized deep links render controlled `403` states
+
+========================================================================
+FE4-16 — Workforce overview dashboard and quick-entry flows
+Related Epic 4 features: caregiver profile, credentials / licensure, availability, PTO / unavailability, performance indicators
+Backend status: BLOCKED
+
+Story
+As an agency owner or coordinator, I want a workforce overview so I can see whether caregiver setup data is complete.
+
+Frontend acceptance criteria
+
+- workforce overview screen exists or directory summary supports:
+  - active caregiver count
+  - expiring credentials count if supported
+  - blocked or unavailable caregiver count if supported
+  - incomplete profile indicators if supported
+- quick-entry paths exist for common add actions
+- links route into caregiver detail modules
+
+========================================================================
+FE4-17 — Workforce audit visibility and mutation-sensitive UX
+Related Epic 4 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin, I want workforce screens to reflect audit-sensitive changes so the UI reinforces that caregiver changes are controlled operations.
+
+Frontend acceptance criteria
+
+- audit-sensitive messaging appears on mutation screens
+- success states indicate that changes are logged
+- where useful, screens can link out to filtered audit log views
+- no internal-only metadata is exposed unnecessarily
+
+========================================================================
+FE4-18 — Mobile-responsive workforce administration
+Related Epic 4 features: all web-admin Epic 4 screens
+Backend status: BLOCKED
+
+Story
+As an agency user, I want workforce administration screens to remain usable on smaller screens so urgent caregiver updates are still possible away from a desktop.
+
+Frontend acceptance criteria
+
+- workforce list and detail screens remain usable on tablet and small laptop widths
+- section navigation stays accessible
+- forms, availability controls, and credential actions remain usable on smaller viewports
+- no critical Epic 4 screen breaks the layout on mobile-sized viewports
+
+========================================================================
+FE4-19 — Frontend regression coverage for Epic 4 workforce flows
+Related Epic 4 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 4 workforce screens so caregiver-management flows remain stable as scheduling features are added later.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 4 routes
+- happy-path interaction coverage exists for representative workforce modules
+- validation and conflict states are covered
+- unauthorized-state rendering is covered
+- availability or credential failure states are covered where practical
+
+Recommended implementation order
+
+Phase A — shared workforce UI foundation
+
+- `FE4-01`
+- `FE4-04`
+- `FE4-13`
+- `FE4-14`
+- `FE4-15`
+
+Phase B — core workforce record modules
+
+- `FE4-02`
+- `FE4-03`
+- `FE4-05`
+- `FE4-06`
+- `FE4-07`
+- `FE4-12`
+
+Phase C — workforce preferences and schedulability inputs
+
+- `FE4-08`
+- `FE4-09`
+- `FE4-10`
+- `FE4-11`
+- `FE4-16`
+
+Phase D — audit-aware UX
+
+- `FE4-17`
+
+Phase E — hardening
+
+- `FE4-18`
+- `FE4-19`
+
+Definition of done for Epic 4 frontend
+
+Epic 4 frontend is done only when:
+
+- caregiver records are reachable from the app shell through a dedicated workforce workspace
+- Epic 4 screens use backend APIs rather than placeholder local state
+- create/edit flows for caregiver profile, credentials, languages, skills, geography, shift preferences, availability, PTO or unavailability, and performance views are usable and permission-aware
+- conflict, validation, and unauthorized errors are shown clearly
+- caregiver detail navigation is coherent and reusable
+- audit-sensitive workforce changes are reflected in the UI
+- core Epic 4 screens are regression-covered

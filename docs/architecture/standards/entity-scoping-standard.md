@@ -31,6 +31,13 @@ Use this pattern for:
 - patient authorizations
 - patient attachment metadata
 - caregivers
+- caregiver credentials
+- caregiver language profiles
+- caregiver skill profiles
+- caregiver geography preferences
+- caregiver shift preferences
+- caregiver availability windows
+- caregiver unavailability windows
 - service lines
 - task templates
 - payer configuration

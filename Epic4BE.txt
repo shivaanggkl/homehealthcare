@@ -1,0 +1,500 @@
+Epic 4 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 4 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 4 title
+
+Caregiver workforce management
+
+Epic 4 feature scope from the requirements
+
+- caregiver profile
+- credentials / licensure
+- availability
+- preferred geography
+- language
+- skills
+- shift preferences
+- PTO / unavailability
+- performance indicators
+
+Planning assumptions
+
+- Epic 1 is complete and available as the security, tenancy, RBAC, audit, and session foundation
+- Epic 2 is complete and provides reusable agency setup data such as service lines, visit types, skills, certifications, and branch policies
+- Epic 3 is complete and provides patient and attachment patterns, but Epic 4 remains workforce-scoped rather than patient-scoped
+- caregiver workforce records are agency-scoped, with branch association supported where the operating model needs branch-limited assignment or visibility
+- Epic 4 should stop short of full scheduling-board logic, route optimization, or visit assignment automation because those belong to Epic 5
+- performance indicators in Epic 4 are operational rollups and profile-visible metrics, not full analytics warehousing
+
+Scope rule
+
+- Include only Epic 4 backend work
+- Cover domain model, validation, authorization, audit, public APIs, and tests
+- Do not include frontend-only tasks
+- Do not pull scheduling-engine logic from Epic 5 into Epic 4
+
+Status legend
+
+- NOT STARTED: no Epic 4 implementation exists yet
+
+========================================================================
+BE4-01 — Define caregiver workforce domain architecture and lifecycle rules
+Related Epic 4 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent caregiver workforce domain so all Epic 4 records follow consistent ownership, status, and history rules.
+
+Recommended acceptance criteria
+
+- caregiver workforce records are classified as:
+  - core caregiver profile
+  - credentials and licensure
+  - skills and languages
+  - geography and branch alignment
+  - availability and shift preferences
+  - PTO and unavailability windows
+  - performance indicators
+- caregiver lifecycle states are defined
+- inactive, suspended, and no-longer-schedulable behavior is defined
+- audit expectations are defined for all Epic 4 entities
+- future extension points for scheduling, assignment matching, and visit execution are documented
+
+========================================================================
+BE4-02 — Create caregiver profile model
+Related Epic 4 features: caregiver profile
+Current status: NOT STARTED
+
+Story
+As the backend, I need a caregiver profile record so workforce-specific information exists separately from the base user account.
+
+Recommended acceptance criteria
+
+- caregiver profile entity exists
+- caregiver profile is linked to user and agency membership
+- fields include:
+  - id
+  - agency_id
+  - user_id
+  - status
+  - caregiver_code or external_reference optional
+  - display_name or preferred_work_name optional
+  - primary_branch_id optional
+  - employment_type optional
+  - start_date optional
+  - end_date optional
+  - notes optional
+- one active caregiver profile per agency membership is supported
+- caregiver profile changes are audited
+
+========================================================================
+BE4-03 — Create caregiver credentials and licensure model
+Related Epic 4 features: credentials / licensure
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured credential and licensure records so agencies can track workforce qualifications safely.
+
+Recommended acceptance criteria
+
+- caregiver credential entity exists
+- multiple credentials or licenses can be linked to a caregiver
+- fields include:
+  - credential_type or certification reference
+  - license_number optional
+  - issuing_authority optional
+  - issued_on optional
+  - expires_on optional
+  - status
+  - verification_status optional
+  - notes optional
+- active vs expired vs suspended state is supported
+- duplicate credential records are controlled within a caregiver profile
+- credential changes are audited
+
+========================================================================
+BE4-04 — Create caregiver language and communication attributes model
+Related Epic 4 features: language
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured caregiver language data so later matching and profile views can reflect communication capabilities.
+
+Recommended acceptance criteria
+
+- caregiver language linkage exists
+- a caregiver can have multiple languages
+- fields include:
+  - language_code or configured language value
+  - proficiency level optional
+  - primary_language flag optional
+- duplicate language assignment is prevented
+- language changes are audited
+
+========================================================================
+BE4-05 — Create caregiver skill profile model
+Related Epic 4 features: skills
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver skill linkage so agencies can track workforce capabilities against configured skill catalogs.
+
+Recommended acceptance criteria
+
+- caregiver skill linkage exists
+- linkage references Epic 2 caregiver skill catalog entries when available
+- fields include:
+  - caregiver_profile_id
+  - skill_id or free-text fallback only if product-approved
+  - proficiency_level optional
+  - verified flag optional
+  - notes optional
+- duplicate skill assignment is prevented
+- skill profile changes are audited
+
+========================================================================
+BE4-06 — Create caregiver preferred geography model
+Related Epic 4 features: preferred geography
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver geography preferences so later scheduling and matching workflows can respect travel expectations.
+
+Recommended acceptance criteria
+
+- caregiver geography preference model exists
+- a caregiver can have multiple preferred areas
+- supported geography expression is defined as product-approved:
+  - branch
+  - postal code
+  - city/state
+  - radius from anchor point
+- fields include:
+  - preference_type
+  - geographic_value or coordinates
+  - radius_miles optional
+  - priority or rank optional
+  - notes optional
+- geography changes are audited
+
+========================================================================
+BE4-07 — Create caregiver shift preference model
+Related Epic 4 features: shift preferences
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver shift preferences so agencies can capture when and how a caregiver prefers to work.
+
+Recommended acceptance criteria
+
+- shift preference model exists
+- fields include:
+  - day_of_week or recurring pattern
+  - preferred_start_time optional
+  - preferred_end_time optional
+  - preferred_shift_length optional
+  - preferred_visit_types optional
+  - preference_strength optional
+  - notes optional
+- recurring preference patterns are supported
+- shift preference changes are audited
+
+========================================================================
+BE4-08 — Create caregiver availability model
+Related Epic 4 features: availability
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured caregiver availability so later scheduling workflows can consume a clear source of truth.
+
+Recommended acceptance criteria
+
+- caregiver availability model exists
+- both recurring and date-specific availability can be represented
+- fields include:
+  - availability_type
+  - starts_at or start_time
+  - ends_at or end_time
+  - day_of_week optional
+  - effective_from optional
+  - effective_to optional
+  - branch_id optional
+  - notes optional
+- overlapping-rule behavior is defined
+- availability changes are audited
+
+========================================================================
+BE4-09 — Create PTO and unavailability model
+Related Epic 4 features: PTO / unavailability
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit unavailability records so agencies can distinguish normal availability from blocked time.
+
+Recommended acceptance criteria
+
+- caregiver unavailability entity exists
+- fields include:
+  - reason_type
+  - starts_at
+  - ends_at
+  - all_day flag optional
+  - approval_status optional
+  - notes optional
+- PTO and other unavailable reasons are distinguishable
+- overlap conflicts with existing unavailability are controlled
+- changes are audited
+
+========================================================================
+BE4-10 — Define workforce performance indicator contract
+Related Epic 4 features: performance indicators
+Current status: NOT STARTED
+
+Story
+As the backend, I need a clear performance indicator contract so caregiver profiles can surface operational metrics without embedding full analytics logic into the core profile entities.
+
+Recommended acceptance criteria
+
+- performance indicator model or read model is defined
+- supported indicators for Epic 4 are documented and implemented as product-approved values such as:
+  - completed visits count
+  - missed visit count
+  - on-time percentage
+  - documentation completion percentage
+  - exception count
+- time-window semantics are defined
+- indicators are agency-scoped and caregiver-scoped
+- audit expectations for derived metric refreshes are documented
+
+========================================================================
+BE4-11 — Add workforce duplicate and integrity guardrails
+Related Epic 4 features: caregiver profile, credentials / licensure, availability, PTO / unavailability
+Current status: NOT STARTED
+
+Story
+As the backend, I need workforce-specific conflict guardrails so caregiver records remain safe and schedulable.
+
+Recommended acceptance criteria
+
+- duplicate caregiver-profile creation is prevented for the same user and agency
+- duplicate or conflicting credentials are controlled
+- overlapping availability and unavailability conflicts are validated according to product-approved rules
+- invalid date or time windows fail cleanly
+- guardrail failures return controlled domain exceptions
+
+========================================================================
+BE4-12 — Extend authorization matrix for workforce management
+Related Epic 4 features: all
+Current status: NOT STARTED
+
+Story
+As the security model, I need Epic 4 workforce permissions so caregiver management follows agency and branch access rules.
+
+Recommended acceptance criteria
+
+- permissions are added for:
+  - view workforce directory
+  - manage caregiver profiles
+  - manage credentials
+  - manage availability
+  - manage PTO or unavailability
+  - view performance indicators
+- branch-scoped visibility rules are defined where needed
+- permission mapping remains compatible with Epic 1 role infrastructure
+
+========================================================================
+BE4-13 — Create caregiver directory and search API
+Related Epic 4 features: caregiver profile
+Current status: NOT STARTED
+
+Story
+As the backend, I need a caregiver directory API so the frontend can search and open workforce records efficiently.
+
+Recommended acceptance criteria
+
+- `GET /api/caregivers` or equivalent exists
+- search is supported
+- pagination is supported
+- status filtering is supported
+- branch filtering is supported if applicable
+- key list fields include:
+  - caregiver id
+  - display name
+  - linked user identity summary
+  - branch summary
+  - workforce status
+  - key contact info if product-approved
+
+========================================================================
+BE4-14 — Create caregiver profile detail and edit APIs
+Related Epic 4 features: caregiver profile
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver profile APIs so agencies can create, view, update, and deactivate workforce records.
+
+Recommended acceptance criteria
+
+- create caregiver profile endpoint exists
+- caregiver detail endpoint exists
+- update caregiver profile endpoint exists
+- deactivate or archive behavior exists if product-approved
+- duplicate or conflict states return controlled errors
+
+========================================================================
+BE4-15 — Create caregiver credential APIs
+Related Epic 4 features: credentials / licensure
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver credential APIs so qualifications can be maintained and validated from the frontend.
+
+Recommended acceptance criteria
+
+- list credentials endpoint exists
+- create credential endpoint exists
+- update credential endpoint exists
+- deactivate or archive behavior exists if product-approved
+- expired and invalid status handling is explicit
+
+========================================================================
+BE4-16 — Create caregiver language and skill APIs
+Related Epic 4 features: language, skills
+Current status: NOT STARTED
+
+Story
+As the backend, I need caregiver language and skill APIs so profile capabilities can be maintained consistently.
+
+Recommended acceptance criteria
+
+- caregiver language list and mutation endpoints exist
+- caregiver skill list and mutation endpoints exist
+- duplicates are rejected cleanly
+- configured Epic 2 skill catalog references are validated
+
+========================================================================
+BE4-17 — Create caregiver geography and shift preference APIs
+Related Epic 4 features: preferred geography, shift preferences
+Current status: NOT STARTED
+
+Story
+As the backend, I need geography and shift preference APIs so workforce preference data can be maintained cleanly.
+
+Recommended acceptance criteria
+
+- caregiver geography preference list and mutation endpoints exist
+- caregiver shift preference list and mutation endpoints exist
+- recurring or ranked preference payloads are validated
+- invalid geography payloads fail cleanly
+
+========================================================================
+BE4-18 — Create caregiver availability and PTO APIs
+Related Epic 4 features: availability, PTO / unavailability
+Current status: NOT STARTED
+
+Story
+As the backend, I need availability and unavailability APIs so schedulability inputs are available to the frontend and future scheduling engine.
+
+Recommended acceptance criteria
+
+- caregiver availability list and mutation endpoints exist
+- caregiver unavailability or PTO list and mutation endpoints exist
+- overlap conflicts return controlled errors
+- recurring and date-specific windows are both supported if product-approved
+
+========================================================================
+BE4-19 — Create caregiver performance indicator API
+Related Epic 4 features: performance indicators
+Current status: NOT STARTED
+
+Story
+As the backend, I need workforce performance indicator APIs so caregiver detail views can show operational quality signals.
+
+Recommended acceptance criteria
+
+- caregiver performance summary endpoint exists
+- time-window parameters are supported if product-approved
+- unsupported or unavailable metrics degrade cleanly
+- no heavyweight analytics-only internals are exposed
+
+========================================================================
+BE4-20 — Create workforce audit visibility support
+Related Epic 4 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need workforce changes to be audit-visible so caregiver operations are traceable.
+
+Recommended acceptance criteria
+
+- caregiver profile changes are audit-logged
+- credential changes are audit-logged
+- availability and PTO changes are audit-logged
+- Epic 1 audit APIs can query the new workforce audit actions
+
+========================================================================
+BE4-21 — Add Epic 4 backend regression coverage
+Related Epic 4 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need regression coverage for Epic 4 backend APIs so workforce management remains stable as scheduling features are added later.
+
+Recommended acceptance criteria
+
+- integration coverage exists for representative caregiver APIs
+- authorization denial coverage exists
+- overlap and conflict guardrail coverage exists
+- representative audit assertions exist
+- Epic 4 API coverage is runnable in CI
+
+Recommended implementation order
+
+Phase A — workforce domain foundation
+
+- `BE4-01`
+- `BE4-10`
+- `BE4-11`
+- `BE4-12`
+
+Phase B — core workforce record model
+
+- `BE4-02`
+- `BE4-03`
+- `BE4-04`
+- `BE4-05`
+- `BE4-06`
+- `BE4-07`
+- `BE4-08`
+- `BE4-09`
+
+Phase C — public API layer
+
+- `BE4-13`
+- `BE4-14`
+- `BE4-15`
+- `BE4-16`
+- `BE4-17`
+- `BE4-18`
+- `BE4-19`
+- `BE4-20`
+
+Phase D — hardening
+
+- `BE4-21`
+
+Definition of done for Epic 4 backend
+
+Epic 4 backend is done only when:
+
+- caregiver workforce records are modeled separately from base user accounts and can be maintained through public APIs
+- credentials, languages, skills, geography preferences, shift preferences, availability, and PTO or unavailability are represented through auditable backend entities
+- Epic 4 APIs are permission-aware and compatible with branch-scoped access rules
+- overlap, duplicate, and invalid-window conflicts are returned as controlled errors
+- performance indicators are available through a defined backend contract
+- workforce changes are audit-visible
+- Epic 4 backend regression coverage exists for representative CRUD, denial, and conflict behavior

@@ -8,6 +8,7 @@
 - `docs/architecture/adr/0004-secure-session-token-strategy.md` records the approved auth session model for `E1-S32`.
 - `docs/architecture/adr/0005-epic-2-configuration-foundation.md` records the approved shared foundation for Epic 2 configuration modules.
 - `docs/architecture/adr/0006-epic-3-patient-domain-foundation.md` records the approved shared foundation for Epic 3 patient modules.
+- `docs/architecture/adr/0007-epic-4-workforce-domain-foundation.md` records the approved shared foundation for Epic 4 workforce modules.
 - `docs/architecture/erd/e1-s01-tenancy-model.mmd` is the source ERD for the tenancy foundation.
 - `docs/architecture/standards/entity-scoping-standard.md` defines `agency_id` and `branch_id` standards for future entities.
 - `docs/architecture/standards/migration-pattern.md` defines the migration checklist for tenant-aware tables.
@@ -23,6 +24,8 @@
 - `docs/architecture/standards/configuration-lifecycle-standard.md` defines the shared lifecycle, effective-date, and dependency rules for Epic 2 configuration entities.
 - `docs/architecture/standards/patient-domain-standard.md` defines shared categories, fields, and audit expectations for Epic 3 patient modules.
 - `docs/architecture/standards/patient-lifecycle-standard.md` defines the shared lifecycle, duplicate, archival, and attachment rules for Epic 3 patient entities.
+- `docs/architecture/standards/workforce-domain-standard.md` defines shared categories, fields, and audit expectations for Epic 4 workforce modules.
+- `docs/architecture/standards/workforce-lifecycle-standard.md` defines the shared lifecycle, schedulability, and guardrail rules for Epic 4 workforce entities.
 - `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.

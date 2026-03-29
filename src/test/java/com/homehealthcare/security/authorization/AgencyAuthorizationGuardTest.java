@@ -25,6 +25,8 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_AGENCY_CONFIGURATION)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_PATIENT_DIRECTORY)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_PATIENT_ATTACHMENTS)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_WORKFORCE_DIRECTORY)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_CAREGIVER_AVAILABILITY)).isTrue();
     }
 
     @Test
@@ -36,6 +38,8 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_TEMPLATE_CONFIGURATION)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_PATIENT_DIRECTORY)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_PATIENT_ATTACHMENTS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_WORKFORCE_DIRECTORY)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_CAREGIVER_PERFORMANCE)).isFalse();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,
@@ -61,6 +65,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(auditor, AgencyPermission.MANAGE_COMPENSATION_SETTINGS)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_PATIENT_DIRECTORY)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_PATIENT_ATTACHMENTS)).isFalse();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_WORKFORCE_DIRECTORY)).isFalse();
     }
 
     private AgencyMembership membership(AgencyRole role, boolean active) {

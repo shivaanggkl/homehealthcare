@@ -1,0 +1,13 @@
+package com.homehealthcare.workforce.foundation;
+
+public enum WorkforceEntityCategory {
+    CAREGIVER_PROFILE,
+    CREDENTIAL_LICENSURE,
+    LANGUAGE_COMMUNICATION,
+    SKILL_CAPABILITY,
+    GEOGRAPHY_PREFERENCE,
+    SHIFT_PREFERENCE,
+    AVAILABILITY_WINDOW,
+    UNAVAILABILITY_WINDOW,
+    PERFORMANCE_INDICATOR
+}
