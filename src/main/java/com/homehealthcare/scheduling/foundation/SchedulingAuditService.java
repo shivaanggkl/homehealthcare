@@ -32,6 +32,22 @@ public class SchedulingAuditService {
         record(actorMembership, Epic5SchedulingAuditAction.VISIT_UPDATED, Epic5SchedulingTargetType.VISIT_OCCURRENCE, targetId, branchId, metadataJson);
     }
 
+    public void recordRecurringRuleCreated(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic5SchedulingAuditAction.RECURRING_RULE_CREATED, Epic5SchedulingTargetType.RECURRING_VISIT_RULE, targetId, branchId, metadataJson);
+    }
+
+    public void recordRecurringRuleUpdated(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic5SchedulingAuditAction.RECURRING_RULE_UPDATED, Epic5SchedulingTargetType.RECURRING_VISIT_RULE, targetId, branchId, metadataJson);
+    }
+
     public void recordCaregiverAssigned(
             AgencyMembership actorMembership,
             UUID targetId,
