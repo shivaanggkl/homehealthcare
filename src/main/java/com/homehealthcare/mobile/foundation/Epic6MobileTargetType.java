@@ -1,0 +1,13 @@
+package com.homehealthcare.mobile.foundation;
+
+public enum Epic6MobileTargetType {
+    MOBILE_DEVICE_SESSION,
+    VISIT_EXECUTION_SESSION,
+    TASK_CHECKLIST_ENTRY,
+    QUICK_NOTE_ENTRY,
+    FIELD_PHOTO_ARTIFACT,
+    FIELD_SIGNATURE_ARTIFACT,
+    INCIDENT_REPORT,
+    MESSAGE_THREAD,
+    OFFLINE_SYNC_ENVELOPE
+}

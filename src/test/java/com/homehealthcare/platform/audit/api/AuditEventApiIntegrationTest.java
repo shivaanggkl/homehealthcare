@@ -18,6 +18,8 @@ import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
 import com.homehealthcare.scheduling.foundation.Epic5SchedulingAuditAction;
 import com.homehealthcare.scheduling.foundation.Epic5SchedulingTargetType;
+import com.homehealthcare.mobile.foundation.Epic6MobileAuditAction;
+import com.homehealthcare.mobile.foundation.Epic6MobileTargetType;
 import com.homehealthcare.security.branch.AgencyRole;
 import com.homehealthcare.security.tenant.TenantAccessPrincipal;
 import com.homehealthcare.security.tenant.TenantMembership;
@@ -239,6 +241,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic5SchedulingTargetType.VISIT_OCCURRENCE.name())))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic5SchedulingAuditAction.VISIT_CREATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic6MobileEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID sessionId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType(),
+                Epic6MobileTargetType.MOBILE_DEVICE_SESSION.name(),
+                sessionId,
+                agency.getId(),
+                null,
+                "{\"offlineSyncEnabled\":true}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic6MobileTargetType.MOBILE_DEVICE_SESSION.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic6MobileTargetType.MOBILE_DEVICE_SESSION.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic6MobileAuditAction.MOBILE_SESSION_BOOTSTRAPPED.actionType())));
     }
 
     @Test

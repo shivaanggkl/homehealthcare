@@ -44,6 +44,13 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_CAREGIVER_PERFORMANCE)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_SCHEDULING_WORKSPACE)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.CANCEL_VISITS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_OWN_MOBILE_VISITS)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.EXECUTE_OWN_VISITS)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SUBMIT_MOBILE_VISIT_DOCUMENTATION)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.UPLOAD_MOBILE_VISIT_ARTIFACTS)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.CREATE_MOBILE_INCIDENTS)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_MOBILE_MESSAGES)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SEND_MOBILE_MESSAGES)).isTrue();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,

@@ -1,0 +1,455 @@
+Epic 6 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 6 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 6 title
+
+Caregiver mobile app
+
+Epic 6 feature scope from the requirements
+
+- secure login
+- today’s visits
+- route/order of visits
+- patient summary
+- care instructions
+- start visit / end visit
+- GPS proof
+- offline-first support
+- signature capture
+- task checklist
+- quick notes
+- photo uploads
+- incident flagging
+- message center
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, and branch-aware authorization
+- Epic 2 is complete and provides agency configuration, visit types, service lines, alert rules, documentation templates, and setup catalogs
+- Epic 3 is complete and provides patient records, contacts, address, diagnoses, payer/authorization context, and patient attachment patterns
+- Epic 4 is complete and provides caregiver profiles, skills, credentials, geography, availability, and workforce context
+- Epic 5 is complete and provides visit, assignment, recurrence, conflict, reschedule, cancellation, and scheduling board APIs
+- Epic 6 is the caregiver-facing mobile execution layer, not the full compliance-grade EVV exception and missed-visit workflow from Epic 7
+- Epic 6 should produce durable visit-session and field-documentation records, not UI-only state
+- mobile execution must tolerate intermittent connectivity through sync-safe request and event models
+- secure mobile APIs should minimize data needed for field execution and avoid exposing admin-only scheduling internals
+
+Scope rule
+
+- Include only Epic 6 backend work
+- Cover mobile session contracts, visit-execution state, offline sync support, field notes/tasks/photos/signatures/incidents/messaging APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull full EVV compliance workflows, geofence tolerance policy engines, missed-visit escalation trees, or revenue-readiness review queues from later epics into Epic 6
+
+Status legend
+
+- NOT STARTED: no Epic 6 implementation exists yet
+
+========================================================================
+BE6-01 — Define caregiver mobile execution architecture and lifecycle rules
+Related Epic 6 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent mobile execution domain so caregiver-facing visit work follows consistent state, ownership, and audit rules.
+
+Recommended acceptance criteria
+
+- Epic 6 domain entities are defined explicitly, including:
+  - mobile device session context
+  - caregiver mobile inbox or today-work query model
+  - mobile visit execution session
+  - route stop/order projection
+  - care-instruction snapshot
+  - mobile task completion state
+  - quick note entry
+  - field photo attachment
+  - field signature artifact
+  - incident report
+  - mobile message thread summary
+  - offline sync envelope
+- visit-execution lifecycle states are defined for at least:
+  - not_started
+  - in_progress
+  - paused optional
+  - completed
+  - failed_sync optional
+- ownership expectations are documented for caregiver, visit, branch, patient, and assignment linkage
+- extension points for Epic 7 EVV and missed-visit exception flows are documented without implementing those later-epic behaviors fully
+- audit expectations are documented for all mobile execution mutations
+
+========================================================================
+BE6-02 — Create caregiver mobile home / today-work query model
+Related Epic 6 features: today’s visits, route/order of visits
+Current status: NOT STARTED
+
+Story
+As a caregiver using the mobile app, I need a backend today-work query so I can see the right visits in the right operational order.
+
+Recommended acceptance criteria
+
+- a mobile today-work query model exists
+- the query returns today’s assigned visits for the authenticated caregiver
+- each item includes enough context for the mobile app, including:
+  - visit id
+  - patient display summary
+  - branch optional
+  - planned start and end
+  - timezone
+  - schedule status
+  - route order if available
+  - current mobile execution status if any
+- day filtering behavior is explicit and timezone-aware
+- only the caregiver’s authorized assigned work is returned
+- the query is test-covered
+
+========================================================================
+BE6-03 — Create mobile visit execution session model
+Related Epic 6 features: start visit / end visit, GPS proof
+Current status: NOT STARTED
+
+Story
+As the backend, I need a visit execution session model so caregiver visit start and end actions are durable and auditable.
+
+Recommended acceptance criteria
+
+- mobile visit execution session entity exists
+- the session links to:
+  - visit occurrence
+  - caregiver profile or membership
+  - patient
+  - branch when applicable
+- fields include:
+  - started_at
+  - ended_at optional
+  - started_latitude optional
+  - started_longitude optional
+  - ended_latitude optional
+  - ended_longitude optional
+  - start_source and end_source optional
+  - execution_status
+  - sync_status optional
+- at most one active in-progress execution session exists per visit per caregiver unless product explicitly allows reopen behavior
+- visit start and end actions are audited
+
+========================================================================
+BE6-04 — Create caregiver route and visit-order projection
+Related Epic 6 features: route/order of visits
+Current status: NOT STARTED
+
+Story
+As the backend, I need a route/order projection so the mobile app can present assigned visits in a practical sequence.
+
+Recommended acceptance criteria
+
+- a caregiver route/day projection exists
+- route ordering can be derived from schedule time and explicit order overrides if supported
+- each route stop exposes:
+  - visit reference
+  - patient display summary
+  - address summary
+  - planned window
+  - sequence or sort order
+  - execution state summary
+- travel or map-provider internals are not required for the base contract
+- the projection is caregiver-scoped and test-covered
+
+========================================================================
+BE6-05 — Create patient summary and care-instruction mobile contract
+Related Epic 6 features: patient summary, care instructions
+Current status: NOT STARTED
+
+Story
+As a caregiver, I need patient summary and care-instruction data so I can prepare for the visit without loading the entire admin chart.
+
+Recommended acceptance criteria
+
+- a mobile-safe patient summary contract exists for scheduled visits
+- the summary includes only approved field data such as:
+  - patient name
+  - age or DOB if approved
+  - address summary
+  - contact or emergency contact summary if approved
+  - diagnoses or service flags summary if approved
+  - payer or authorization snippets only if needed for care execution
+- a care-instruction contract exists and can include:
+  - visit-type instructions
+  - service-line instructions
+  - branch or agency defaults
+  - patient-specific care notes approved for field display
+- unauthorized or sensitive back-office-only data is excluded
+- the contract is test-covered
+
+========================================================================
+BE6-06 — Create mobile task checklist and quick-note model
+Related Epic 6 features: task checklist, quick notes
+Current status: NOT STARTED
+
+Story
+As the backend, I need task and quick-note records so caregivers can capture field execution progress in a structured way.
+
+Recommended acceptance criteria
+
+- visit task-checklist model exists for mobile execution
+- task items can be derived from visit type, service line, or task template configuration when supported
+- task completion state can be persisted per visit execution session
+- quick-note entry model exists with authored timestamp and caregiver linkage
+- draft vs submitted behavior is defined if supported
+- mobile task and note mutations are audited
+
+========================================================================
+BE6-07 — Create mobile photo and signature artifact support
+Related Epic 6 features: photo uploads, signature capture
+Current status: NOT STARTED
+
+Story
+As the backend, I need field artifact storage so caregivers can attach visit photos and signatures securely.
+
+Recommended acceptance criteria
+
+- mobile photo artifact support exists
+- mobile signature artifact support exists
+- artifacts link to visit execution session and patient or visit context
+- content-type and size restrictions are defined
+- storage abstraction is reusable and consistent with existing attachment patterns where possible
+- artifact metadata and upload/download actions are audited
+- public APIs do not expose raw storage internals
+
+========================================================================
+BE6-08 — Create incident flagging and field escalation model
+Related Epic 6 features: incident flagging
+Current status: NOT STARTED
+
+Story
+As the backend, I need an incident-report model so caregivers can flag operational or clinical concerns from the field.
+
+Recommended acceptance criteria
+
+- incident-report entity exists for mobile visit execution
+- the record links to visit, caregiver, patient, and branch
+- fields include:
+  - incident type or category
+  - severity optional
+  - narrative
+  - created_at
+  - status
+  - attachment references optional
+- incident creation is auditable
+- notification or escalation hooks are defined for later workflow expansion
+
+========================================================================
+BE6-09 — Create secure mobile message-center query and mutation contracts
+Related Epic 6 features: message center
+Current status: NOT STARTED
+
+Story
+As a caregiver, I need a lightweight message-center backend so I can review and send operational messages from the mobile app.
+
+Recommended acceptance criteria
+
+- caregiver-scoped message thread summary query exists
+- thread detail query exists
+- send-message mutation exists if approved in Epic 6 scope
+- thread metadata includes:
+  - thread id
+  - participants summary
+  - last message preview
+  - unread count optional
+  - patient or visit linkage optional
+- mobile message APIs enforce tenant and participant authorization
+- messaging mutations are audited
+
+========================================================================
+BE6-10 — Implement secure mobile auth/session contract
+Related Epic 6 features: secure login
+Current status: NOT STARTED
+
+Story
+As the backend, I need secure mobile auth flows so caregiver app access is protected appropriately on handheld devices.
+
+Recommended acceptance criteria
+
+- mobile login uses the existing auth foundation with mobile-safe response handling
+- mobile session bootstrap contract exists for the caregiver app
+- session renewal or token refresh works for mobile use
+- device/session metadata can be captured where approved
+- caregiver-only mobile routes enforce the appropriate role and assignment context
+- auth flows are test-covered
+
+========================================================================
+BE6-11 — Implement offline sync envelope and idempotent mutation support
+Related Epic 6 features: offline-first support
+Current status: NOT STARTED
+
+Story
+As the backend, I need sync-safe contracts so caregivers can keep working when connectivity is intermittent.
+
+Recommended acceptance criteria
+
+- an offline sync envelope or request pattern exists for mobile mutations
+- idempotency support exists for start/end/task/note/photo/signature submissions
+- sync result distinguishes:
+  - accepted
+  - duplicate already applied
+  - rejected validation
+  - rejected authorization
+- conflict behavior is defined for stale or already-completed visits
+- sync behavior is test-covered
+
+========================================================================
+BE6-12 — Extend authorization and audit rules for caregiver mobile operations
+Related Epic 6 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit authorization and audit rules for mobile execution so field actions stay constrained and reviewable.
+
+Recommended acceptance criteria
+
+- backend permissions are defined for mobile visit work such as:
+  - view own mobile visits
+  - start or end visit
+  - submit mobile notes/tasks
+  - upload field artifacts
+  - create incidents
+  - view or send messages
+- caregiver mobile APIs are limited to authorized self-context unless elevated roles are explicitly allowed
+- all Epic 6 mutations emit audit events with mobile-safe metadata
+- cross-tenant and cross-caregiver access is blocked and test-covered
+
+========================================================================
+BE6-13 — Build caregiver mobile home and today-work APIs
+Related Epic 6 features: secure login, today’s visits, route/order of visits
+Current status: NOT STARTED
+
+Story
+As the mobile app, I need today-work APIs so caregivers can load their shift and route efficiently.
+
+Recommended acceptance criteria
+
+- API exists to load caregiver mobile home or today-work summary
+- API exists to load ordered visit list for the day
+- API exists to load a single visit detail for mobile execution
+- responses are optimized for mobile payload size
+- authorization and tenant isolation are enforced
+- integration tests exist
+
+========================================================================
+BE6-14 — Build visit start and end execution APIs
+Related Epic 6 features: start visit / end visit, GPS proof
+Current status: NOT STARTED
+
+Story
+As the mobile app, I need visit start/end APIs so field execution can be recorded with time and location proof.
+
+Recommended acceptance criteria
+
+- API exists to start a visit execution session
+- API exists to end a visit execution session
+- request can include location proof and source metadata
+- start and end actions are idempotent or safely repeatable
+- invalid transitions are blocked clearly
+- integration tests exist
+
+========================================================================
+BE6-15 — Build patient summary, care instructions, task checklist, and quick-note APIs
+Related Epic 6 features: patient summary, care instructions, task checklist, quick notes
+Current status: NOT STARTED
+
+Story
+As the mobile app, I need field-content APIs so caregivers can review patient context and document execution progress.
+
+Recommended acceptance criteria
+
+- API exists to load mobile-safe patient summary and care instructions for a visit
+- API exists to load task checklist items for a visit
+- API exists to submit task completion state
+- API exists to create or update quick notes
+- validation and authorization failures are handled clearly
+- integration tests exist
+
+========================================================================
+BE6-16 — Build field photo, signature, incident, and message-center APIs
+Related Epic 6 features: photo uploads, signature capture, incident flagging, message center
+Current status: NOT STARTED
+
+Story
+As the mobile app, I need field artifact and communication APIs so caregivers can complete core execution tasks from one app.
+
+Recommended acceptance criteria
+
+- API exists for photo upload and metadata retrieval
+- API exists for signature submission and retrieval
+- API exists for incident creation and status read
+- API exists for message-center thread list, thread detail, and send-message if approved
+- artifact and incident APIs enforce visit/caregiver authorization
+- integration tests exist
+
+========================================================================
+BE6-17 — Harden mobile execution flows with regression coverage
+Related Epic 6 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need regression coverage for Epic 6 mobile APIs so later EVV, notes, and QA work does not destabilize field execution.
+
+Recommended acceptance criteria
+
+- CRUD and workflow integration tests exist for representative Epic 6 flows
+- idempotent sync behavior is covered
+- authorization denial coverage exists
+- photo/signature upload restrictions are covered
+- audit assertions exist for key mobile execution mutations
+- Epic 6 backend flows are runnable in CI
+
+========================================================================
+Implementation phases
+
+Phase A — mobile execution foundation
+
+- `BE6-01`
+- `BE6-10`
+- `BE6-11`
+- `BE6-12`
+
+Phase B — core mobile execution model
+
+- `BE6-02`
+- `BE6-03`
+- `BE6-04`
+- `BE6-05`
+- `BE6-06`
+
+Phase C — field artifact and communication support
+
+- `BE6-07`
+- `BE6-08`
+- `BE6-09`
+
+Phase D — public API layer
+
+- `BE6-13`
+- `BE6-14`
+- `BE6-15`
+- `BE6-16`
+
+Phase E — hardening
+
+- `BE6-17`
+
+========================================================================
+Definition of done for Epic 6 backend
+
+Epic 6 backend is done only when:
+
+- caregiver mobile work is exposed through secure, caregiver-scoped APIs
+- mobile today-work, visit execution, patient summary, task checklist, note, photo, signature, incident, and messaging contracts exist with clear lifecycle rules
+- offline-tolerant and idempotent mutation handling exists for representative field actions
+- start/end visit actions support location-proof inputs without overreaching into later Epic 7 compliance logic
+- tenant isolation and self-context authorization are enforced for all mobile execution APIs
+- audit events exist for key field mutations
+- core Epic 6 mobile flows are regression-covered

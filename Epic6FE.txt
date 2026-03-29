@@ -1,0 +1,399 @@
+Epic 6 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 6 from `Requirements.txt` into a frontend delivery backlog for the caregiver mobile application.
+
+Epic 6 title
+
+Caregiver mobile app
+
+Epic 6 feature scope from the requirements
+
+- secure login
+- today’s visits
+- route/order of visits
+- patient summary
+- care instructions
+- start visit / end visit
+- GPS proof
+- offline-first support
+- signature capture
+- task checklist
+- quick notes
+- photo uploads
+- incident flagging
+- message center
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 3 patient workflows are complete and provide patient summary data that can be projected into mobile-safe visit context
+- Epic 4 workforce workflows are complete and provide caregiver identity and availability context
+- Epic 5 scheduling workflows are complete and provide assigned visit, route-order, and open-shift resolution data that the mobile app consumes
+- Epic 6 frontend is a caregiver-facing mobile experience, not an admin web scheduling workspace
+- Epic 6 should feel mobile-first and task-oriented, not like a smaller copy of the desktop admin UI
+- offline-first behavior should prioritize safe local capture, explicit sync states, and recoverable retries
+- Epic 6 should stop short of the deeper EVV exception/compliance workflows that belong to Epic 7
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 6 backend APIs
+
+========================================================================
+FE6-01 — Mobile app navigation and caregiver information architecture
+Related Epic 6 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a simple mobile navigation model so I can move between today’s work, visit details, messages, and field tasks quickly.
+
+Frontend acceptance criteria
+
+- caregiver mobile app has a dedicated mobile navigation shell
+- navigation is optimized for handheld use
+- routes are grouped by caregiver field workflows
+- unauthorized or unsupported deep links render controlled states
+- today-work, visit detail, message center, and task capture flows are easy to reach with minimal taps
+
+========================================================================
+FE6-02 — Secure mobile login and session bootstrap UX
+Related Epic 6 features: secure login
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want secure mobile sign-in so I can access only my field work safely.
+
+Frontend acceptance criteria
+
+- mobile login flow exists
+- session bootstrap after login exists
+- expired-session and re-auth behaviors are clear
+- device/session bootstrap states are understandable
+- auth errors are shown clearly without exposing internal details
+
+========================================================================
+FE6-03 — Today’s visits mobile home screen
+Related Epic 6 features: today’s visits
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a today-work screen so I can immediately see what visits require attention.
+
+Frontend acceptance criteria
+
+- today-work screen exists
+- visit cards are rendered from backend today-work APIs
+- visit timing, patient, route order, and execution state are visible
+- empty-state UX exists for no assigned visits
+- the screen supports pull-to-refresh or an equivalent refresh pattern
+
+========================================================================
+FE6-04 — Route and visit-order presentation
+Related Epic 6 features: route/order of visits
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want my visits shown in a practical order so I can move through the day efficiently.
+
+Frontend acceptance criteria
+
+- route order or sequence is visible
+- timing-based fallback ordering is understandable if no explicit route exists
+- current, next, and completed visit states are distinguishable
+- travel or route context is shown without exposing raw engine internals
+- visit reordering is not implied unless product explicitly supports it
+
+========================================================================
+FE6-05 — Mobile visit detail with patient summary and care instructions
+Related Epic 6 features: patient summary, care instructions
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a mobile visit detail screen so I can review patient context and care guidance before starting work.
+
+Frontend acceptance criteria
+
+- visit detail screen exists
+- patient summary is rendered from backend mobile-safe APIs
+- care instructions are visible in a readable mobile layout
+- sensitive admin-only chart data is not exposed
+- missing optional data degrades cleanly
+
+========================================================================
+FE6-06 — Start-visit workflow with GPS proof UX
+Related Epic 6 features: start visit, GPS proof
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a clear start-visit action so field execution begins with visible location/time capture.
+
+Frontend acceptance criteria
+
+- start-visit workflow exists
+- the app requests or uses approved location permissions when needed
+- start state becomes visually obvious after success
+- location-capture pending, denied, and failed states are handled clearly
+- optimistic UI and retry behavior are controlled
+
+========================================================================
+FE6-07 — End-visit workflow UX
+Related Epic 6 features: end visit
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want an end-visit action so I can finish field work cleanly when the visit is done.
+
+Frontend acceptance criteria
+
+- end-visit workflow exists
+- completion state is visually obvious
+- required end-of-visit prerequisites are surfaced clearly if supported
+- failure and retry states are handled clearly
+- the today-work list and visit detail update without requiring a full manual refresh
+
+========================================================================
+FE6-08 — Offline-first mobile state and sync UX
+Related Epic 6 features: offline-first support
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want the app to keep working during poor connectivity so field work is not blocked by temporary network loss.
+
+Frontend acceptance criteria
+
+- offline state is visible in the mobile shell
+- supported actions can be queued locally for sync
+- queued, syncing, synced, and failed-sync states are understandable
+- users can retry failed sync actions where supported
+- stale or conflicted local actions are handled clearly without silent data loss
+
+========================================================================
+FE6-09 — Signature capture UX
+Related Epic 6 features: signature capture
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want an in-app signature capture flow so visit confirmation can be recorded directly in the field.
+
+Frontend acceptance criteria
+
+- signature capture screen or panel exists
+- touch-friendly signature pad exists
+- clear, retry, and save flows exist
+- saved signature state is visible on the visit workflow
+- signature capture failure states are handled clearly
+
+========================================================================
+FE6-10 — Mobile task checklist and quick-note workflow
+Related Epic 6 features: task checklist, quick notes
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a simple task checklist and note-taking flow so I can record what happened during the visit.
+
+Frontend acceptance criteria
+
+- task checklist UI exists
+- task completion state can be toggled or saved
+- quick-note entry exists
+- draft vs saved state is understandable if supported
+- validation and save failures are shown clearly
+
+========================================================================
+FE6-11 — Photo upload workflow for field documentation
+Related Epic 6 features: photo uploads
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a mobile photo upload flow so I can attach field evidence or context during a visit.
+
+Frontend acceptance criteria
+
+- capture from device camera or device file selection exists if platform-supported
+- upload progress is visible
+- file restrictions are enforced clearly in the UI
+- uploaded-photo list or confirmation state is visible
+- failed uploads can be retried where supported
+
+========================================================================
+FE6-12 — Incident flagging workflow
+Related Epic 6 features: incident flagging
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want to flag incidents from the visit workflow so urgent issues are not lost.
+
+Frontend acceptance criteria
+
+- incident creation flow exists
+- incident type and narrative capture are clear
+- optional attachment linkage is understandable if supported
+- submitted incident state is visible
+- incident failure and retry states are handled clearly
+
+========================================================================
+FE6-13 — Mobile message center
+Related Epic 6 features: message center
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a lightweight message center so I can communicate about visits and patients without leaving the app.
+
+Frontend acceptance criteria
+
+- thread list screen exists
+- thread detail screen exists
+- unread or freshness indicators exist if supported
+- send-message flow exists if approved in scope
+- message failures and offline behavior are handled clearly
+
+========================================================================
+FE6-14 — Shared mobile visit execution layout and interaction framework
+Related Epic 6 features: today’s visits, visit detail, tasks, notes, signatures, incidents
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want reusable mobile execution patterns so the caregiver app remains consistent and maintainable.
+
+Frontend acceptance criteria
+
+- reusable mobile shell exists
+- reusable visit card and visit detail layout exists
+- reusable action footer or primary-action pattern exists
+- loading, empty, sync, validation, and unauthorized states are standardized
+- modules can opt into read-only vs editable behavior cleanly
+
+========================================================================
+FE6-15 — Shared mobile mutation and sync framework
+Related Epic 6 features: start/end visit, tasks, notes, photos, signatures, incidents
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation and sync pattern so field actions behave consistently under unreliable connectivity.
+
+Frontend acceptance criteria
+
+- reusable mutation pattern exists for start, end, task save, note save, photo upload, signature save, and incident submit
+- offline queue or retry presentation is consistent
+- conflict, validation, and authorization errors share one presentation pattern
+- optimistic state is controlled and reversible
+- sync status placement is consistent across mobile modules
+
+========================================================================
+FE6-16 — Scheduling-aware quick-entry and field priority cues
+Related Epic 6 features: today’s visits, route/order, start/end visit
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want the mobile home to emphasize the next important action so I can move through visits quickly.
+
+Frontend acceptance criteria
+
+- the home screen highlights current or next visit
+- late, in-progress, and completed states are visually distinct
+- quick-entry actions exist for:
+  - open current visit
+  - start visit
+  - continue in-progress visit
+  - message coordinator if supported
+- state transitions route cleanly into the relevant workflow screens
+
+========================================================================
+FE6-17 — Mobile audit-sensitive and privacy-aware UX
+Related Epic 6 features: all
+Backend status: BLOCKED
+
+Story
+As an agency admin and caregiver, I want field actions to feel controlled and privacy-aware so mobile execution remains trustworthy.
+
+Frontend acceptance criteria
+
+- sensitive field mutations communicate that they are controlled operations
+- success states indicate that key visit-execution changes are logged where appropriate
+- privacy-sensitive patient data is not shown more broadly than needed
+- internal-only backend metadata is not exposed unnecessarily
+- where useful, support links or audit-aware messaging can direct admins to later review activity without cluttering caregiver workflows
+
+========================================================================
+FE6-18 — Mobile-responsive hardening and device usability
+Related Epic 6 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want the mobile app to remain usable across common phones and small tablets so field execution is reliable on real devices.
+
+Frontend acceptance criteria
+
+- core screens work on common phone widths
+- touch targets are large enough for handheld use
+- keyboard and form interactions do not break key screens
+- image, signature, and note flows remain usable on smaller devices
+- no critical Epic 6 screen breaks layout on mobile-sized viewports
+
+========================================================================
+FE6-19 — Frontend regression coverage for Epic 6 mobile flows
+Related Epic 6 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 6 mobile screens so later EVV, QA, and billing work does not destabilize field execution.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 6 routes
+- happy-path interaction coverage exists for representative mobile modules
+- sync, validation, and unauthorized states are covered
+- offline-tolerant behavior is covered where practical
+- signature, photo, or incident failure states are covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared mobile app foundation
+
+- `FE6-01`
+- `FE6-02`
+- `FE6-14`
+- `FE6-15`
+
+Phase B — core mobile visit workflows
+
+- `FE6-03`
+- `FE6-04`
+- `FE6-05`
+- `FE6-06`
+- `FE6-07`
+- `FE6-16`
+
+Phase C — documentation, artifact, and communication modules
+
+- `FE6-08`
+- `FE6-09`
+- `FE6-10`
+- `FE6-11`
+- `FE6-12`
+- `FE6-13`
+
+Phase D — audit-aware UX
+
+- `FE6-17`
+
+Phase E — hardening
+
+- `FE6-18`
+- `FE6-19`
+
+========================================================================
+Definition of done for Epic 6 frontend
+
+Epic 6 frontend is done only when:
+
+- caregiver mobile work is reachable through a dedicated mobile app shell
+- today-work, visit detail, start/end visit, task checklist, note, photo, signature, incident, and message-center screens use backend APIs rather than placeholder local state
+- offline or low-connectivity behavior is understandable and recoverable for representative field actions
+- validation, sync, conflict, and unauthorized errors are shown clearly
+- sensitive patient and visit data is presented in a privacy-aware mobile form
+- the mobile experience remains usable on common phone-sized screens
+- core Epic 6 mobile screens are regression-covered
