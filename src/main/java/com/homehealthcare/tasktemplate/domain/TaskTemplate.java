@@ -54,6 +54,15 @@ public class TaskTemplate extends AgencyConfigurationEntity {
     @Column(name = "category", nullable = false, length = 64)
     private TaskTemplateCategory category;
 
+    @Column(name = "default_sort_order", nullable = false)
+    private int defaultSortOrder;
+
+    @Column(name = "default_completion_expectation", length = 255)
+    private String defaultCompletionExpectation;
+
+    @Column(name = "required_by_default", nullable = false)
+    private boolean requiredByDefault;
+
     @Builder
     private TaskTemplate(
             UUID id,
@@ -63,7 +72,10 @@ public class TaskTemplate extends AgencyConfigurationEntity {
             String name,
             String code,
             String description,
-            TaskTemplateCategory category) {
+            TaskTemplateCategory category,
+            int defaultSortOrder,
+            String defaultCompletionExpectation,
+            boolean requiredByDefault) {
         this.id = id;
         assignAgency(agency);
         this.serviceLine = serviceLine;
@@ -72,6 +84,9 @@ public class TaskTemplate extends AgencyConfigurationEntity {
         this.code = code;
         this.description = description;
         this.category = category;
+        this.defaultSortOrder = defaultSortOrder;
+        this.defaultCompletionExpectation = defaultCompletionExpectation;
+        this.requiredByDefault = requiredByDefault;
     }
 
     public static TaskTemplate create(
@@ -83,6 +98,21 @@ public class TaskTemplate extends AgencyConfigurationEntity {
             String description,
             TaskTemplateCategory category,
             int displayOrder) {
+        return create(agency, serviceLine, visitType, name, code, description, category, displayOrder, displayOrder, null, false);
+    }
+
+    public static TaskTemplate create(
+            Agency agency,
+            ServiceLine serviceLine,
+            VisitType visitType,
+            String name,
+            String code,
+            String description,
+            TaskTemplateCategory category,
+            int displayOrder,
+            int defaultSortOrder,
+            String defaultCompletionExpectation,
+            boolean requiredByDefault) {
         validateLinks(agency, serviceLine, visitType);
         TaskTemplate template = TaskTemplate.builder()
                 .id(UUID.randomUUID())
@@ -93,6 +123,9 @@ public class TaskTemplate extends AgencyConfigurationEntity {
                 .code(code)
                 .description(description)
                 .category(category)
+                .defaultSortOrder(defaultSortOrder)
+                .defaultCompletionExpectation(defaultCompletionExpectation)
+                .requiredByDefault(requiredByDefault)
                 .build();
         template.updateDisplayOrder(displayOrder);
         template.activate();
@@ -107,6 +140,20 @@ public class TaskTemplate extends AgencyConfigurationEntity {
             String description,
             TaskTemplateCategory category,
             int displayOrder) {
+        updateDetails(serviceLine, visitType, name, code, description, category, displayOrder, defaultSortOrder, defaultCompletionExpectation, requiredByDefault);
+    }
+
+    public void updateDetails(
+            ServiceLine serviceLine,
+            VisitType visitType,
+            String name,
+            String code,
+            String description,
+            TaskTemplateCategory category,
+            int displayOrder,
+            int defaultSortOrder,
+            String defaultCompletionExpectation,
+            boolean requiredByDefault) {
         validateLinks(getAgency(), serviceLine, visitType);
         this.serviceLine = serviceLine;
         this.visitType = visitType;
@@ -114,6 +161,9 @@ public class TaskTemplate extends AgencyConfigurationEntity {
         this.code = code;
         this.description = description;
         this.category = category;
+        this.defaultSortOrder = defaultSortOrder;
+        this.defaultCompletionExpectation = defaultCompletionExpectation;
+        this.requiredByDefault = requiredByDefault;
         updateDisplayOrder(displayOrder);
     }
 
@@ -126,7 +176,11 @@ public class TaskTemplate extends AgencyConfigurationEntity {
         name = required(name);
         code = required(code).toUpperCase(Locale.ROOT);
         description = optional(description);
+        defaultCompletionExpectation = optional(defaultCompletionExpectation);
         Objects.requireNonNull(category, "category must not be null");
+        if (defaultSortOrder < 0) {
+            throw new IllegalArgumentException("defaultSortOrder must be greater than or equal to 0");
+        }
         validateLinks(getAgency(), serviceLine, visitType);
     }
 
