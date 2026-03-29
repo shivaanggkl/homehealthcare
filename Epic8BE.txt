@@ -1,0 +1,428 @@
+Epic 8 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 8 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 8 title
+
+Notes, forms, and task completion
+
+Epic 8 feature scope from the requirements
+
+- visit note templates by visit type
+- structured tasks and free text
+- required-field enforcement
+- quick save / draft handling
+- attachments/photos
+- reusable task libraries
+- printable summaries
+- role-based forms
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 is complete and provides patient records, attachments, diagnoses, payer context, and patient-specific data needed inside visit documentation
+- Epic 4 is complete and provides caregiver workforce context and role-based assignment information
+- Epic 5 is complete and provides visit, recurrence, schedule state, and assignment context
+- Epic 6 is complete and provides caregiver mobile execution, artifact upload, field notes, and sync-aware mobile workflows
+- Epic 7 is complete and provides EVV, missed-visit, exception, and verification outcomes that documentation must respect
+- Epic 8 focuses on structured visit documentation and task completion, not generalized messaging from Epic 9, QA review queues from Epic 10, or broader care-plan/goals workflows from Epic 13
+- Epic 8 should support both field capture and office-side completion without forcing agencies into one documentation style
+- printable summaries should expose a backend-ready structured export or render contract, not require a separate document engine product in this epic
+
+Scope rule
+
+- Include only Epic 8 backend work
+- Cover note template, form template, task library, task completion, draft/final note state, required-field enforcement, attachment linkage, printable summary contracts, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull messaging, QA queue, compliance dashboard, goals/interventions, or billing workflow scope from later epics into Epic 8
+
+Status legend
+
+- NOT STARTED: no Epic 8 implementation exists yet
+
+========================================================================
+BE8-01 — Define documentation and task-completion domain architecture
+Related Epic 8 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent documentation domain so notes, forms, tasks, drafts, and printable outputs follow one lifecycle and audit model.
+
+Recommended acceptance criteria
+
+- Epic 8 entities are defined explicitly, including:
+  - visit note template
+  - form template
+  - reusable task library item
+  - task set or note-template task instance
+  - visit documentation record
+  - visit note section or field response
+  - note draft / submission state
+  - printable summary projection
+- lifecycle states are defined for at least:
+  - draft
+  - in_progress
+  - submitted
+  - amended optional
+  - locked optional for later QA or billing use
+- ownership and linkage rules are documented across visit, patient, caregiver, branch, visit type, and service line
+- required-field and role-based visibility rules are documented
+- audit expectations are defined for template changes, documentation saves, submission, amendment, attachment linkage, and printable summary generation
+
+========================================================================
+BE8-02 — Create visit note template and form-template model
+Related Epic 8 features: visit note templates by visit type, role-based forms
+Current status: NOT STARTED
+
+Story
+As an agency admin, I need configurable documentation templates so notes can vary by visit type and role without becoming ad hoc free text.
+
+Recommended acceptance criteria
+
+- visit note template model exists
+- templates can be linked to:
+  - visit type
+  - service line optional
+  - branch optional
+  - caregiver role or allowed actor roles
+- templates support:
+  - title
+  - status active/inactive
+  - ordered sections
+  - field definitions
+  - free-text blocks
+  - instructional/help text optional
+- field definitions support at least:
+  - text
+  - long text
+  - boolean
+  - number
+  - date/time
+  - select or coded value
+- template changes are auditable and test-covered
+
+========================================================================
+BE8-03 — Create reusable task library and note-task composition model
+Related Epic 8 features: reusable task libraries, structured tasks and free text
+Current status: NOT STARTED
+
+Story
+As operations, I need reusable task definitions so common visit tasks can be assembled into note templates without duplicating setup.
+
+Recommended acceptance criteria
+
+- reusable task library entity exists
+- tasks support:
+  - title
+  - description optional
+  - category
+  - sort default
+  - default completion expectation optional
+  - required yes/no
+- note templates can include ordered task references or embedded overrides
+- template-specific task overrides are supported where needed
+- free-text-only notes remain supported without requiring tasks
+- task-library changes are auditable and test-covered
+
+========================================================================
+BE8-04 — Create visit documentation record and draft-state model
+Related Epic 8 features: quick save / draft handling, structured tasks and free text
+Current status: NOT STARTED
+
+Story
+As a caregiver or coordinator, I need a durable visit documentation record so work can be saved as draft and completed over time without losing structure.
+
+Recommended acceptance criteria
+
+- visit documentation record exists per visit and template selection
+- record links to:
+  - visit occurrence
+  - patient
+  - caregiver or acting membership
+  - branch
+  - selected template
+- documentation record stores:
+  - status
+  - started_at optional
+  - submitted_at optional
+  - last_saved_at
+  - author / last editor
+  - printable summary snapshot version optional
+- one active documentation record per visit/template combination is enforced unless versioning is explicit
+- draft saves are auditable and test-covered
+
+========================================================================
+BE8-05 — Create structured response and task-completion persistence model
+Related Epic 8 features: structured tasks and free text, required-field enforcement
+Current status: NOT STARTED
+
+Story
+As the backend, I need structured response storage so completed tasks and note fields can be validated and reused downstream.
+
+Recommended acceptance criteria
+
+- structured field-response model exists
+- task-completion response model exists
+- responses can store:
+  - field key or template field id
+  - normalized value
+  - display value optional
+  - completion state
+  - notes optional
+  - completed_at optional
+- free-text narrative responses are supported
+- response persistence supports partial draft saves
+- response storage is auditable and test-covered
+
+========================================================================
+BE8-06 — Implement required-field and submission validation engine
+Related Epic 8 features: required-field enforcement
+Current status: NOT STARTED
+
+Story
+As QA and billing-adjacent operations, I need the backend to reject incomplete submissions so required documentation is enforced before work advances.
+
+Recommended acceptance criteria
+
+- validation engine exists for documentation submission
+- engine can enforce:
+  - required fields
+  - required tasks
+  - required free-text narrative optional by template
+  - role-based field visibility and editability
+  - signature-linked requirements from Epic 7 where configured
+- validation errors return field-level and task-level feedback
+- draft saves allow incomplete state while submitted saves do not
+- validation rules are test-covered
+
+========================================================================
+BE8-07 — Implement attachment and photo linkage for documentation records
+Related Epic 8 features: attachments/photos
+Current status: NOT STARTED
+
+Story
+As a caregiver and reviewer, I need documentation to reference attachments and photos so supporting evidence stays linked to the visit note instead of living separately.
+
+Recommended acceptance criteria
+
+- visit documentation can link attachments and mobile artifacts
+- linkage supports:
+  - patient attachment references from Epic 3
+  - mobile field artifacts from Epic 6
+  - optional note-specific caption or description
+- attachment references are authorization-aware and agency-scoped
+- invalid cross-visit or cross-patient attachment linkage is rejected
+- linkage changes are auditable and test-covered
+
+========================================================================
+BE8-08 — Create printable summary projection contract
+Related Epic 8 features: printable summaries
+Current status: NOT STARTED
+
+Story
+As office staff, I need a backend summary projection so completed documentation can be rendered as a clean printable note without rebuilding business logic in the frontend.
+
+Recommended acceptance criteria
+
+- printable summary projection exists for visit documentation
+- projection includes:
+  - patient and visit-safe header context
+  - template title
+  - completed field values
+  - task completion summary
+  - linked attachments or artifact references where allowed
+  - author / submission metadata
+- projection is optimized for print/PDF-friendly rendering
+- internal-only metadata is excluded from the printable contract
+- projection is test-covered
+
+========================================================================
+BE8-09 — Implement role-based template access and documentation authorization rules
+Related Epic 8 features: role-based forms
+Current status: NOT STARTED
+
+Story
+As the backend, I need role-based template and documentation access so different users only see and edit the forms appropriate to their responsibility.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - manage templates
+  - view documentation
+  - draft documentation
+  - submit documentation
+  - amend documentation optional
+- role-based access can differ between caregiver, coordinator, reviewer, and admin actors
+- branch-aware and tenant-aware isolation is enforced
+- unauthorized access returns controlled errors
+- authorization behavior is test-covered
+
+========================================================================
+BE8-10 — Define Epic 8 audit model and documentation event taxonomy
+Related Epic 8 features: all
+Current status: NOT STARTED
+
+Story
+As compliance-minded operations, I need documentation actions to be auditable so template and note changes can be reconstructed later.
+
+Recommended acceptance criteria
+
+- Epic 8 audit actions are defined for:
+  - template created
+  - template updated
+  - task library updated
+  - documentation draft saved
+  - documentation submitted
+  - documentation amended optional
+  - attachment linked
+  - printable summary generated
+- audit target types are defined
+- audit metadata avoids storing broad PHI unnecessarily
+- Epic 1 audit API can expose Epic 8 events through existing filter and export patterns
+
+========================================================================
+BE8-11 — Create template-management APIs
+Related Epic 8 features: visit note templates by visit type, reusable task libraries, role-based forms
+Current status: NOT STARTED
+
+Story
+As an admin, I need APIs to manage note templates and task libraries so the frontend can support structured configuration.
+
+Recommended acceptance criteria
+
+- APIs exist for:
+  - list/create/read/update/deactivate note templates
+  - list/create/read/update/deactivate task library items
+- APIs support filtering by:
+  - visit type
+  - active/inactive status
+  - allowed role optional
+  - branch optional
+- responses return normalized template structures suitable for frontend editors
+- authorization, validation, and audit are enforced
+
+========================================================================
+BE8-12 — Create visit documentation APIs
+Related Epic 8 features: structured tasks and free text, quick save / draft handling, attachments/photos
+Current status: NOT STARTED
+
+Story
+As a caregiver or coordinator, I need documentation APIs so visit notes can be loaded, saved, and submitted against real backend records.
+
+Recommended acceptance criteria
+
+- APIs exist for:
+  - load documentation for a visit
+  - create documentation from a template
+  - save draft responses
+  - submit documentation
+  - list linked attachments
+  - link or unlink attachments where authorized
+- APIs return field-level validation errors on submission failure
+- draft-save and submit semantics are distinct
+- authorization, validation, and audit are enforced
+
+========================================================================
+BE8-13 — Create printable-summary and export APIs
+Related Epic 8 features: printable summaries
+Current status: NOT STARTED
+
+Story
+As office staff, I need printable-summary APIs so the frontend can render or download completed visit notes cleanly.
+
+Recommended acceptance criteria
+
+- API exists to fetch printable-summary projection for a documentation record
+- optional export endpoint exists for print-friendly text, HTML, or PDF-ready data contract
+- summary generation is authorization-aware
+- export/generation actions are auditable where appropriate
+- the API is test-covered
+
+========================================================================
+BE8-14 — Create documentation list and search APIs for operational visibility
+Related Epic 8 features: quick save / draft handling, required-field enforcement
+Current status: NOT STARTED
+
+Story
+As operations, I need list/search APIs so draft, submitted, and incomplete documentation can be located without waiting for the later QA workspace.
+
+Recommended acceptance criteria
+
+- list/search API exists for visit documentation
+- filters support at least:
+  - day or date range
+  - branch
+  - caregiver
+  - patient
+  - status
+  - template or visit type optional
+- pagination is supported
+- results expose enough summary data for workflow routing without exposing entire note bodies
+- authorization is enforced
+
+========================================================================
+BE8-15 — Implement Epic 8 regression and CI hardening
+Related Epic 8 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need documentation and task-completion flows regression-covered so later QA, care-plan, and billing work does not destabilize Epic 8.
+
+Recommended acceptance criteria
+
+- repository and service tests cover:
+  - template lifecycle
+  - task library reuse
+  - draft save
+  - submit validation
+  - attachment linkage
+  - printable summary projection
+- API integration tests cover representative CRUD, validation failure, unauthorized access, and printable-summary retrieval
+- Epic 8 test task is runnable in CI
+
+========================================================================
+Implementation phases
+
+Phase A — documentation domain foundation
+
+- `BE8-01`
+- `BE8-10`
+
+Phase B — core template and documentation model
+
+- `BE8-02`
+- `BE8-03`
+- `BE8-04`
+- `BE8-05`
+- `BE8-06`
+- `BE8-07`
+- `BE8-08`
+- `BE8-09`
+
+Phase C — public API layer
+
+- `BE8-11`
+- `BE8-12`
+- `BE8-13`
+- `BE8-14`
+
+Phase D — hardening
+
+- `BE8-15`
+
+========================================================================
+Definition of done for Epic 8 backend
+
+Epic 8 backend is done only when:
+
+- note templates, form structures, reusable task libraries, documentation records, structured responses, and attachment linkage exist with clear lifecycle rules
+- draft-save and submit behavior are both implemented and intentionally different
+- required-field enforcement is available through structured backend validation
+- role-based and branch-aware authorization is enforced for templates and documentation records
+- printable-summary contracts are available for completed visit notes
+- documentation APIs use real backend models rather than placeholder storage
+- documentation and template changes are audit-visible
+- core Epic 8 documentation flows are regression-covered

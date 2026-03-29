@@ -1,0 +1,22 @@
+package com.homehealthcare.documentation.foundation;
+
+public enum Epic8DocumentationAuditAction {
+    TEMPLATE_CREATED("DOCUMENTATION_TEMPLATE_CREATED"),
+    TEMPLATE_UPDATED("DOCUMENTATION_TEMPLATE_UPDATED"),
+    TASK_LIBRARY_UPDATED("DOCUMENTATION_TASK_LIBRARY_UPDATED"),
+    DOCUMENTATION_DRAFT_SAVED("VISIT_DOCUMENTATION_DRAFT_SAVED"),
+    DOCUMENTATION_SUBMITTED("VISIT_DOCUMENTATION_SUBMITTED"),
+    DOCUMENTATION_AMENDED("VISIT_DOCUMENTATION_AMENDED"),
+    ATTACHMENT_LINKED("VISIT_DOCUMENTATION_ATTACHMENT_LINKED"),
+    PRINTABLE_SUMMARY_GENERATED("VISIT_DOCUMENTATION_PRINTABLE_SUMMARY_GENERATED");
+
+    private final String actionType;
+
+    Epic8DocumentationAuditAction(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String actionType() {
+        return actionType;
+    }
+}

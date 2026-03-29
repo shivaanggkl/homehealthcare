@@ -1,0 +1,358 @@
+Epic 8 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 8 from `Requirements.txt` into a frontend delivery backlog for notes, forms, and task completion.
+
+Epic 8 title
+
+Notes, forms, and task completion
+
+Epic 8 feature scope from the requirements
+
+- visit note templates by visit type
+- structured tasks and free text
+- required-field enforcement
+- quick save / draft handling
+- attachments/photos
+- reusable task libraries
+- printable summaries
+- role-based forms
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 3 frontend and backend are complete and provide patient workspace, attachment visibility, and patient context used inside documentation
+- Epic 5 frontend and backend are complete and provide visit/schedule context
+- Epic 6 frontend and backend are complete and provide caregiver mobile execution, quick notes, artifact capture, and offline sync patterns
+- Epic 7 frontend and backend are complete and provide EVV/missed-visit/exception outcomes that documentation can reference but should not duplicate
+- Epic 8 frontend should support both caregiver-facing documentation capture and admin-side template management
+- Epic 8 should stop short of generalized messaging from Epic 9, dedicated QA review workspaces from Epic 10, and broader goals/care-plan progression workflows from Epic 13
+- printable summaries should render from backend summary contracts, not ad hoc client-only reconstruction
+- role-based forms should stay explicit and understandable, not hide required work behind confusing dynamic behavior
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 8 backend APIs
+
+========================================================================
+FE8-01 — Documentation information architecture and route model
+Related Epic 8 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, coordinator, or admin, I want notes, forms, tasks, and print views to fit naturally into the visit and admin workflows so documentation work is coherent instead of scattered.
+
+Frontend acceptance criteria
+
+- caregiver-facing documentation routes exist within visit workflows
+- admin-facing routes exist for template and task-library management
+- documentation routes distinguish:
+  - draft editing
+  - submitted/read-only summary
+  - printable summary
+  - template configuration
+- unsupported or unauthorized documentation routes render controlled states
+- documentation status is visible without overwhelming the user with backend detail
+
+========================================================================
+FE8-02 — Visit note template management UX
+Related Epic 8 features: visit note templates by visit type, role-based forms
+Backend status: BLOCKED
+
+Story
+As an admin, I want to manage note templates by visit type so agencies can define structured documentation expectations cleanly.
+
+Frontend acceptance criteria
+
+- template list screen exists
+- template create/edit flow exists
+- template editor supports:
+  - title
+  - active/inactive state
+  - visit-type linkage
+  - role visibility
+  - ordered sections and fields
+- template CRUD uses backend APIs rather than placeholder local state
+- controlled validation and unauthorized states are shown clearly
+
+========================================================================
+FE8-03 — Reusable task-library management UX
+Related Epic 8 features: reusable task libraries
+Backend status: BLOCKED
+
+Story
+As an admin, I want reusable task definitions so common visit work can be configured once and reused across documentation templates.
+
+Frontend acceptance criteria
+
+- task-library list and editor exist
+- task-library items show title, category, description, and required/default state
+- task-library items can be linked into template editing UX
+- active/inactive task state is visible
+- CRUD uses real backend APIs
+
+========================================================================
+FE8-04 — Visit documentation workspace and field-entry shell
+Related Epic 8 features: structured tasks and free text, role-based forms
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want a structured documentation screen for each visit so I can complete required fields and tasks without navigating old-style worksheet clutter.
+
+Frontend acceptance criteria
+
+- documentation workspace exists for a visit
+- workspace shows:
+  - template title
+  - documentation status
+  - task sections
+  - field sections
+  - attachment area
+  - summary of required work remaining
+- structured tasks and free-text fields coexist cleanly
+- role-based field visibility/editability is respected
+- the screen uses backend APIs rather than placeholder local state
+
+========================================================================
+FE8-05 — Required-field, validation, and submission UX
+Related Epic 8 features: required-field enforcement
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want clear validation feedback so I know what still blocks note submission.
+
+Frontend acceptance criteria
+
+- required fields are marked clearly
+- submission shows field-level and task-level validation errors from the backend
+- draft save does not present the same blocking behavior as final submit
+- validation messaging is understandable on mobile and desktop
+- blocking vs non-blocking issues are visually distinct
+
+========================================================================
+FE8-06 — Quick save, draft, and resume-later UX
+Related Epic 8 features: quick save / draft handling
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want quick save and draft handling so I can capture partial work without losing progress.
+
+Frontend acceptance criteria
+
+- quick save exists in documentation flows
+- draft status is visible after save
+- later resume is supported for in-progress documentation
+- save success, failure, and retry states are clear
+- draft vs submitted states are visually distinct
+
+========================================================================
+FE8-07 — Task completion and free-text note UX
+Related Epic 8 features: structured tasks and free text
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want task completion and free-text narrative to work together so documentation is structured without becoming rigid.
+
+Frontend acceptance criteria
+
+- task checklist style UI exists inside documentation
+- tasks support complete/incomplete state and optional completion notes
+- free-text narrative areas are supported where configured
+- task completion status updates immediately in the UI after save
+- incomplete required tasks are visible before submission
+
+========================================================================
+FE8-08 — Attachment and photo linkage UX inside documentation
+Related Epic 8 features: attachments/photos
+Backend status: BLOCKED
+
+Story
+As a caregiver or reviewer, I want note-linked attachments and photos so documentation evidence stays connected to the visit note.
+
+Frontend acceptance criteria
+
+- documentation workspace can show linked attachments and photos
+- existing Epic 3 / Epic 6 attachment sources are integrated rather than duplicated
+- users can link supported artifacts where authorized
+- linked attachment state is visible after save
+- unauthorized or invalid attachment-link actions are handled clearly
+
+========================================================================
+FE8-09 — Printable summary and print-preview UX
+Related Epic 8 features: printable summaries
+Backend status: BLOCKED
+
+Story
+As office staff, I want a print-friendly documentation summary so completed notes can be reviewed or exported cleanly.
+
+Frontend acceptance criteria
+
+- printable-summary route or print-preview surface exists
+- printable view uses backend summary contracts rather than reconstructing note logic on the client
+- printable view hides editing controls and internal-only metadata
+- print layout remains readable on desktop and small tablet widths
+
+========================================================================
+FE8-10 — Role-based documentation form behavior
+Related Epic 8 features: role-based forms
+Backend status: BLOCKED
+
+Story
+As a caregiver, coordinator, or reviewer, I want form behavior that matches my role so I only see and edit the relevant documentation controls.
+
+Frontend acceptance criteria
+
+- role-based field visibility works in the UI
+- read-only vs editable documentation states are explicit
+- unauthorized users receive controlled `403` or read-only states as appropriate
+- caregiver and admin surfaces do not expose irrelevant fields or controls
+
+========================================================================
+FE8-11 — Shared documentation editor and template-builder framework
+Related Epic 8 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared documentation interaction framework so template editing and visit-note editing remain consistent.
+
+Frontend acceptance criteria
+
+- reusable editor pattern exists for:
+  - field sections
+  - task sections
+  - required markers
+  - validation display
+  - status banners
+- reusable template-builder pattern exists for configuration screens
+- modules can opt into caregiver-edit, admin-edit, and read-only summary behavior cleanly
+- loading, validation, save, and unauthorized states are standardized
+
+========================================================================
+FE8-12 — Shared draft/save/submit mutation and retry UX
+Related Epic 8 features: quick save / draft handling, required-field enforcement
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for draft save and submit so documentation behavior stays predictable.
+
+Frontend acceptance criteria
+
+- draft save and submit use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- where supported, offline or resume-later state is explicit
+- risky actions avoid misleading optimistic states
+- failed submit attempts remain visible until resolved or retried
+
+========================================================================
+FE8-13 — Coordinator-facing documentation status list
+Related Epic 8 features: quick save / draft handling, required-field enforcement
+Backend status: BLOCKED
+
+Story
+As a coordinator, I want a focused documentation status list so I can see draft, incomplete, and submitted visit notes without waiting for the broader QA workspace.
+
+Frontend acceptance criteria
+
+- authorized coordinator/admin screen exists for documentation status visibility
+- list can show draft, incomplete, and submitted documentation records
+- branch, status, caregiver, patient, and date filters exist if backend supports them
+- item detail links into the relevant visit documentation context
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE8-14 — Audit-sensitive and privacy-aware documentation UX
+Related Epic 8 features: all
+Backend status: BLOCKED
+
+Story
+As an admin and caregiver, I want documentation workflows to feel controlled and privacy-aware so note and template changes remain trustworthy.
+
+Frontend acceptance criteria
+
+- sensitive template and documentation mutations communicate that they are controlled operations
+- success states indicate that key configuration and submission actions are logged where appropriate
+- privacy-sensitive patient details are not shown more broadly than needed
+- internal-only backend metadata is not exposed unnecessarily
+- where useful, audit-aware messaging can point admins to later review activity without cluttering caregiver workflows
+
+========================================================================
+FE8-15 — Mobile and tablet hardening for documentation workflows
+Related Epic 8 features: all
+Backend status: BLOCKED
+
+Story
+As a caregiver, I want documentation workflows to remain usable on real phones and small tablets so note entry and task completion are reliable in the field.
+
+Frontend acceptance criteria
+
+- core documentation screens work on common phone widths
+- touch targets remain usable for checklist, field entry, attachment linking, and submit actions
+- keyboard and form interactions do not break critical screens
+- required-field and validation states remain readable on smaller devices
+- no critical Epic 8 screen breaks layout on mobile-sized viewports
+
+========================================================================
+FE8-16 — Frontend regression coverage for Epic 8 flows
+Related Epic 8 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for documentation and task-completion flows so later QA, care-plan, and billing work does not destabilize Epic 8.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 8 routes
+- happy-path interaction coverage exists for representative template, draft-save, submit, and print-summary flows
+- validation, unauthorized, and failure states are covered
+- draft/resume behavior is covered where practical
+- attachment-link and printable-summary failure states are covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared documentation UI foundation
+
+- `FE8-01`
+- `FE8-11`
+- `FE8-12`
+
+Phase B — template and visit-note core workflows
+
+- `FE8-02`
+- `FE8-03`
+- `FE8-04`
+- `FE8-05`
+- `FE8-06`
+- `FE8-07`
+- `FE8-08`
+- `FE8-09`
+- `FE8-10`
+
+Phase C — coordinator-facing documentation visibility
+
+- `FE8-13`
+
+Phase D — audit-aware UX
+
+- `FE8-14`
+
+Phase E — hardening
+
+- `FE8-15`
+- `FE8-16`
+
+========================================================================
+Definition of done for Epic 8 frontend
+
+Epic 8 frontend is done only when:
+
+- note templates, task libraries, and visit documentation are reachable through coherent admin and visit-facing routes
+- template editing, draft save, task completion, submission, attachment linkage, and printable-summary flows use real backend APIs rather than placeholder local state
+- required-field and task validation is shown clearly with understandable draft vs submit behavior
+- caregivers can tell when documentation is draft, incomplete, submitted, or read-only
+- coordinator-facing documentation visibility exists for authorized users
+- privacy-sensitive patient and internal metadata is minimized appropriately
+- documentation screens are mobile-safe where field staff use them
+- core Epic 8 screens are regression-covered

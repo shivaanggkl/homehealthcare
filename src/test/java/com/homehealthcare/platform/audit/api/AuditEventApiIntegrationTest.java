@@ -10,6 +10,8 @@ import com.homehealthcare.agency.domain.Agency;
 import com.homehealthcare.agency.domain.AgencyRepository;
 import com.homehealthcare.configuration.foundation.Epic2ConfigurationAuditAction;
 import com.homehealthcare.configuration.foundation.Epic2ConfigurationTargetType;
+import com.homehealthcare.documentation.foundation.Epic8DocumentationAuditAction;
+import com.homehealthcare.documentation.foundation.Epic8DocumentationTargetType;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
 import com.homehealthcare.patient.foundation.Epic3PatientAuditAction;
@@ -311,6 +313,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic7EvvTargetType.EVV_CLOCK_EVENT.name())))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic7EvvAuditAction.CLOCK_IN_RECORDED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic8DocumentationEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID documentationId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED.actionType(),
+                Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD.name(),
+                documentationId,
+                agency.getId(),
+                null,
+                "{\"status\":\"DRAFT\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED.actionType())));
     }
 
     @Test

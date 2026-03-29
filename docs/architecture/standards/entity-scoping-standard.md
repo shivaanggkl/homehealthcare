@@ -42,6 +42,9 @@ Use this pattern for:
 - task templates
 - payer configuration
 - memberships
+- note templates
+- form templates
+- task library items
 - EVV verification sessions
 - EVV clock events
 - device metadata snapshots
@@ -69,6 +72,9 @@ Use this pattern for:
 
 - visits
 - schedules
+- visit documentation records
+- documentation field responses
+- task completion responses
 - branch alerts
 - branch-specific staffing data
 - branch-level dashboards

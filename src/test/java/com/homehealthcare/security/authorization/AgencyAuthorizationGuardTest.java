@@ -29,6 +29,9 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_CAREGIVER_AVAILABILITY)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_SCHEDULING_WORKSPACE)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.ASSIGN_CAREGIVERS)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.DRAFT_VISIT_DOCUMENTATION)).isTrue();
     }
 
     @Test
@@ -57,6 +60,12 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_MISSED_VISITS)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.RESOLVE_MISSED_VISITS)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.RECEIVE_EVV_NOTIFICATIONS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_VISIT_DOCUMENTATION)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.DRAFT_VISIT_DOCUMENTATION)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SUBMIT_VISIT_DOCUMENTATION)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.GENERATE_PRINTABLE_DOCUMENTATION_SUMMARY)).isFalse();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,
@@ -73,6 +82,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_PATIENT_DEMOGRAPHICS)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_SCHEDULE_VISITS)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.RESOLVE_MISSED_VISITS)).isFalse();
+        assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isFalse();
     }
 
     @Test
@@ -87,6 +97,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_WORKFORCE_DIRECTORY)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_SCHEDULE_CONFLICTS)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_MISSED_VISITS)).isFalse();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE)).isFalse();
     }
 
     private AgencyMembership membership(AgencyRole role, boolean active) {
