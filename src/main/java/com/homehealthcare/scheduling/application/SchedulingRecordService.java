@@ -19,6 +19,7 @@ import com.homehealthcare.schedulingopenshift.domain.OpenShiftStatus;
 import com.homehealthcare.schedulingrecurrence.domain.RecurringVisitCadence;
 import com.homehealthcare.schedulingrecurrence.domain.RecurringVisitRule;
 import com.homehealthcare.schedulingrecurrence.domain.RecurringVisitRuleRepository;
+import com.homehealthcare.schedulingrecurrence.domain.RecurringVisitRuleStatus;
 import com.homehealthcare.schedulingworkflow.domain.VisitCancellationEvent;
 import com.homehealthcare.schedulingworkflow.domain.VisitCancellationEventRepository;
 import com.homehealthcare.schedulingworkflow.domain.VisitCancellationParty;
@@ -187,6 +188,17 @@ public class SchedulingRecordService {
     }
 
     @Transactional
+    public RecurringVisitRule deactivateRecurringRule(@NotNull AgencyMembership actorMembership, @NotNull UUID recurringVisitRuleId) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_SCHEDULE_VISITS);
+        RecurringVisitRule rule = recurringVisitRuleRepository.findByIdAndAgency_Id(recurringVisitRuleId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new SchedulingEntityNotFoundException("RecurringVisitRule", recurringVisitRuleId));
+        rule.deactivate();
+        RecurringVisitRule saved = recurringVisitRuleRepository.saveAndFlush(rule);
+        schedulingAuditService.recordRecurringRuleUpdated(actorMembership, saved.getId(), saved.getBranch() == null ? null : saved.getBranch().getId(), recurringMetadata(saved));
+        return saved;
+    }
+
+    @Transactional
     public List<VisitOccurrence> expandRecurringRule(
             @NotNull AgencyMembership actorMembership,
             @NotNull UUID recurringVisitRuleId,
@@ -278,6 +290,35 @@ public class SchedulingRecordService {
         visit.markOpenShift();
         visitOccurrenceRepository.saveAndFlush(visit);
         schedulingAuditService.recordOpenShiftCreated(actorMembership, saved.getId(), visit.getBranchId(), openShiftMetadata(saved));
+        return saved;
+    }
+
+    @Transactional
+    public CaregiverVisitAssignment removeAssignment(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID visitOccurrenceId,
+            @NotNull UUID assignmentId,
+            boolean convertToOpenShift,
+            @Valid ManageOpenShiftCommand openShiftCommand) {
+        requirePermission(actorMembership, AgencyPermission.ASSIGN_CAREGIVERS);
+        VisitOccurrence visit = resolveVisit(actorMembership.getAgencyId(), visitOccurrenceId);
+        CaregiverVisitAssignment assignment = caregiverVisitAssignmentRepository.findByIdAndAgency_Id(assignmentId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new SchedulingEntityNotFoundException("CaregiverVisitAssignment", assignmentId));
+        if (!Objects.equals(assignment.getVisitOccurrenceId(), visitOccurrenceId)) {
+            throw new SchedulingConflictException("Assignment does not belong to the requested visit.");
+        }
+        if (assignment.getAssignmentStatus() != CaregiverAssignmentStatus.ACTIVE) {
+            throw new SchedulingConflictException("Only active assignments can be removed.");
+        }
+        assignment.remove();
+        CaregiverVisitAssignment saved = caregiverVisitAssignmentRepository.saveAndFlush(assignment);
+        schedulingAuditService.recordAssignmentRemoved(actorMembership, saved.getId(), visit.getBranchId(), assignmentMetadata(saved));
+        if (convertToOpenShift) {
+            openShift(actorMembership, visitOccurrenceId, openShiftCommand == null ? new ManageOpenShiftCommand(visit.getBranchId(), visit.getPriority(), null) : openShiftCommand);
+        } else {
+            visit.markPlanned();
+            visitOccurrenceRepository.saveAndFlush(visit);
+        }
         return saved;
     }
 

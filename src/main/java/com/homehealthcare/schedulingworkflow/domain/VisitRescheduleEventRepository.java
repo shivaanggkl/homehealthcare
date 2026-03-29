@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface VisitRescheduleEventRepository extends JpaRepository<VisitRescheduleEvent, UUID> {
 
     List<VisitRescheduleEvent> findAllByVisitOccurrence_IdOrderByRescheduledAtAsc(UUID visitOccurrenceId);
+
+    List<VisitRescheduleEvent> findAllByAgency_IdOrderByRescheduledAtAsc(UUID agencyId);
 }

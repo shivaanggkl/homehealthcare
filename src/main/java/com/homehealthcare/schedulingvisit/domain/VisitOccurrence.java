@@ -166,6 +166,10 @@ public class VisitOccurrence extends AgencyScopedEntity {
         this.status = SchedulingVisitStatus.ASSIGNED;
     }
 
+    public void markPlanned() {
+        this.status = SchedulingVisitStatus.PLANNED;
+    }
+
     public void markOpenShift() {
         this.status = SchedulingVisitStatus.OPEN_SHIFT;
     }

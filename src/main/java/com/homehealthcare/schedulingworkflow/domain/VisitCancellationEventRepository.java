@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface VisitCancellationEventRepository extends JpaRepository<VisitCancellationEvent, UUID> {
 
     List<VisitCancellationEvent> findAllByVisitOccurrence_IdOrderByCancelledAtAsc(UUID visitOccurrenceId);
+
+    List<VisitCancellationEvent> findAllByAgency_IdOrderByCancelledAtAsc(UUID agencyId);
 }
