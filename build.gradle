@@ -102,3 +102,19 @@ tasks.register('epic3ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.patient.foundation.PhaseCPatientFinancialServiceTest'
 	}
 }
+
+tasks.register('epic4ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 4 workforce API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.workforce.api.CaregiverApiIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.workforce.api.WorkforceCatalogIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.workforce.foundation.WorkforceAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.workforce.foundation.PhaseBWorkforceRepositoryTest'
+		includeTestsMatching 'com.homehealthcare.workforce.foundation.PhaseBWorkforceServiceTest'
+	}
+}
