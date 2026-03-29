@@ -142,6 +142,10 @@ public class PatientEpisodeAuthorization extends AgencyScopedEntity {
         validateState();
     }
 
+    public void deactivate() {
+        this.status = PatientEpisodeAuthorizationStatus.CANCELLED;
+    }
+
     private void assignPatient(Patient patient) {
         this.patient = Objects.requireNonNull(patient, "patient must not be null");
         assignAgency(patient.getAgency());

@@ -138,6 +138,10 @@ public class PatientPayerLink extends AgencyScopedEntity {
         validateState();
     }
 
+    public void deactivate() {
+        this.status = PatientPayerLinkStatus.INACTIVE;
+    }
+
     private void assignPatient(Patient patient) {
         this.patient = Objects.requireNonNull(patient, "patient must not be null");
         assignAgency(patient.getAgency());

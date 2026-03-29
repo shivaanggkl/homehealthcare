@@ -1,6 +1,7 @@
 package com.homehealthcare.patientdiagnosis.application;
 
 import com.homehealthcare.membership.domain.AgencyMembership;
+import com.homehealthcare.patient.application.PatientConflictException;
 import com.homehealthcare.patient.application.PatientEntityNotFoundException;
 import com.homehealthcare.patient.application.UnauthorizedPatientActorException;
 import com.homehealthcare.patient.domain.Patient;
@@ -38,6 +39,7 @@ public class PatientDiagnosisService {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new PatientEntityNotFoundException("Patient", patientId));
         assertSameAgency(actorMembership.getAgencyId(), patient.getAgencyId(), "Patient", patientId);
+        assertPrimaryConditionAllowed(patientId, command.primaryCondition(), null);
 
         PatientDiagnosisCondition saved = patientDiagnosisConditionRepository.saveAndFlush(PatientDiagnosisCondition.create(
                 patient,
@@ -59,6 +61,7 @@ public class PatientDiagnosisService {
         PatientDiagnosisCondition diagnosis = patientDiagnosisConditionRepository.findById(diagnosisId)
                 .orElseThrow(() -> new PatientEntityNotFoundException("PatientDiagnosisCondition", diagnosisId));
         assertSameAgency(actorMembership.getAgencyId(), diagnosis.getAgencyId(), "PatientDiagnosisCondition", diagnosisId);
+        assertPrimaryConditionAllowed(diagnosis.getPatient().getId(), command.primaryCondition(), diagnosisId);
 
         diagnosis.update(
                 command.diagnosisCode(),
@@ -74,11 +77,35 @@ public class PatientDiagnosisService {
         return saved;
     }
 
+    @Transactional
+    public PatientDiagnosisCondition deactivate(@NotNull AgencyMembership actorMembership, @NotNull UUID diagnosisId) {
+        requireManageDiagnoses(actorMembership);
+        PatientDiagnosisCondition diagnosis = patientDiagnosisConditionRepository.findById(diagnosisId)
+                .orElseThrow(() -> new PatientEntityNotFoundException("PatientDiagnosisCondition", diagnosisId));
+        assertSameAgency(actorMembership.getAgencyId(), diagnosis.getAgencyId(), "PatientDiagnosisCondition", diagnosisId);
+        diagnosis.deactivate();
+        PatientDiagnosisCondition saved = patientDiagnosisConditionRepository.saveAndFlush(diagnosis);
+        patientAuditService.recordDeactivated(actorMembership, Epic3PatientTargetType.PATIENT_DIAGNOSIS, saved.getId(), null, metadata(saved));
+        return saved;
+    }
+
     private void requireManageDiagnoses(AgencyMembership actorMembership) {
         agencyAuthorizationGuard.requirePermission(
                 actorMembership,
                 AgencyPermission.MANAGE_PATIENT_DIAGNOSES,
                 UnauthorizedPatientActorException::new);
+    }
+
+    private void assertPrimaryConditionAllowed(UUID patientId, boolean primaryCondition, UUID existingId) {
+        if (!primaryCondition) {
+            return;
+        }
+        long count = existingId == null
+                ? patientDiagnosisConditionRepository.countByPatient_IdAndPrimaryConditionTrue(patientId)
+                : patientDiagnosisConditionRepository.countByPatient_IdAndPrimaryConditionTrueAndIdNot(patientId, existingId);
+        if (count > 0) {
+            throw new PatientConflictException("Only one primary diagnosis is allowed per patient");
+        }
     }
 
     private static void assertSameAgency(UUID expectedAgencyId, UUID actualAgencyId, String entityType, UUID entityId) {

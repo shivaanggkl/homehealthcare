@@ -35,4 +35,6 @@ public interface PatientPayerLinkRepository extends JpaRepository<PatientPayerLi
             @Param("excludeId") UUID excludeId);
 
     long countByPatient_IdAndPrimaryPayerTrueAndStatusIn(UUID patientId, List<PatientPayerLinkStatus> statuses);
+
+    long countByPatient_IdAndPrimaryPayerTrueAndStatusInAndIdNot(UUID patientId, List<PatientPayerLinkStatus> statuses, UUID id);
 }

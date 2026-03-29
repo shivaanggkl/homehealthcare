@@ -104,6 +104,18 @@ public class PatientEpisodeAuthorizationService {
         return saved;
     }
 
+    @Transactional
+    public PatientEpisodeAuthorization deactivate(@NotNull AgencyMembership actorMembership, @NotNull UUID authorizationId) {
+        requireManageAuthorizations(actorMembership);
+        PatientEpisodeAuthorization authorization = patientEpisodeAuthorizationRepository.findById(authorizationId)
+                .orElseThrow(() -> new PatientEntityNotFoundException("PatientEpisodeAuthorization", authorizationId));
+        assertSameAgency(actorMembership.getAgencyId(), authorization.getAgencyId(), "PatientEpisodeAuthorization", authorizationId);
+        authorization.deactivate();
+        PatientEpisodeAuthorization saved = patientEpisodeAuthorizationRepository.saveAndFlush(authorization);
+        patientAuditService.recordDeactivated(actorMembership, Epic3PatientTargetType.PATIENT_EPISODE_AUTHORIZATION, saved.getId(), null, metadata(saved));
+        return saved;
+    }
+
     private void requireManageAuthorizations(AgencyMembership actorMembership) {
         agencyAuthorizationGuard.requirePermission(
                 actorMembership,

@@ -113,6 +113,10 @@ public class PatientServiceEligibility extends AgencyScopedEntity {
         validateDateWindow();
     }
 
+    public void deactivate() {
+        this.status = PatientServiceEligibilityStatus.EXPIRED;
+    }
+
     private void assignPatient(Patient patient) {
         this.patient = Objects.requireNonNull(patient, "patient must not be null");
         assignAgency(patient.getAgency());

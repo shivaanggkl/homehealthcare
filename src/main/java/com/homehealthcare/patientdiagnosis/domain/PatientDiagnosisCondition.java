@@ -129,6 +129,10 @@ public class PatientDiagnosisCondition extends AgencyScopedEntity {
         validateClinicalDates();
     }
 
+    public void deactivate() {
+        this.status = PatientDiagnosisStatus.INACTIVE;
+    }
+
     private void assignPatient(Patient patient) {
         this.patient = Objects.requireNonNull(patient, "patient must not be null");
         assignAgency(patient.getAgency());

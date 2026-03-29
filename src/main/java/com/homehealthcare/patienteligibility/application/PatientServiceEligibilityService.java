@@ -74,6 +74,18 @@ public class PatientServiceEligibilityService {
         return saved;
     }
 
+    @Transactional
+    public PatientServiceEligibility deactivate(@NotNull AgencyMembership actorMembership, @NotNull UUID eligibilityId) {
+        requireManageEligibility(actorMembership);
+        PatientServiceEligibility eligibility = patientServiceEligibilityRepository.findById(eligibilityId)
+                .orElseThrow(() -> new PatientEntityNotFoundException("PatientServiceEligibility", eligibilityId));
+        assertSameAgency(actorMembership.getAgencyId(), eligibility.getAgencyId(), "PatientServiceEligibility", eligibilityId);
+        eligibility.deactivate();
+        PatientServiceEligibility saved = patientServiceEligibilityRepository.saveAndFlush(eligibility);
+        patientAuditService.recordDeactivated(actorMembership, Epic3PatientTargetType.PATIENT_SERVICE_ELIGIBILITY, saved.getId(), null, metadata(saved));
+        return saved;
+    }
+
     private void requireManageEligibility(AgencyMembership actorMembership) {
         agencyAuthorizationGuard.requirePermission(
                 actorMembership,

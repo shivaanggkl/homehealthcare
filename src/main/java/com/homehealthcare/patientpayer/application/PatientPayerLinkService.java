@@ -85,6 +85,18 @@ public class PatientPayerLinkService {
         return saved;
     }
 
+    @Transactional
+    public PatientPayerLink deactivate(@NotNull AgencyMembership actorMembership, @NotNull UUID payerLinkId) {
+        requireManagePayerLinkage(actorMembership);
+        PatientPayerLink payerLink = patientPayerLinkRepository.findById(payerLinkId)
+                .orElseThrow(() -> new PatientEntityNotFoundException("PatientPayerLink", payerLinkId));
+        assertSameAgency(actorMembership.getAgencyId(), payerLink.getAgencyId(), "PatientPayerLink", payerLinkId);
+        payerLink.deactivate();
+        PatientPayerLink saved = patientPayerLinkRepository.saveAndFlush(payerLink);
+        patientAuditService.recordDeactivated(actorMembership, Epic3PatientTargetType.PATIENT_PAYER_LINK, saved.getId(), null, metadata(saved));
+        return saved;
+    }
+
     private void requireManagePayerLinkage(AgencyMembership actorMembership) {
         agencyAuthorizationGuard.requirePermission(
                 actorMembership,
@@ -96,10 +108,15 @@ public class PatientPayerLinkService {
         if (!primaryPayer) {
             return;
         }
-        long primaryCount = patientPayerLinkRepository.countByPatient_IdAndPrimaryPayerTrueAndStatusIn(
-                patientId,
-                List.of(PatientPayerLinkStatus.ACTIVE, PatientPayerLinkStatus.PENDING));
-        if (existingId == null ? primaryCount > 0 : primaryCount > 1) {
+        long primaryCount = existingId == null
+                ? patientPayerLinkRepository.countByPatient_IdAndPrimaryPayerTrueAndStatusIn(
+                        patientId,
+                        List.of(PatientPayerLinkStatus.ACTIVE, PatientPayerLinkStatus.PENDING))
+                : patientPayerLinkRepository.countByPatient_IdAndPrimaryPayerTrueAndStatusInAndIdNot(
+                        patientId,
+                        List.of(PatientPayerLinkStatus.ACTIVE, PatientPayerLinkStatus.PENDING),
+                        existingId);
+        if (primaryCount > 0) {
             throw new PatientConflictException("Only one active or pending primary payer link is allowed per patient");
         }
     }
