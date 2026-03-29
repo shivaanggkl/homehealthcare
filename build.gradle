@@ -118,3 +118,19 @@ tasks.register('epic4ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.workforce.foundation.PhaseBWorkforceServiceTest'
 	}
 }
+
+tasks.register('epic5ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 5 scheduling API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.scheduling.api.SchedulingApiIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.scheduling.foundation.SchedulingAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.scheduling.foundation.PhaseBSchedulingRepositoryTest'
+		includeTestsMatching 'com.homehealthcare.scheduling.foundation.PhaseBSchedulingServiceTest'
+		includeTestsMatching 'com.homehealthcare.scheduling.foundation.PhaseCSchedulingRulesServiceTest'
+	}
+}
