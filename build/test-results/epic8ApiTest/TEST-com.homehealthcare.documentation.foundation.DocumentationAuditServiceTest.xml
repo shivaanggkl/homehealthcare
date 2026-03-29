@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.documentation.foundation.DocumentationAuditServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-29T19:44:10.123Z" hostname="Shivangs-MacBook-Pro.local" time="1.85">
+  <properties/>
+  <testcase name="documentationFoundationContractsCoverExpectedLifecycleAndFieldVocabulary()" classname="com.homehealthcare.documentation.foundation.DocumentationAuditServiceTest" time="1.75"/>
+  <testcase name="templateAuditUsesStandardizedEpic8ActionAndTargetType()" classname="com.homehealthcare.documentation.foundation.DocumentationAuditServiceTest" time="0.094"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

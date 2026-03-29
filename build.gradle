@@ -163,3 +163,17 @@ tasks.register('epic7ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.evv.api.EvvApiIntegrationTest'
 	}
 }
+
+tasks.register('epic8ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 8 documentation API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.documentation.foundation.DocumentationAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.documentation.foundation.PhaseBDocumentationServiceTest'
+		includeTestsMatching 'com.homehealthcare.documentation.api.DocumentationApiIntegrationTest'
+	}
+}
