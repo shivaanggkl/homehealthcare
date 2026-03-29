@@ -281,6 +281,32 @@ public class EvvVerificationService {
     }
 
     @Transactional
+    public SupervisorNotificationEvent notifySupervisorForException(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID visitExceptionRecordId,
+            @Valid NotifySupervisorCommand command) {
+        requirePermission(actorMembership, AgencyPermission.RECEIVE_EVV_NOTIFICATIONS);
+        VisitExceptionRecord visitExceptionRecord = visitExceptionRecordRepository.findByIdAndAgency_Id(visitExceptionRecordId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new EvvEntityNotFoundException("VisitExceptionRecord", visitExceptionRecordId));
+        AgencyMembership recipientMembership = resolveNotificationRecipient(actorMembership.getAgencyId(), command.recipientMembershipId());
+        SupervisorNotificationEvent event = supervisorNotificationEventRepository.saveAndFlush(
+                SupervisorNotificationEvent.createForException(
+                        visitExceptionRecord,
+                        recipientMembership,
+                        actorMembership,
+                        visitExceptionRecord.getBranch(),
+                        command.channel(),
+                        command.rationale(),
+                        command.createdAt()));
+        evvAuditService.recordSupervisorNotified(
+                actorMembership,
+                event.getId(),
+                visitExceptionRecord.getBranch() == null ? null : visitExceptionRecord.getBranch().getId(),
+                "{\"channel\":\"" + command.channel().trim().toUpperCase() + "\"}");
+        return event;
+    }
+
+    @Transactional
     public EscalationRequest createEscalationForException(
             @NotNull AgencyMembership actorMembership,
             @NotNull UUID visitExceptionRecordId,
@@ -299,6 +325,62 @@ public class EvvVerificationService {
         record.markEscalated();
         evvAuditService.recordEscalationCreated(actorMembership, escalationRequest.getId(), record.getBranch() == null ? null : record.getBranch().getId(), "{\"targetRoleKey\":\"" + command.targetRoleKey().trim().toUpperCase() + "\"}");
         refreshCompliance(record.getVerificationSession());
+        return escalationRequest;
+    }
+
+    @Transactional(readOnly = true)
+    public VisitExceptionRecord getVisitException(@NotNull AgencyMembership actorMembership, @NotNull UUID visitExceptionRecordId) {
+        if (!agencyAuthorizationGuard.hasPermission(actorMembership, AgencyPermission.MANAGE_EVV_EXCEPTIONS)
+                && !agencyAuthorizationGuard.hasPermission(actorMembership, AgencyPermission.VIEW_MISSED_VISITS)
+                && !agencyAuthorizationGuard.hasPermission(actorMembership, AgencyPermission.RECEIVE_EVV_NOTIFICATIONS)) {
+            throw new UnauthorizedEvvActorException(actorMembership.getId());
+        }
+        return visitExceptionRecordRepository.findByIdAndAgency_Id(visitExceptionRecordId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new EvvEntityNotFoundException("VisitExceptionRecord", visitExceptionRecordId));
+    }
+
+    @Transactional
+    public VisitExceptionRecord updateExceptionStatus(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID visitExceptionRecordId,
+            @Valid UpdateExceptionStatusCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_EVV_EXCEPTIONS);
+        VisitExceptionRecord record = visitExceptionRecordRepository.findByIdAndAgency_Id(visitExceptionRecordId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new EvvEntityNotFoundException("VisitExceptionRecord", visitExceptionRecordId));
+        switch (command.status()) {
+            case ACKNOWLEDGED -> record.acknowledge(command.actedAt());
+            case RESOLVED -> record.resolve(command.actedAt());
+            case OPEN, ESCALATED -> throw new IllegalArgumentException("Only ACKNOWLEDGED and RESOLVED are supported through the exception status API");
+        }
+        visitExceptionRecordRepository.saveAndFlush(record);
+        if (record.getVerificationSession() != null) {
+            refreshCompliance(record.getVerificationSession());
+        }
+        return record;
+    }
+
+    @Transactional
+    public EscalationRequest createEscalationForMissedVisit(
+            @NotNull AgencyMembership actorMembership,
+            @NotNull UUID missedVisitRecordId,
+            @Valid CreateEscalationCommand command) {
+        requirePermission(actorMembership, AgencyPermission.MANAGE_EVV_EXCEPTIONS);
+        MissedVisitRecord record = missedVisitRecordRepository.findByIdAndAgency_Id(missedVisitRecordId, actorMembership.getAgencyId())
+                .orElseThrow(() -> new EvvEntityNotFoundException("MissedVisitRecord", missedVisitRecordId));
+        EscalationRequest escalationRequest = escalationRequestRepository.saveAndFlush(EscalationRequest.createForMissedVisit(
+                record,
+                actorMembership,
+                record.getBranch(),
+                command.targetRoleKey(),
+                command.severity(),
+                command.rationale(),
+                command.slaDueAt()));
+        record.markEscalated();
+        evvAuditService.recordEscalationCreated(
+                actorMembership,
+                escalationRequest.getId(),
+                record.getBranch() == null ? null : record.getBranch().getId(),
+                "{\"targetRoleKey\":\"" + command.targetRoleKey().trim().toUpperCase() + "\"}");
         return escalationRequest;
     }
 
@@ -533,5 +615,10 @@ public class EvvVerificationService {
             @NotNull VisitExceptionSeverity severity,
             @NotBlank String rationale,
             OffsetDateTime slaDueAt) {
+    }
+
+    public record UpdateExceptionStatusCommand(
+            @NotNull VisitExceptionStatus status,
+            @NotNull OffsetDateTime actedAt) {
     }
 }

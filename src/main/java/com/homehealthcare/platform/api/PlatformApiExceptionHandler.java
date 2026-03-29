@@ -1,5 +1,8 @@
 package com.homehealthcare.platform.api;
 
+import com.homehealthcare.evv.application.EvvConflictException;
+import com.homehealthcare.evv.application.EvvEntityNotFoundException;
+import com.homehealthcare.evv.application.UnauthorizedEvvActorException;
 import com.homehealthcare.mobile.application.MobileConflictException;
 import com.homehealthcare.mobile.application.MobileEntityNotFoundException;
 import java.time.DateTimeException;
@@ -44,6 +47,24 @@ class PlatformApiExceptionHandler {
     @ExceptionHandler(MobileEntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     Map<String, String> handleMobileNotFound(MobileEntityNotFoundException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(EvvConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    Map<String, String> handleEvvConflict(EvvConflictException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(EvvEntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Map<String, String> handleEvvNotFound(EvvEntityNotFoundException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedEvvActorException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    Map<String, String> handleUnauthorizedEvvActor(UnauthorizedEvvActorException exception) {
         return Map.of("error", exception.getMessage());
     }
 }
