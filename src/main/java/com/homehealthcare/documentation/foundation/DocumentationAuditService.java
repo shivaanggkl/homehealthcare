@@ -16,82 +16,36 @@ public class DocumentationAuditService {
 
     private final AuditEventRepository auditEventRepository;
 
-    public void recordTemplateCreated(
-            AgencyMembership actorMembership,
-            Epic8DocumentationTargetType targetType,
-            UUID targetId,
-            UUID branchId,
-            String metadataJson) {
-        record(actorMembership, Epic8DocumentationAuditAction.TEMPLATE_CREATED, targetType, targetId, branchId, metadataJson);
+    public void recordTemplateCreated(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
+        record(actorMembership, Epic8DocumentationAuditAction.TEMPLATE_CREATED, Epic8DocumentationTargetType.DOCUMENTATION_TEMPLATE, targetId, branchId, metadataJson);
     }
 
-    public void recordTemplateUpdated(
-            AgencyMembership actorMembership,
-            Epic8DocumentationTargetType targetType,
-            UUID targetId,
-            UUID branchId,
-            String metadataJson) {
-        record(actorMembership, Epic8DocumentationAuditAction.TEMPLATE_UPDATED, targetType, targetId, branchId, metadataJson);
+    public void recordTemplateUpdated(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
+        record(actorMembership, Epic8DocumentationAuditAction.TEMPLATE_UPDATED, Epic8DocumentationTargetType.DOCUMENTATION_TEMPLATE, targetId, branchId, metadataJson);
     }
 
     public void recordTaskLibraryUpdated(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.TASK_LIBRARY_UPDATED,
-                Epic8DocumentationTargetType.TASK_LIBRARY_ITEM,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.TASK_LIBRARY_UPDATED, Epic8DocumentationTargetType.TASK_LIBRARY_ITEM, targetId, branchId, metadataJson);
     }
 
     public void recordDocumentationDraftSaved(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED,
-                Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.DOCUMENTATION_DRAFT_SAVED, Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD, targetId, branchId, metadataJson);
     }
 
     public void recordDocumentationSubmitted(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.DOCUMENTATION_SUBMITTED,
-                Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.DOCUMENTATION_SUBMITTED, Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD, targetId, branchId, metadataJson);
     }
 
     public void recordDocumentationAmended(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.DOCUMENTATION_AMENDED,
-                Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.DOCUMENTATION_AMENDED, Epic8DocumentationTargetType.VISIT_DOCUMENTATION_RECORD, targetId, branchId, metadataJson);
     }
 
     public void recordAttachmentLinked(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.ATTACHMENT_LINKED,
-                Epic8DocumentationTargetType.DOCUMENTATION_ATTACHMENT_LINK,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.ATTACHMENT_LINKED, Epic8DocumentationTargetType.DOCUMENTATION_ATTACHMENT_LINK, targetId, branchId, metadataJson);
     }
 
     public void recordPrintableSummaryGenerated(AgencyMembership actorMembership, UUID targetId, UUID branchId, String metadataJson) {
-        record(
-                actorMembership,
-                Epic8DocumentationAuditAction.PRINTABLE_SUMMARY_GENERATED,
-                Epic8DocumentationTargetType.PRINTABLE_SUMMARY_PROJECTION,
-                targetId,
-                branchId,
-                metadataJson);
+        record(actorMembership, Epic8DocumentationAuditAction.PRINTABLE_SUMMARY_GENERATED, Epic8DocumentationTargetType.PRINTABLE_SUMMARY, targetId, branchId, metadataJson);
     }
 
     private void record(

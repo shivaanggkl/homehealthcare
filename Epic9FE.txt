@@ -1,0 +1,328 @@
+Epic 9 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 9 from `Requirements.txt` into a frontend delivery backlog for messaging and coordination.
+
+Epic 9 title
+
+Messaging and coordination
+
+Epic 9 feature scope from the requirements
+
+- in-app secure messaging
+- patient-level communication threads
+- staff groups
+- branch broadcasts
+- visit-specific notes
+- escalation tags
+- read receipts
+- task-linked discussion threads
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 3 frontend and backend are complete and provide patient workspaces and patient-scoped operational context
+- Epic 5 frontend and backend are complete and provide visit, schedule, and task-adjacent coordination entry points
+- Epic 6 frontend and backend are complete and provide caregiver mobile messaging patterns that Epic 9 should generalize for web coordination workflows
+- Epic 8 frontend and backend are complete and provide documentation/task completion context that can link into discussion threads
+- Epic 9 frontend should support direct messaging, contextual operational communication, and branch announcements without turning the app into a generic external mail client
+- Epic 9 should stop short of the QA queue and reviewer workflow from Epic 10
+- secure coordination should remain privacy-aware and avoid exposing unnecessary patient or message metadata outside authorized contexts
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 9 backend APIs
+
+========================================================================
+FE9-01 — Messaging information architecture and route model
+Related Epic 9 features: all
+Backend status: BLOCKED
+
+Story
+As a coordinator, admin, or caregiver, I want messaging and coordination routes to fit naturally into the app so conversations, broadcasts, and contextual notes are easy to find.
+
+Frontend acceptance criteria
+
+- protected messaging workspace route exists
+- dedicated routes exist for:
+  - inbox or thread list
+  - thread detail
+  - patient-linked discussion context
+  - visit or task-linked discussion context
+  - staff-group and broadcast admin surfaces
+- unsupported or unauthorized messaging routes render controlled states
+- unread and escalation state can be surfaced without exposing backend-only detail
+
+========================================================================
+FE9-02 — Secure inbox and thread-list UX
+Related Epic 9 features: in-app secure messaging, read receipts
+Backend status: BLOCKED
+
+Story
+As a user, I want a secure inbox so I can see active threads, unread work, and recent coordination without opening every conversation.
+
+Frontend acceptance criteria
+
+- inbox screen exists
+- thread list shows at least:
+  - subject or context label
+  - participant summary
+  - last activity time
+  - unread state
+  - escalation state where present
+- empty, loading, and failure states are handled clearly
+- inbox uses real backend APIs rather than placeholder local state
+
+========================================================================
+FE9-03 — Thread detail and compose/reply UX
+Related Epic 9 features: in-app secure messaging
+Backend status: BLOCKED
+
+Story
+As a user, I want thread detail and reply flow so secure coordination feels like a first-class part of daily work.
+
+Frontend acceptance criteria
+
+- thread detail view exists
+- message timeline supports:
+  - sender identity
+  - timestamp
+  - read state where allowed
+  - escalation marker where present
+- compose and reply flow exists
+- send uses backend APIs rather than placeholder local state
+- validation, pending, success, and failure states are shown clearly
+
+========================================================================
+FE9-04 — Patient-level communication thread UX
+Related Epic 9 features: patient-level communication threads
+Backend status: BLOCKED
+
+Story
+As a coordinator or clinician, I want patient-level threads so care-team communication stays attached to the patient context.
+
+Frontend acceptance criteria
+
+- patient workspace can show patient-linked communication threads where authorized
+- patient-thread list and thread-open action exist
+- patient-linked compose flow exists where authorized
+- patient context is visible without exposing broader protected data than necessary
+- unauthorized users receive controlled `403` or hidden entry points as appropriate
+
+========================================================================
+FE9-05 — Staff-group management UX
+Related Epic 9 features: staff groups
+Backend status: BLOCKED
+
+Story
+As an admin, I want to manage staff groups so common recipient sets can be reused cleanly.
+
+Frontend acceptance criteria
+
+- staff-group list and editor exist
+- group editor supports:
+  - name
+  - description optional
+  - branch scope optional
+  - active/inactive state
+  - membership management
+- staff-group CRUD uses real backend APIs
+- controlled validation and unauthorized states are shown clearly
+
+========================================================================
+FE9-06 — Branch broadcast management and read UX
+Related Epic 9 features: branch broadcasts
+Backend status: BLOCKED
+
+Story
+As branch leadership and staff, I want branch broadcasts so operational announcements are visible without becoming one-off message spam.
+
+Frontend acceptance criteria
+
+- authorized admin/leadership broadcast screen exists
+- broadcast create/list/cancel workflow exists where authorized
+- recipient-facing broadcast visibility exists in the messaging workspace
+- branch broadcast state and expiration are visible
+- broadcast flows use backend APIs rather than placeholder local state
+
+========================================================================
+FE9-07 — Visit-specific note and task-linked discussion UX
+Related Epic 9 features: visit-specific notes, task-linked discussion threads
+Backend status: BLOCKED
+
+Story
+As operations, I want discussion threads linked to visits and tasks so coordination stays with the work item that needs follow-up.
+
+Frontend acceptance criteria
+
+- visit workspace can open visit-linked discussion
+- task-adjacent surfaces can open linked discussion where backend supports it
+- context-linked threads clearly identify what object they belong to
+- message send and thread-open flows reuse the shared messaging APIs
+- invalid or unavailable context shows controlled states
+
+========================================================================
+FE9-08 — Escalation tags and read-receipt UX
+Related Epic 9 features: escalation tags, read receipts
+Backend status: BLOCKED
+
+Story
+As a coordinator, I want escalation and read state surfaced clearly so urgent coordination is distinguishable from normal chatter.
+
+Frontend acceptance criteria
+
+- escalated vs normal thread/message state is visually distinct
+- authorized escalation-tag and clear actions exist where supported
+- read receipts or seen state are shown where allowed
+- unread counts update after thread open or mark-read actions
+- escalation/read flows use real backend APIs
+
+========================================================================
+FE9-09 — Shared messaging workspace foundation
+Related Epic 9 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared messaging framework so inbox, thread detail, patient discussion, and broadcast surfaces remain consistent.
+
+Frontend acceptance criteria
+
+- reusable messaging layout exists for:
+  - thread list
+  - thread detail
+  - participant summary
+  - context badge
+  - unread badge
+  - escalation badge
+- modules can opt into admin-edit, coordinator-view, and caregiver-view behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE9-10 — Shared send, read, and retry mutation UX
+Related Epic 9 features: in-app secure messaging, read receipts
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for send, mark-read, broadcast, and escalation actions so messaging behavior stays predictable.
+
+Frontend acceptance criteria
+
+- send and update mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- unread or read state does not use misleading optimistic behavior where data safety matters
+- risky actions like broadcast and escalation are confirmed clearly
+- failed message sends remain visible until resolved or retried where practical
+
+========================================================================
+FE9-11 — Coordinator-facing communication visibility and command-center summary
+Related Epic 9 features: patient-level communication threads, branch broadcasts, escalation tags
+Backend status: BLOCKED
+
+Story
+As a coordinator, I want focused communication visibility so unread, escalated, and broadcasted coordination work is easy to triage.
+
+Frontend acceptance criteria
+
+- authorized coordinator/admin summary screen exists for communication visibility
+- summary can show:
+  - unread thread count
+  - escalated thread state
+  - recent broadcasts
+  - recent patient or visit-linked activity where supported
+- thread and context links route into the relevant messaging surface
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE9-12 — Audit-sensitive and privacy-aware messaging UX
+Related Epic 9 features: all
+Backend status: BLOCKED
+
+Story
+As an admin and staff user, I want secure coordination UX to feel controlled and privacy-aware so sensitive conversation data is handled appropriately.
+
+Frontend acceptance criteria
+
+- sensitive messaging mutations communicate that they are controlled operations
+- success states indicate that key messaging and broadcast actions are logged where appropriate
+- patient and visit detail shown in message lists stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware messaging can point admins to later review activity without cluttering everyday thread use
+
+========================================================================
+FE9-13 — Mobile and tablet hardening for messaging workflows
+Related Epic 9 features: all
+Backend status: BLOCKED
+
+Story
+As a field or office user, I want messaging workflows to remain usable on phones and small tablets so coordination does not require desktop-only screens.
+
+Frontend acceptance criteria
+
+- core messaging screens work on common phone and tablet widths
+- thread list, thread detail, unread badges, escalation badges, and compose actions remain usable on touch devices
+- keyboard and form interactions do not break critical screens
+- no critical Epic 9 screen breaks layout on mobile-sized viewports
+
+========================================================================
+FE9-14 — Frontend regression coverage for Epic 9 flows
+Related Epic 9 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for secure coordination flows so later QA, compliance, and revenue work does not destabilize Epic 9.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 9 routes
+- happy-path interaction coverage exists for representative inbox, thread reply, group management, and broadcast flows
+- validation, unauthorized, and failure states are covered
+- escalation and read-state behavior is covered where practical
+- context-linked thread visibility is covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared messaging UI foundation
+
+- `FE9-01`
+- `FE9-09`
+- `FE9-10`
+
+Phase B — core messaging and coordination workflows
+
+- `FE9-02`
+- `FE9-03`
+- `FE9-04`
+- `FE9-05`
+- `FE9-06`
+- `FE9-07`
+- `FE9-08`
+
+Phase C — coordinator-facing communication visibility
+
+- `FE9-11`
+
+Phase D — audit-aware UX
+
+- `FE9-12`
+
+Phase E — hardening
+
+- `FE9-13`
+- `FE9-14`
+
+========================================================================
+Definition of done for Epic 9 frontend
+
+Epic 9 frontend is done only when:
+
+- messaging, contextual discussion, staff groups, and branch broadcasts are reachable through coherent protected routes
+- inbox, thread detail, send, read, group, broadcast, and escalation flows use real backend APIs rather than placeholder local state
+- patient, visit, and task-linked communication context is visible where authorized
+- unread, read, and escalation state is shown clearly without exposing internal-only data
+- coordinator-facing communication visibility exists for authorized users
+- privacy-sensitive context and message metadata is minimized appropriately
+- messaging screens are mobile-safe where staff use them
+- core Epic 9 screens are regression-covered
