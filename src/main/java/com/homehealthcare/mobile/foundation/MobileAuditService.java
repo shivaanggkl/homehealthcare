@@ -48,6 +48,14 @@ public class MobileAuditService {
         record(actorMembership, Epic6MobileAuditAction.QUICK_NOTE_SAVED, Epic6MobileTargetType.QUICK_NOTE_ENTRY, targetId, branchId, metadataJson);
     }
 
+    public void recordTaskChecklistSaved(
+            AgencyMembership actorMembership,
+            UUID targetId,
+            UUID branchId,
+            String metadataJson) {
+        record(actorMembership, Epic6MobileAuditAction.TASK_CHECKLIST_SAVED, Epic6MobileTargetType.TASK_CHECKLIST_ENTRY, targetId, branchId, metadataJson);
+    }
+
     public void recordIncidentFlagged(
             AgencyMembership actorMembership,
             UUID targetId,

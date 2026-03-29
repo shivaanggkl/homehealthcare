@@ -23,6 +23,22 @@ public interface CaregiverVisitAssignmentRepository extends JpaRepository<Caregi
             CaregiverAssignmentStatus assignmentStatus);
 
     @Query("""
+            select assignment
+            from CaregiverVisitAssignment assignment
+            where assignment.caregiverProfile.id = :caregiverProfileId
+              and assignment.assignmentStatus = :status
+              and assignment.visitOccurrence.status <> com.homehealthcare.scheduling.foundation.SchedulingVisitStatus.CANCELLED
+              and assignment.visitOccurrence.plannedStartAt >= :windowStart
+              and assignment.visitOccurrence.plannedStartAt < :windowEnd
+            order by assignment.visitOccurrence.plannedStartAt asc, assignment.assignedAt asc
+            """)
+    List<CaregiverVisitAssignment> findAllActiveForCaregiverWithin(
+            @Param("caregiverProfileId") UUID caregiverProfileId,
+            @Param("windowStart") OffsetDateTime windowStart,
+            @Param("windowEnd") OffsetDateTime windowEnd,
+            @Param("status") CaregiverAssignmentStatus status);
+
+    @Query("""
             select case when count(assignment) > 0 then true else false end
             from CaregiverVisitAssignment assignment
             where assignment.caregiverProfile.id = :caregiverProfileId

@@ -9,6 +9,8 @@ public interface CaregiverProfileRepository extends JpaRepository<CaregiverProfi
 
     boolean existsByAgency_IdAndAgencyMembership_Id(UUID agencyId, UUID agencyMembershipId);
 
+    Optional<CaregiverProfile> findFirstByAgency_IdAndAgencyMembership_Id(UUID agencyId, UUID agencyMembershipId);
+
     Optional<CaregiverProfile> findByIdAndAgency_Id(UUID id, UUID agencyId);
 
     List<CaregiverProfile> findAllByAgency_IdOrderByCreatedAtAsc(UUID agencyId);
