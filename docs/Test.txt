@@ -1,0 +1,401 @@
+Use this local setup.
+
+**Run Locally**
+Backend runs on `8080` and frontend on `5173`. The frontend already expects the backend origin to be configurable through [session-api.ts](/Users/shiva/Documents/GitHub/homehealthcarefe/src/app/auth/session-api.ts), and the backend already allows `http://localhost:5173` in [application.properties](/Users/shiva/Documents/GitHub/homehealthcare/src/main/resources/application.properties).
+
+Start backend from [/Users/shiva/Documents/GitHub/homehealthcare]( /Users/shiva/Documents/GitHub/homehealthcare ):
+```bash
+./gradlew bootRun --args='
+--app.dev-bootstrap.owner.enabled=true
+--app.dev-bootstrap.owner.internal-super-admin-email=ops@platform.local
+--app.dev-bootstrap.owner.agency-name=North Star Home Care
+--app.dev-bootstrap.owner.agency-slug=north-star-home-care
+--app.dev-bootstrap.owner.agency-timezone=America/Chicago
+--app.dev-bootstrap.owner.agency-contact-email=hello@northstar.example
+--app.dev-bootstrap.owner.owner-first-name=Alicia
+--app.dev-bootstrap.owner.owner-last-name=Owner
+--app.dev-bootstrap.owner.owner-email=alicia.owner@northstar.example
+--app.dev-bootstrap.owner.owner-phone=+1-312-555-0101
+--app.dev-bootstrap.owner.owner-password=StartPassword1!
+'
+```
+
+Start frontend from [/Users/shiva/Documents/GitHub/homehealthcarefe]( /Users/shiva/Documents/GitHub/homehealthcarefe ):
+```bash
+VITE_API_BASE_URL=http://localhost:8080 npm install
+VITE_API_BASE_URL=http://localhost:8080 npm run dev
+```
+
+Open `http://localhost:5173`, log in with:
+- email: `alicia.owner@northstar.example`
+- password: `StartPassword1!`
+
+Important local expectation:
+- the backend uses in-memory H2, so all data resets when the backend restarts
+- owner login will cover most admin/web pages
+- caregiver mobile pages and some role-specific command centers may require additional users/roles/records created in the app
+
+**Best Testing Order**
+Test in this order or many later pages will just show empty states:
+1. Auth and settings
+2. Setup and catalogs
+3. Branches and users
+4. Patients
+5. Workforce
+6. Scheduling
+7. Mobile + EVV
+8. Documentation
+9. Messaging
+10. Review
+11. Compliance
+12. Patient events
+13. Goals
+14. Revenue readiness
+15. Analytics
+
+**What To Expect Before Data Exists**
+Many pages are correctly empty at first. That is normal. Expect:
+- list pages show empty or onboarding-style states
+- detail routes with IDs are best reached by clicking from list pages, not typing random IDs
+- command-center pages will stay sparse until upstream records exist
+- route guards show denied states if the logged-in user lacks permission
+
+**Page-by-Page Test Guide**
+
+**Auth / Security**
+- `/login`
+  - Do: sign in with the bootstrap owner.
+  - Expect: redirect into `/app`, session established.
+- `/forgot-password`
+  - Do: submit any email.
+  - Expect: safe success messaging, no account enumeration.
+- `/reset-password`
+  - Do: only test if you have a valid reset token flow.
+  - Expect: password policy validation and completion state.
+- `/login/mfa`
+  - Do: test only after enabling MFA in settings.
+  - Expect: TOTP or recovery-code challenge.
+- `/app/settings/password`
+  - Do: try weak and strong passwords.
+  - Expect: backend policy enforcement.
+- `/app/settings/mfa`
+  - Do: enroll MFA.
+  - Expect: QR/manual key flow and confirmation.
+- `/app/settings/sessions`
+  - Do: open a second browser session, revoke one.
+  - Expect: current/recent sessions and revoke behavior.
+- `/app/settings/security`
+  - Do: review consolidated security settings.
+  - Expect: admin-only access.
+- `/app/settings/admin-mfa-policy`
+  - Do: change agency MFA policy.
+  - Expect: save confirmation, audit-sensitive behavior.
+- `/app/settings/admin-notifications`
+  - Do: change admin notification preferences.
+  - Expect: save confirmation.
+- `/app/admin/audit`
+  - Do: review recent auth/settings changes.
+  - Expect: filtered audit history.
+
+**Home / Shell**
+- `/app/home`
+  - Do: verify landing cards and navigation.
+  - Expect: role-aware home page and links into the enabled modules.
+
+**Setup / Catalogs**
+- `/app/setup`
+  - Do: verify module overview.
+  - Expect: entry links into setup areas.
+- `/app/setup/profile`
+  - Do: edit agency profile values.
+  - Expect: persisted agency setup behavior.
+- `/app/setup/catalog/service-lines`
+  - Do: create and update service lines.
+  - Expect: list updates and validation.
+- `/app/setup/catalog/visit-types`
+  - Do: create and update visit types.
+  - Expect: list updates and validation.
+- `/app/setup/workforce/catalogs`
+  - Do: verify workforce catalog sections.
+  - Expect: supporting workforce configuration behavior.
+- `/app/setup/templates/tasks`
+  - Do: create task templates.
+  - Expect: reusable tasks for documentation.
+- `/app/setup/templates/documentation`
+  - Do: create a documentation template with fields/tasks.
+  - Expect: reusable documentation template behavior.
+- `/app/setup/policies/branches`
+  - Do: create or update branch policies.
+  - Expect: branch-policy save behavior.
+- `/app/setup/policies/alerts`
+  - Do: create or update alert rules.
+  - Expect: alert-rule save behavior.
+- `/app/setup/compensation/mileage-pay`
+  - Do: set defaults and branch-specific values.
+  - Expect: saved mileage settings.
+
+**Admin / Org**
+- `/app/admin/branches`
+  - Do: create at least one branch.
+  - Expect: branch list/detail management.
+- `/app/admin/users`
+  - Do: inspect directory, statuses, assignments if available.
+  - Expect: admin-only directory behavior.
+- `/app/admin/users/invite`
+  - Do: invite at least one scheduler/coordinator and one caregiver.
+  - Expect: onboarding/invite behavior.
+
+**Patients**
+- `/app/patients`
+  - Do: create/open patient records.
+  - Expect: searchable patient workspace.
+- `/app/patients/new/demographics`
+  - Do: create a patient.
+  - Expect: demographic validation and save.
+- `/app/patients/:patientId/*`
+  - Do: fill demographics, contacts, address, eligibility, diagnoses, payer, authorizations, attachments.
+  - Expect: section-specific forms and saved patient context.
+
+**Workforce**
+- `/app/workforce`
+  - Do: create or inspect caregiver records.
+  - Expect: caregiver list and filters.
+- `/app/workforce/new/profile`
+  - Do: create a caregiver profile.
+  - Expect: form validation and save.
+- `/app/workforce/:caregiverId/*`
+  - Do: fill profile, credentials, capabilities, geography, shifts, availability, unavailability.
+  - Expect: section-specific detail behavior.
+  - Performance route should show later once upstream data exists.
+
+**Scheduling**
+- `/app/scheduling`
+  - Do: create scheduled visits using the patient, caregiver, visit type, and branch you created.
+  - Expect: board/list view, assignments, conflict preview.
+- `/app/scheduling/visits/:visitId`
+  - Do: open visit detail.
+  - Expect: visit context, assignment, timing, decision support.
+- Also test reschedule, cancel, open shift, match suggestions if exposed in UI.
+
+**Mobile / EVV**
+Use a caregiver account for these.
+- `/mobile/login`
+  - Do: sign in as caregiver.
+  - Expect: mobile-first login.
+- `/mobile`
+  - Do: open today work.
+  - Expect: current/upcoming/completed visit view.
+- `/mobile/visits/:visitId`
+  - Do: open an assigned visit.
+  - Expect: patient summary, care instructions, action footer.
+- `/mobile/visits/:visitId/evv`
+  - Do: clock in and later clock out.
+  - Expect: timestamp/location-driven EVV results.
+- `/mobile/visits/:visitId/evv/missed-visit`
+  - Do: submit a missed-visit reason.
+  - Expect: saved missed-visit workflow and follow-up messaging.
+- `/mobile/visits/:visitId/evv/exception`
+  - Do: create an EVV exception.
+  - Expect: exception capture and status flow.
+- `/mobile/visits/:visitId/documentation`
+  - Do: complete checklist/note/documentation sections.
+  - Expect: draft/save/submit behavior.
+- `/mobile/messages`
+  - Do: view message center and send a message if thread data exists.
+  - Expect: mobile-safe thread list/detail.
+- `/mobile/account`
+  - Do: verify session/account shell.
+  - Expect: caregiver account route behavior.
+
+**Documentation**
+- `/app/documentation`
+  - Do: verify module landing.
+  - Expect: links into templates, task library, records, status.
+- `/app/documentation/templates`
+  - Do: create/update/deactivate templates.
+  - Expect: template builder behavior.
+- `/app/documentation/task-library`
+  - Do: create/update/deactivate task entries.
+  - Expect: task-library behavior.
+- `/app/documentation/visits/:visitId`
+  - Do: create/edit draft, validate, submit.
+  - Expect: structured note editing with required-field handling.
+- `/app/documentation/records/:documentationRecordId/printable`
+  - Do: open printable output.
+  - Expect: read-only formatted summary.
+- `/app/documentation/status`
+  - Do: review status after creating drafts/submissions.
+  - Expect: coordinator-facing status filters and links.
+
+**Messaging**
+- `/app/messaging`
+  - Do: create/open threads, reply, mark read.
+  - Expect: inbox, thread detail, unread/escalation state.
+- `/app/messaging/threads/:threadId`
+  - Do: open a thread directly.
+  - Expect: message timeline and participants.
+- `/app/patients/:patientId/discussion`
+  - Do: open patient-linked thread context.
+  - Expect: patient-context discussion behavior.
+- `/app/scheduling/visits/:visitId/discussion`
+  - Do: open visit-linked discussion.
+  - Expect: visit-context thread behavior.
+- `/app/documentation/tasks/:taskTemplateId/discussion`
+  - Do: open task discussion.
+  - Expect: task-linked thread behavior.
+- `/app/messaging/admin`
+  - Do: manage groups/broadcasts if permitted.
+  - Expect: admin messaging tools.
+- `/app/messaging/command-center`
+  - Do: inspect unread/escalated/broadcast summaries.
+  - Expect: coordinator summary lanes.
+
+**Review**
+- `/app/review`
+  - Do: after submitting documentation or creating reviewable exceptions, inspect queue.
+  - Expect: review list with assignment/status.
+- `/app/review/exceptions`
+  - Do: inspect exception-driven queue items.
+  - Expect: filtered exception queue.
+- `/app/review/items/:workItemId`
+  - Do: view findings, assign, approve, reject, return for fix.
+  - Expect: complete review detail behavior.
+- `/app/review/items/:workItemId/resubmission`
+  - Do: inspect returned-for-fix loop.
+  - Expect: resubmission history/context.
+- `/app/review/items/:workItemId/assignment`
+  - Do: assign/reassign/release.
+  - Expect: assignment workflow.
+- `/app/review/command-center`
+  - Do: inspect overdue/unassigned/returned/signoff-needed lanes.
+  - Expect: coordinator summary.
+
+**Compliance**
+- `/app/compliance`
+  - Do: inspect dashboard after patient docs/EVV/events exist.
+  - Expect: branch and patient compliance summaries.
+- `/app/compliance/command-center`
+  - Do: inspect patient-gap summary.
+  - Expect: coordinator triage lanes.
+- `/app/compliance/patients/:patientId`
+  - Do: review patient compliance detail.
+  - Expect: checklist, documentation gaps, acknowledgments, certification, reminders.
+- Test checklist/documentation-gaps/acknowledgments/certification-periods/risk-reminders subroutes similarly.
+
+**Patient Events**
+- `/app/patient-events`
+  - Do: inspect workspace entry.
+  - Expect: incident/infection/wound summary.
+- `/app/patient-events/incidents`
+  - Do: create/update/resolve incident.
+  - Expect: lifecycle state and evidence support.
+- `/app/patient-events/infections`
+  - Do: create/update/resolve infection.
+  - Expect: infection log behavior.
+- `/app/patient-events/wounds`
+  - Do: create/update wound and add wound history.
+  - Expect: longitudinal wound behavior.
+- Follow-up, escalation, and timeline routes
+  - Do: assign follow-up, mark overdue/completed, escalate and clear.
+  - Expect: patient-event workflow state.
+- `/app/patient-events/command-center`
+  - Do: inspect open/escalated/overdue summaries.
+  - Expect: coordinator-facing event visibility.
+
+**Goals / Care Progression**
+- `/app/goals`
+  - Do: inspect workspace landing.
+  - Expect: templates, patient goals, summary sections.
+- `/app/goals/templates`
+  - Do: create/update/deactivate templates.
+  - Expect: template management.
+- `/app/goals/patients/:patientId`
+  - Do: inspect patient progression summary.
+  - Expect: active/completed/unmet counts and risk visibility.
+- `/app/goals/patient-goals/:goalId`
+  - Do: change state and edit target dates.
+  - Expect: structured goal lifecycle.
+- Interventions, progress-notes, history, careplan-sync subroutes
+  - Do: create interventions, add notes, inspect history, update sync state.
+  - Expect: full progression workflow.
+- `/app/goals/command-center`
+  - Do: inspect overdue/unmet/unsynced summaries.
+  - Expect: coordinator-facing progression visibility.
+
+**Revenue Readiness**
+- `/app/revenue-readiness`
+  - Do: inspect readiness list after visits, EVV, docs, review, and signatures exist.
+  - Expect: ready/warning/blocked visit finance posture.
+- `/app/revenue-readiness/visits/:visitId`
+  - Do: inspect visit readiness detail.
+  - Expect: completion/signature/exception summary.
+- `/app/revenue-readiness/exceptions`
+  - Do: inspect blockers.
+  - Expect: exception list and severity.
+- `/app/revenue-readiness/payroll-export`
+  - Do: preview export rows.
+  - Expect: blocked vs exportable posture.
+- `/app/revenue-readiness/invoice-export`
+  - Do: preview invoice rows.
+  - Expect: payer/service/readiness context.
+- `/app/revenue-readiness/authorizations/:authorizationId`
+  - Do: inspect usage posture.
+  - Expect: authorized/used/remaining.
+- `/app/revenue-readiness/command-center`
+  - Do: inspect blocked/missing-signature/authorization-warning summaries.
+  - Expect: finance summary lanes.
+
+**Analytics**
+- `/app/analytics`
+  - Do: inspect dashboard after operating data exists.
+  - Expect: summary cards and drilldown links.
+- `/app/analytics/operational`
+  - Do: inspect today visits, unfilled, late, missed.
+  - Expect: operational drilldown.
+- `/app/analytics/branch-performance`
+  - Do: compare branches.
+  - Expect: branch-level metrics.
+- `/app/analytics/caregiver-utilization`
+  - Do: inspect caregiver load/completion/utilization.
+  - Expect: utilization view.
+- `/app/analytics/readiness`
+  - Do: inspect revenue/compliance summary.
+  - Expect: readiness/compliance analytics.
+- `/app/analytics/command-center`
+  - Do: inspect leadership summary lanes.
+  - Expect: cross-domain operational overview.
+
+**How To Know A Page Is Working**
+A page is healthy if:
+- it loads without console/network failures
+- empty states are intentional and understandable
+- save/update/delete actions show a clear success or error state
+- links route into the correct downstream page
+- denied pages show access-denied UI rather than broken UI
+- lists reflect new records after mutation or refresh
+- command-center pages become richer as upstream data is added
+
+**Best Practical Way To Test Everything**
+Use one dataset and keep building on it:
+1. Create branch
+2. Create service line and visit type
+3. Create patient
+4. Create caregiver
+5. Create scheduled visit
+6. Run mobile visit + EVV
+7. Submit documentation
+8. Review it
+9. Create compliance reminders/events/goals
+10. Open revenue readiness
+11. Open analytics
+
+That single chain unlocks most of the later pages.
+
+For the broader reference, use [complete-product-guide.md](/Users/shiva/Documents/GitHub/homehealthcare/docs/complete-product-guide.md) and the full route surface in [App.tsx](/Users/shiva/Documents/GitHub/homehealthcarefe/src/app/App.tsx).
+
+If you want, I can turn this into a strict QA checklist document with:
+- exact route
+- prerequisite data
+- actions
+- expected result
+- pass/fail box
