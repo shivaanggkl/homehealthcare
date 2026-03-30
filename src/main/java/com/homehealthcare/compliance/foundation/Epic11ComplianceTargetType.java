@@ -1,0 +1,12 @@
+package com.homehealthcare.compliance.foundation;
+
+public enum Epic11ComplianceTargetType {
+    COMPLIANCE_PROFILE,
+    CHECKLIST_DEFINITION,
+    CHECKLIST_RESULT,
+    DOCUMENTATION_REQUIREMENT,
+    ACKNOWLEDGMENT_RECORD,
+    CERTIFICATION_PERIOD,
+    RISK_REMINDER,
+    STATUS_PROJECTION
+}

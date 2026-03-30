@@ -16,6 +16,18 @@ import com.homehealthcare.messaging.foundation.Epic9MessagingAuditAction;
 import com.homehealthcare.messaging.foundation.Epic9MessagingTargetType;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.membership.domain.AgencyMembershipRepository;
+import com.homehealthcare.review.foundation.Epic10ReviewAuditAction;
+import com.homehealthcare.review.foundation.Epic10ReviewTargetType;
+import com.homehealthcare.compliance.foundation.Epic11ComplianceAuditAction;
+import com.homehealthcare.compliance.foundation.Epic11ComplianceTargetType;
+import com.homehealthcare.patientevent.foundation.Epic12PatientEventAuditAction;
+import com.homehealthcare.patientevent.foundation.Epic12PatientEventTargetType;
+import com.homehealthcare.careprogression.foundation.Epic13CareProgressionAuditAction;
+import com.homehealthcare.careprogression.foundation.Epic13CareProgressionTargetType;
+import com.homehealthcare.revenuereadiness.foundation.Epic14RevenueReadinessAuditAction;
+import com.homehealthcare.revenuereadiness.foundation.Epic14RevenueReadinessTargetType;
+import com.homehealthcare.analytics.foundation.Epic15AnalyticsAuditAction;
+import com.homehealthcare.analytics.foundation.Epic15AnalyticsTargetType;
 import com.homehealthcare.patient.foundation.Epic3PatientAuditAction;
 import com.homehealthcare.patient.foundation.Epic3PatientTargetType;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
@@ -216,6 +228,176 @@ class AuditEventApiIntegrationTest {
     }
 
     @Test
+    void auditApiCanFilterAndExportEpic11ComplianceEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID projectionId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic11ComplianceAuditAction.STATUS_PROJECTION_RECALCULATED.actionType(),
+                Epic11ComplianceTargetType.STATUS_PROJECTION.name(),
+                projectionId,
+                agency.getId(),
+                null,
+                "{\"readiness\":\"WARNING\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic11ComplianceAuditAction.STATUS_PROJECTION_RECALCULATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic11ComplianceAuditAction.STATUS_PROJECTION_RECALCULATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic11ComplianceTargetType.STATUS_PROJECTION.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic11ComplianceAuditAction.STATUS_PROJECTION_RECALCULATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic11ComplianceTargetType.STATUS_PROJECTION.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic11ComplianceAuditAction.STATUS_PROJECTION_RECALCULATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic12PatientEventEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID incidentId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic12PatientEventAuditAction.INCIDENT_CREATED.actionType(),
+                Epic12PatientEventTargetType.INCIDENT_RECORD.name(),
+                incidentId,
+                agency.getId(),
+                null,
+                "{\"severity\":\"HIGH\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic12PatientEventAuditAction.INCIDENT_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic12PatientEventAuditAction.INCIDENT_CREATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic12PatientEventTargetType.INCIDENT_RECORD.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic12PatientEventAuditAction.INCIDENT_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic12PatientEventTargetType.INCIDENT_RECORD.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic12PatientEventAuditAction.INCIDENT_CREATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic13CareProgressionEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID patientGoalId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic13CareProgressionAuditAction.PATIENT_GOAL_CREATED.actionType(),
+                Epic13CareProgressionTargetType.PATIENT_GOAL.name(),
+                patientGoalId,
+                agency.getId(),
+                null,
+                "{\"status\":\"ACTIVE\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic13CareProgressionAuditAction.PATIENT_GOAL_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic13CareProgressionAuditAction.PATIENT_GOAL_CREATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic13CareProgressionTargetType.PATIENT_GOAL.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic13CareProgressionAuditAction.PATIENT_GOAL_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic13CareProgressionTargetType.PATIENT_GOAL.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic13CareProgressionAuditAction.PATIENT_GOAL_CREATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic14RevenueReadinessEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID readinessProjectionId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic14RevenueReadinessAuditAction.READINESS_RECALCULATED.actionType(),
+                Epic14RevenueReadinessTargetType.REVENUE_READINESS_PROJECTION.name(),
+                readinessProjectionId,
+                agency.getId(),
+                null,
+                "{\"status\":\"BLOCKED\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic14RevenueReadinessAuditAction.READINESS_RECALCULATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic14RevenueReadinessAuditAction.READINESS_RECALCULATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic14RevenueReadinessTargetType.REVENUE_READINESS_PROJECTION.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic14RevenueReadinessAuditAction.READINESS_RECALCULATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic14RevenueReadinessTargetType.REVENUE_READINESS_PROJECTION.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic14RevenueReadinessAuditAction.READINESS_RECALCULATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic15AnalyticsEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID snapshotId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic15AnalyticsAuditAction.DASHBOARD_SNAPSHOT_GENERATED.actionType(),
+                Epic15AnalyticsTargetType.DASHBOARD_METRIC_SNAPSHOT.name(),
+                snapshotId,
+                agency.getId(),
+                null,
+                "{\"metric\":\"TODAYS_VISITS\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic15AnalyticsAuditAction.DASHBOARD_SNAPSHOT_GENERATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic15AnalyticsAuditAction.DASHBOARD_SNAPSHOT_GENERATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic15AnalyticsTargetType.DASHBOARD_METRIC_SNAPSHOT.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic15AnalyticsAuditAction.DASHBOARD_SNAPSHOT_GENERATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic15AnalyticsTargetType.DASHBOARD_METRIC_SNAPSHOT.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic15AnalyticsAuditAction.DASHBOARD_SNAPSHOT_GENERATED.actionType())));
+    }
+
+    @Test
     void auditApiCanFilterAndExportEpic5SchedulingEvents() throws Exception {
         Agency agency = agencyRepository.saveAndFlush(
                 Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
@@ -247,6 +429,40 @@ class AuditEventApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic5SchedulingTargetType.VISIT_OCCURRENCE.name())))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic5SchedulingAuditAction.VISIT_CREATED.actionType())));
+    }
+
+    @Test
+    void auditApiCanFilterAndExportEpic10ReviewEvents() throws Exception {
+        Agency agency = agencyRepository.saveAndFlush(
+                Agency.create("North Star Home Care", UUID.randomUUID().toString(), "America/Chicago", "ops@northstar.example"));
+        AgencyMembership ownerMembership = createMembership(createUser("Alicia", "Owner"), agency, AgencyRole.AGENCY_OWNER);
+        UUID reviewWorkItemId = UUID.randomUUID();
+
+        auditEventRepository.save(AuditEvent.createSuccess(
+                "AGENCY_MEMBERSHIP",
+                ownerMembership.getId(),
+                ownerMembership.getUser().getEmail(),
+                Epic10ReviewAuditAction.REVIEW_ITEM_CREATED.actionType(),
+                Epic10ReviewTargetType.REVIEW_WORK_ITEM.name(),
+                reviewWorkItemId,
+                agency.getId(),
+                null,
+                "{\"status\":\"PENDING_REVIEW\"}"));
+
+        mockMvc.perform(get("/api/audit-events")
+                        .param("actionType", Epic10ReviewAuditAction.REVIEW_ITEM_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].actionType").value(Epic10ReviewAuditAction.REVIEW_ITEM_CREATED.actionType()))
+                .andExpect(jsonPath("$.content[0].targetType").value(Epic10ReviewTargetType.REVIEW_WORK_ITEM.name()));
+
+        mockMvc.perform(get("/api/audit-events/export")
+                        .param("actionType", Epic10ReviewAuditAction.REVIEW_ITEM_CREATED.actionType())
+                        .with(authentication(authenticationFor(ownerMembership))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic10ReviewTargetType.REVIEW_WORK_ITEM.name())))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(Epic10ReviewAuditAction.REVIEW_ITEM_CREATED.actionType())));
     }
 
     @Test

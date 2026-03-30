@@ -16,6 +16,8 @@ public interface VisitDocumentationRecordRepository extends JpaRepository<VisitD
 
     List<VisitDocumentationRecord> findAllByAgency_IdOrderByLastSavedAtDesc(UUID agencyId);
 
+    List<VisitDocumentationRecord> findAllByAgency_IdAndPatient_IdOrderByLastSavedAtDesc(UUID agencyId, UUID patientId);
+
     List<VisitDocumentationRecord> findAllByVisitOccurrence_IdOrderByLastSavedAtDesc(UUID visitOccurrenceId);
 
     List<VisitDocumentationRecord> findAllByAgency_IdAndLastSavedAtBetweenOrderByLastSavedAtDesc(

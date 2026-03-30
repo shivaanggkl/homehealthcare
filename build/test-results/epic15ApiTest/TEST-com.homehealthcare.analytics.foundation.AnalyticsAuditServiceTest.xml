@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.analytics.foundation.AnalyticsAuditServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-30T06:23:43.437Z" hostname="Shivangs-MacBook-Pro.local" time="0.277">
+  <properties/>
+  <testcase name="analyticsAuditUsesStandardizedEpic15ActionAndTargetType()" classname="com.homehealthcare.analytics.foundation.AnalyticsAuditServiceTest" time="0.266"/>
+  <testcase name="refreshContractCapturesMetricTypeModeAndFreshnessExpectation()" classname="com.homehealthcare.analytics.foundation.AnalyticsAuditServiceTest" time="0.004"/>
+  <testcase name="analyticsFoundationContractsCoverExpectedMetricAndRefreshVocabulary()" classname="com.homehealthcare.analytics.foundation.AnalyticsAuditServiceTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

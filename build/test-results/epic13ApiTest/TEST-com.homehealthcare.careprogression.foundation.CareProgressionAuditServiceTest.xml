@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.careprogression.foundation.CareProgressionAuditServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-30T04:02:47.533Z" hostname="Shivangs-MacBook-Pro.local" time="0.27">
+  <properties/>
+  <testcase name="careProgressionAuditUsesStandardizedEpic13ActionAndTargetType()" classname="com.homehealthcare.careprogression.foundation.CareProgressionAuditServiceTest" time="0.263"/>
+  <testcase name="careProgressionFoundationContractsCoverExpectedLifecycleAndEventVocabulary()" classname="com.homehealthcare.careprogression.foundation.CareProgressionAuditServiceTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.revenuereadiness.foundation.RevenueReadinessAuditServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-30T05:17:47.741Z" hostname="Shivangs-MacBook-Pro.local" time="0.38">
+  <properties/>
+  <testcase name="revenueReadinessAuditUsesStandardizedEpic14ActionAndTargetType()" classname="com.homehealthcare.revenuereadiness.foundation.RevenueReadinessAuditServiceTest" time="0.374"/>
+  <testcase name="exportAuditRejectsUnsupportedTargetTypes()" classname="com.homehealthcare.revenuereadiness.foundation.RevenueReadinessAuditServiceTest" time="0.002"/>
+  <testcase name="revenueReadinessFoundationContractsCoverExpectedLifecycleAndProjectionVocabulary()" classname="com.homehealthcare.revenuereadiness.foundation.RevenueReadinessAuditServiceTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

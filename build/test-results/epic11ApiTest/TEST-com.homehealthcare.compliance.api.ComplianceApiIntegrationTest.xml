@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.compliance.api.ComplianceApiIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-30T01:50:34.639Z" hostname="Shivangs-MacBook-Pro.local" time="9.084">
+  <properties/>
+  <testcase name="complianceApisSupportDashboardWorkspaceMutationsAndHistory()" classname="com.homehealthcare.compliance.api.ComplianceApiIntegrationTest" time="1.025"/>
+  <testcase name="complianceApisEnforceForbiddenForUnassignedReviewer()" classname="com.homehealthcare.compliance.api.ComplianceApiIntegrationTest" time="0.163"/>
+  <system-out><![CDATA[20:50:34.747 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.homehealthcare.compliance.api.ComplianceApiIntegrationTest]: ComplianceApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:50:34.865 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.compliance.api.ComplianceApiIntegrationTest
+20:50:34.907 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.homehealthcare.compliance.api.ComplianceApiIntegrationTest]: ComplianceApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:50:34.909 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.homehealthcare.HomehealthcareApplication for test class com.homehealthcare.compliance.api.ComplianceApiIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.5)
+
+2026-03-29T20:50:35.090-05:00  INFO 43427 --- [homehealthcare] [    Test worker] c.h.c.api.ComplianceApiIntegrationTest   : Starting ComplianceApiIntegrationTest using Java 21.0.9 with PID 43427 (started by shiva in /Users/shiva/Documents/GitHub/homehealthcare)
+2026-03-29T20:50:35.090-05:00  INFO 43427 --- [homehealthcare] [    Test worker] c.h.c.api.ComplianceApiIntegrationTest   : No active profile set, falling back to 1 default profile: "default"
+2026-03-29T20:50:35.091-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.boot.SpringApplication               : Loading source class com.homehealthcare.HomehealthcareApplication
+2026-03-29T20:50:35.100-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@6e4f263e
+2026-03-29T20:50:35.959-05:00  INFO 43427 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-29T20:50:36.102-05:00  INFO 43427 --- [homehealthcare] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 136 ms. Found 98 JPA repository interfaces.
+2026-03-29T20:50:36.877-05:00  INFO 43427 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-29T20:50:36.977-05:00  INFO 43427 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:homehealthcare user=SA
+2026-03-29T20:50:36.978-05:00  INFO 43427 --- [homehealthcare] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-29T20:50:37.007-05:00  INFO 43427 --- [homehealthcare] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:homehealthcare (H2 2.4)
+2026-03-29T20:50:37.011-05:00  WARN 43427 --- [homehealthcare] [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026-03-29T20:50:37.035-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2026-03-29T20:50:37.038-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 33 migrations (execution time 00:00.018s)
+2026-03-29T20:50:37.043-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2026-03-29T20:50:37.078-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2026-03-29T20:50:37.084-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "1 - create agencies"
+2026-03-29T20:50:37.092-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "2 - create branches"
+2026-03-29T20:50:37.100-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "3 - create internal super admin and audit tables"
+2026-03-29T20:50:37.109-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "4 - create users"
+2026-03-29T20:50:37.114-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "5 - create agency memberships"
+2026-03-29T20:50:37.119-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "6 - create branch assignments"
+2026-03-29T20:50:37.128-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "7 - create user invitations"
+2026-03-29T20:50:37.133-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "8 - add user password hash"
+2026-03-29T20:50:37.140-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "9 - add user mfa enabled"
+2026-03-29T20:50:37.148-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "10 - add user profile preferences"
+2026-03-29T20:50:37.155-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "11 - create auth sessions"
+2026-03-29T20:50:37.161-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "12 - create password reset tokens"
+2026-03-29T20:50:37.165-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "13 - create auth login attempts"
+2026-03-29T20:50:37.170-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "14 - create mfa enrollment tables"
+2026-03-29T20:50:37.181-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "15 - add agency mfa policy and login challenges"
+2026-03-29T20:50:37.192-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "16 - add session timeout fields"
+2026-03-29T20:50:37.200-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "17 - create user password history"
+2026-03-29T20:50:37.204-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "18 - extend audit event model"
+2026-03-29T20:50:37.211-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "19 - create admin notification preferences"
+2026-03-29T20:50:37.215-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20 - create epic2 phase b configuration tables"
+2026-03-29T20:50:37.222-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "21 - create epic2 phase c configuration tables"
+2026-03-29T20:50:37.230-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "22 - create epic3 phase b patient tables"
+2026-03-29T20:50:37.242-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "23 - create epic3 phase c patient financial tables"
+2026-03-29T20:50:37.249-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "24 - create epic3 patient attachment tables"
+2026-03-29T20:50:37.258-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "25 - create epic4 phase b workforce tables"
+2026-03-29T20:50:37.281-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "26 - create epic5 phase b scheduling tables"
+2026-03-29T20:50:37.302-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "27 - create epic6 phase b mobile execution tables"
+2026-03-29T20:50:37.317-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "28 - create epic6 phase c mobile support tables"
+2026-03-29T20:50:37.339-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "29 - create epic7 phase b evv tables"
+2026-03-29T20:50:37.408-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "30 - create epic8 phase b documentation tables"
+2026-03-29T20:50:37.438-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "31 - create epic9 phase b messaging tables"
+2026-03-29T20:50:37.454-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "32 - create epic10 phase b review tables"
+2026-03-29T20:50:37.463-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "33 - create epic11 phase b compliance tables"
+2026-03-29T20:50:37.475-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.f.core.internal.command.DbMigrate      : Successfully applied 33 migrations to schema "PUBLIC", now at version v33 (execution time 00:00.247s)
+2026-03-29T20:50:37.528-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.homehealthcare'. Automatic @Repository and @Entity scanning is enabled.
+2026-03-29T20:50:37.571-05:00  INFO 43427 --- [homehealthcare] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-29T20:50:37.600-05:00  INFO 43427 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-03-29T20:50:37.838-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-29T20:50:37.881-05:00  INFO 43427 --- [homehealthcare] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:homehealthcare]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: HOMEHEALTHCARE/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-29T20:50:39.519-05:00  INFO 43427 --- [homehealthcare] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-29T20:50:39.554-05:00  INFO 43427 --- [homehealthcare] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-29T20:50:39.604-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-29T20:50:41.959-05:00  WARN 43427 --- [homehealthcare] [    Test worker] .s.a.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 305d37dd-6066-4a6e-bb4f-4fd3e3693c13
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-29T20:50:41.967-05:00  INFO 43427 --- [homehealthcare] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-29T20:50:42.318-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : 283 mappings in 'requestMappingHandlerMapping'
+2026-03-29T20:50:42.334-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-03-29T20:50:42.353-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 2 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-29T20:50:42.379-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-29T20:50:42.476-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, sessionTenantAuthenticationFilter urls=[/*] order=2147483647, tenantContextFilter urls=[/*] order=2147483647
+2026-03-29T20:50:42.476-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
+2026-03-29T20:50:42.482-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-03-29T20:50:42.482-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.s.filter.OrderedFormContentFilter  : Filter 'formContentFilter' configured for use
+2026-03-29T20:50:42.482-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.s.f.OrderedRequestContextFilter    : Filter 'requestContextFilter' configured for use
+2026-03-29T20:50:42.482-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
+2026-03-29T20:50:42.483-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-03-29T20:50:42.483-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-03-29T20:50:42.484-05:00  INFO 43427 --- [homehealthcare] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-03-29T20:50:42.510-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+
+============================
+CONDITIONS EVALUATION REPORT
+============================
+
+
+Positive matches:
+-----------------
+
+   AopAutoConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.aop.auto=true) matched (OnPropertyCondition)
+
+   AopAutoConfiguration.AspectJAutoProxyingConfiguration matched:
+      - @ConditionalOnClass found required class 'org.aspectj.weaver.Advice' (OnClassCondition)
+
+   AopAutoConfiguration.AspectJAutoProxyingConfiguration.CglibAutoProxyConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.aop.proxy-target-class=true) matched (OnPropertyCondition)
+
+   ApplicationAvailabilityAutoConfiguration#applicationAvailability matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.availability.ApplicationAvailability; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourceAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'javax.sql.DataSource', 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType' (OnClassCondition)
+      - @ConditionalOnMissingBean (types: io.r2dbc.spi.ConnectionFactory; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourceAutoConfiguration.PooledDataSourceConfiguration matched:
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on DataSourceAutoConfiguration.PooledDataSourceCondition.PooledDataSourceAvailable PooledDataSource found supported DataSource; NestedCondition on DataSourceAutoConfiguration.PooledDataSourceCondition.ExplicitType @ConditionalOnProperty (spring.datasource.type) did not find property 'spring.datasource.type' (DataSourceAutoConfiguration.PooledDataSourceCondition)
+      - @ConditionalOnMissingBean (types: javax.sql.DataSource,javax.sql.XADataSource; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourceAutoConfiguration.PooledDataSourceConfiguration#jdbcConnectionDetails matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.jdbc.autoconfigure.JdbcConnectionDetails; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourceConfiguration.Hikari matched:
+      - @ConditionalOnClass found required class 'com.zaxxer.hikari.HikariDataSource' (OnClassCondition)
+      - @ConditionalOnProperty (spring.datasource.type=com.zaxxer.hikari.HikariDataSource) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: javax.sql.DataSource; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourceInitializationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.jdbc.datasource.init.DatabasePopulator' (OnClassCondition)
+      - SQL InitializationDatabase Initialization default value is EMBEDDED (OnSqlInitializationCondition)
+      - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) found a single bean 'dataSource'; @ConditionalOnMissingBean (types: org.springframework.boot.sql.autoconfigure.init.ApplicationScriptDatabaseInitializer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataSourcePoolMetadataProvidersConfiguration.HikariPoolDataSourceMetadataProviderConfiguration matched:
+      - @ConditionalOnClass found required class 'com.zaxxer.hikari.HikariDataSource' (OnClassCondition)
+
+   DataSourceTransactionManagerAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'javax.sql.DataSource', 'org.springframework.jdbc.core.JdbcTemplate', 'org.springframework.transaction.TransactionManager' (OnClassCondition)
+
+   DataSourceTransactionManagerAutoConfiguration.JdbcTransactionManagerConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) found a single bean 'dataSource' (OnBeanCondition)
+
+   DataWebAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.springframework.data.web.PageableHandlerMethodArgumentResolver', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.PageableHandlerMethodArgumentResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataWebAutoConfiguration#pageableCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataWebAutoConfiguration#sortCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DataWebAutoConfiguration#springDataWebSettings matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.SpringDataWebSettings; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DispatcherServletAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.servlet.ServletRegistration' (OnClassCondition)
+      - Default DispatcherServlet did not find dispatcher servlet beans (DispatcherServletAutoConfiguration.DefaultDispatcherServletCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.servlet.ServletRegistration' (OnClassCondition)
+      - DispatcherServlet Registration did not find servlet registration bean (DispatcherServletAutoConfiguration.DispatcherServletRegistrationCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration matched:
+      - @ConditionalOnBean (names: dispatcherServlet types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found bean 'dispatcherServlet' (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   ErrorMvcAutoConfiguration#basicErrorController matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.webmvc.error.ErrorController; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration#errorAttributes matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.webmvc.error.ErrorAttributes; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.DefaultErrorViewResolverConfiguration#conventionErrorViewResolver matched:
+      - @ConditionalOnBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found bean 'dispatcherServlet'; @ConditionalOnMissingBean (types: org.springframework.boot.webmvc.autoconfigure.error.ErrorViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.web.error.whitelabel.enabled=true) matched (OnPropertyCondition)
+      - ErrorTemplate Missing did not find error template view (ErrorMvcAutoConfiguration.ErrorTemplateMissingCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#beanNameViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#defaultErrorView matched:
+      - @ConditionalOnMissingBean (names: error; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   FlywayAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.flywaydb.core.Flyway' (OnClassCondition)
+      - @ConditionalOnBooleanProperty (spring.flyway.enabled=true) matched (OnPropertyCondition)
+      - AnyNestedCondition 2 matched 1 did not; NestedCondition on FlywayAutoConfiguration.FlywayDataSourceCondition.FlywayUrlCondition @ConditionalOnProperty (spring.flyway.url) did not find property 'spring.flyway.url'; NestedCondition on FlywayAutoConfiguration.FlywayDataSourceCondition.JdbcConnectionDetailsCondition @ConditionalOnBean (types: org.springframework.boot.jdbc.autoconfigure.JdbcConnectionDetails; SearchStrategy: all) found bean 'jdbcConnectionDetails'; NestedCondition on FlywayAutoConfiguration.FlywayDataSourceCondition.DataSourceBeanCondition @ConditionalOnBean (types: javax.sql.DataSource; SearchStrategy: all) found bean 'dataSource' (FlywayAutoConfiguration.FlywayDataSourceCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.jdbc.support.JdbcUtils' (OnClassCondition)
+      - @ConditionalOnMissingBean (types: org.flywaydb.core.Flyway; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration#flywayConnectionDetails matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.flyway.autoconfigure.FlywayConnectionDetails; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration#flywayInitializer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.flyway.autoconfigure.FlywayMigrationInitializer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HibernateJpaAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean', 'jakarta.persistence.EntityManager', 'org.hibernate.engine.spi.SessionImplementor' (OnClassCondition)
+
+   HibernateJpaConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) found a single bean 'dataSource' (OnBeanCondition)
+
+   HttpEncodingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.filter.CharacterEncodingFilter' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnBooleanProperty (spring.servlet.encoding.enabled=true) matched (OnPropertyCondition)
+
+   HttpEncodingAutoConfiguration#characterEncodingFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.CharacterEncodingFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpMessageConvertersAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.HttpMessageConverter' (OnClassCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition.ReactiveWebApplication did not find reactive web application classes (HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition)
+
+   HttpMessageConvertersAutoConfiguration.StringHttpMessageConverterConfiguration#stringHttpMessageConvertersCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.StringHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'tools.jackson.databind.json.JsonMapper' (OnClassCondition)
+
+   JacksonAutoConfiguration#jacksonJsonMapper matched:
+      - @ConditionalOnMissingBean (types: tools.jackson.databind.json.JsonMapper; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration#jsonMapperBuilder matched:
+      - @ConditionalOnMissingBean (types: tools.jackson.databind.json.JsonMapper$Builder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration.JsonProblemDetailsConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.ProblemDetail' (OnClassCondition)
+
+   JacksonHttpMessageConvertersConfiguration.JacksonJsonHttpMessageConverterConfiguration matched:
+      - @ConditionalOnClass found required class 'tools.jackson.databind.json.JsonMapper' (OnClassCondition)
+      - @ConditionalOnProperty (spring.http.converters.preferred-json-mapper=jackson) matched (OnPropertyCondition)
+      - @ConditionalOnBean (types: tools.jackson.databind.json.JsonMapper; SearchStrategy: all) found bean 'jacksonJsonMapper' (OnBeanCondition)
+
+   JacksonHttpMessageConvertersConfiguration.JacksonJsonHttpMessageConverterConfiguration#jacksonJsonHttpMessageConvertersCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.json.JacksonJsonHttpMessageConverter ignored: org.springframework.hateoas.server.mvc.TypeConstrainedJacksonJsonHttpMessageConverter,org.springframework.data.rest.webmvc.alps.AlpsJacksonJsonHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JdbcClientAutoConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate; SearchStrategy: all) found a single bean 'namedParameterJdbcTemplate'; @ConditionalOnMissingBean (types: org.springframework.jdbc.core.simple.JdbcClient; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JdbcTemplateAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'javax.sql.DataSource', 'org.springframework.jdbc.core.JdbcTemplate' (OnClassCondition)
+      - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) found a single bean 'dataSource' (OnBeanCondition)
+
+   JdbcTemplateConfiguration matched:
+      - @ConditionalOnMissingBean (types: org.springframework.jdbc.core.JdbcOperations; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration#entityManagerFactory matched:
+      - @ConditionalOnMissingBean (types: org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean,jakarta.persistence.EntityManagerFactory; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration#entityManagerFactoryBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.jpa.EntityManagerFactoryBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration#jpaVendorAdapter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.orm.jpa.JpaVendorAdapter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration#transactionManager matched:
+      - @ConditionalOnMissingBean (types: org.springframework.transaction.TransactionManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration.PersistenceManagedTypesConfiguration matched:
+      - @ConditionalOnMissingBean (types: org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean,jakarta.persistence.EntityManagerFactory; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JpaBaseConfiguration.PersistenceManagedTypesConfiguration#persistenceManagedTypes matched:
+      - @ConditionalOnMissingBean (types: org.springframework.orm.jpa.persistenceunit.PersistenceManagedTypes; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JtaAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.transaction.Transaction' (OnClassCondition)
+      - @ConditionalOnBooleanProperty (spring.jta.enabled=true) matched (OnPropertyCondition)
+
+   LifecycleAutoConfiguration#defaultLifecycleProcessor matched:
+      - @ConditionalOnMissingBean (names: lifecycleProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration matched:
+      - found 'session' scope (OnWebApplicationCondition)
+
+   MockMvcConfiguration#mockMvc matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvc; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcConfiguration#mockMvcBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvcBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcTesterConfiguration matched:
+      - @ConditionalOnClass found required class 'org.assertj.core.api.Assert' (OnClassCondition)
+
+   MockMvcTesterConfiguration#mockMvcTester matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.assertj.MockMvcTester; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MultipartAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.multipart.support.StandardServletMultipartResolver', 'jakarta.servlet.MultipartConfigElement' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnBooleanProperty (spring.servlet.multipart.enabled=true) matched (OnPropertyCondition)
+
+   MultipartAutoConfiguration#multipartConfigElement matched:
+      - @ConditionalOnMissingBean (types: jakarta.servlet.MultipartConfigElement; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MultipartAutoConfiguration#multipartResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.multipart.MultipartResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   NamedParameterJdbcTemplateConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: org.springframework.jdbc.core.JdbcTemplate; SearchStrategy: all) found a single bean 'jdbcTemplate'; @ConditionalOnMissingBean (types: org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   PersistenceExceptionTranslationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor' (OnClassCondition)
+
+   PersistenceExceptionTranslationAutoConfiguration#persistenceExceptionTranslationPostProcessor matched:
+      - @ConditionalOnBooleanProperty (spring.persistence.exceptiontranslation.enabled=true) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   PropertyPlaceholderAutoConfiguration#propertySourcesPlaceholderConfigurer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.context.support.PropertySourcesPlaceholderConfigurer; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   SecurityAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.authentication.DefaultAuthenticationEventPublisher' (OnClassCondition)
+
+   SecurityAutoConfiguration#authenticationEventPublisher matched:
+      - @ConditionalOnMissingBean (types: org.springframework.security.authentication.AuthenticationEventPublisher; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SecurityFilterAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer', 'org.springframework.security.config.http.SessionCreationPolicy' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   SecurityFilterAutoConfiguration#securityFilterChainRegistration matched:
+      - @ConditionalOnBean (names: springSecurityFilterChain; SearchStrategy: all) found bean 'springSecurityFilterChain' (OnBeanCondition)
+
+   ServletWebSecurityAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   ServletWebSecurityAutoConfiguration.EnableWebSecurityConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+      - @ConditionalOnMissingBean (names: springSecurityFilterChain; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ServletWebSecurityAutoConfiguration.PathPatternRequestMatcherBuilderConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.boot.webmvc.autoconfigure.DispatcherServletPath' (OnClassCondition)
+      - @ConditionalOnBean (types: org.springframework.boot.webmvc.autoconfigure.DispatcherServletPath; SearchStrategy: all) found bean 'dispatcherServletRegistration' (OnBeanCondition)
+
+   ServletWebSecurityAutoConfiguration.PathPatternRequestMatcherBuilderConfiguration#pathPatternRequestMatcherBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher$Builder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SslAutoConfiguration#sslBundleRegistry matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.ssl.SslBundleRegistry,org.springframework.boot.ssl.SslBundles; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor' (OnClassCondition)
+
+   TaskExecutorConfigurations.AsyncConfigurerConfiguration matched:
+      - @ConditionalOnMissingBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration matched:
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ModelCondition @ConditionalOnProperty (spring.task.execution.mode=force) did not find property 'spring.task.execution.mode'; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ExecutorBeanCondition @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) did not find any beans (TaskExecutorConfigurations.OnExecutorCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutor matched:
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.ThreadPoolTaskExecutorBuilderConfiguration#threadPoolTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.ThreadPoolTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskSchedulingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler' (OnClassCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskSchedulingConfigurations.ThreadPoolTaskSchedulerBuilderConfiguration#threadPoolTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TomcatServletWebServerAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.ServletRequest', 'org.apache.catalina.startup.Tomcat', 'org.apache.coyote.UpgradeProtocol', 'org.springframework.boot.tomcat.servlet.TomcatServletWebServerFactory' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   TomcatServletWebServerAutoConfiguration#tomcatServletWebServerFactory matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.server.servlet.ServletWebServerFactory; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   TransactionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.transaction.PlatformTransactionManager' (OnClassCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration matched:
+      - @ConditionalOnBean (types: org.springframework.transaction.TransactionManager; SearchStrategy: all) found bean 'transactionManager'; @ConditionalOnMissingBean (types: org.springframework.transaction.annotation.AbstractTransactionManagementConfiguration; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration.CglibAutoProxyConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.aop.proxy-target-class=true) matched (OnPropertyCondition)
+
+   TransactionAutoConfiguration.TransactionTemplateConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: org.springframework.transaction.PlatformTransactionManager; SearchStrategy: all) found a single bean 'transactionManager' (OnBeanCondition)
+
+   TransactionAutoConfiguration.TransactionTemplateConfiguration#transactionTemplate matched:
+      - @ConditionalOnMissingBean (types: org.springframework.transaction.support.TransactionOperations; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TransactionManagerCustomizationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.transaction.PlatformTransactionManager' (OnClassCondition)
+
+   TransactionManagerCustomizationAutoConfiguration#platformTransactionManagerCustomizers matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.transaction.autoconfigure.TransactionManagerCustomizers; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   UserDetailsServiceAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.authentication.AuthenticationManager' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - AnyNestedCondition 1 matched 2 did not; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.PasswordConfigured @ConditionalOnProperty (spring.security.user.password) did not find property 'spring.security.user.password'; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.NameConfigured @ConditionalOnProperty (spring.security.user.name) did not find property 'spring.security.user.name'; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.MissingAlternative @ConditionalOnMissingClass did not find unwanted classes 'org.springframework.security.oauth2.client.registration.ClientRegistrationRepository', 'org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector', 'org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository' (MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured)
+      - @ConditionalOnMissingBean (types: org.springframework.security.authentication.AuthenticationManager,org.springframework.security.authentication.AuthenticationProvider,org.springframework.security.core.userdetails.UserDetailsService,org.springframework.security.authentication.AuthenticationManagerResolver,org.springframework.security.oauth2.jwt.JwtDecoder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ValidationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.validation.executable.ExecutableValidator' (OnClassCondition)
+      - @ConditionalOnResource found location classpath:META-INF/services/jakarta.validation.spi.ValidationProvider (OnResourceCondition)
+
+   ValidationAutoConfiguration#defaultValidator matched:
+      - @ConditionalOnMissingBean (types: jakarta.validation.Validator; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ValidationAutoConfiguration#methodValidationPostProcessor matched:
+      - @ConditionalOnMissingBean (types: org.springframework.validation.beanvalidation.MethodValidationPostProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration#formContentFilter matched:
+      - @ConditionalOnBooleanProperty (spring.mvc.formcontent.filter.enabled=true) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.FormContentFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#flashMapManager matched:
+      - @ConditionalOnMissingBean (names: flashMapManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#localeResolver matched:
+      - @ConditionalOnMissingBean (names: localeResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#viewNameTranslator matched:
+      - @ConditionalOnMissingBean (names: viewNameTranslator; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#defaultViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.InternalResourceViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#requestContextFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.context.request.RequestContextListener,org.springframework.web.filter.RequestContextFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#viewResolver matched:
+      - @ConditionalOnBean (types: org.springframework.web.servlet.ViewResolver; SearchStrategy: all) found beans 'defaultViewResolver', 'beanNameViewResolver', 'mvcViewResolver'; @ConditionalOnMissingBean (names: viewResolver types: org.springframework.web.servlet.view.ContentNegotiatingViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   AopAutoConfiguration.AspectJAutoProxyingConfiguration.JdkDynamicAutoProxyConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.aop.proxy-target-class=false) did not find property 'spring.aop.proxy-target-class' (OnPropertyCondition)
+
+   AopAutoConfiguration.ClassProxyingConfiguration:
+      Did not match:
+         - @ConditionalOnMissingClass found unwanted class 'org.aspectj.weaver.Advice' (OnClassCondition)
+
+   DataJpaRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &visitRescheduleEventRepository, &visitCancellationEventRepository, &staffGroupMemberRepository, &caregiverShiftPreferenceRepository, &visitDocumentationRecordRepository, &userMfaRecoveryCodeRepository, &returnForFixEventRepository, &signoffRequestRepository, &caregiverAvailabilityRepository, &documentationTemplateSectionRepository, &mobileMessageEntryRepository, &complianceStatusProjectionRepository, &agencyProfileRepository, &branchRepository, &adminNotificationPreferenceRepository, &serviceLineRepository, &alertRuleRepository, &patientDiagnosisConditionRepository, &complianceChecklistResultRepository, &patientAttachmentRepository, &userRepository, &patientContactRepository, &reviewDecisionRepository, &branchPolicyRepository, &authSessionRepository, &userPasswordHistoryRepository, &escalationRequestRepository, &certificationPeriodRecordRepository, &mobileFieldArtifactRepository, &authMfaLoginChallengeRepository, &messageReadReceiptRepository, &signatureVerificationLinkRepository, &userInvitationRepository, &documentationAttachmentLinkRepository, &supervisorNotificationEventRepository, &mobileVisitExecutionSessionRepository, &documentationTemplateTaskRepository, &mfaEnrollmentChallengeRepository, &caregiverCredentialRepository, &internalSuperAdminRepository, &communicationThreadRepository, &patientAddressRepository, &staffGroupRepository, &patientRiskReminderRepository, &authLoginAttemptRepository, &evvGeofenceEvaluationRepository, &documentationTaskResponseRepository, &caregiverCertificationRepository, &mobileVisitTaskChecklistEntryRepository, &recurringVisitRuleRepository, &auditEventRepository, &patientServiceEligibilityRepository, &branchAssignmentRepository, &visitTypeRepository, &caregiverUnavailabilityRepository, &missedVisitRecordRepository, &mobileMessageThreadRepository, &documentationFieldResponseRepository, &visitOccurrenceRepository, &reviewFindingRepository, &consentAcknowledgmentRecordRepository, &patientRepository, &missingFieldResultRepository, &documentationTemplateFieldRepository, &evvClockEventRepository, &passwordResetTokenRepository, &caregiverLanguageProfileRepository, &taskTemplateRepository, &caregiverSkillProfileRepository, &escalationMarkerRepository, &reviewExceptionRecordRepository, &agencyOwnerBootstrapRepository, &reviewWorkItemRepository, &agencyRepository, &geofenceToleranceRuleRepository, &openShiftRepository, &threadParticipantRepository, &requiredDocumentationRequirementRepository, &communicationContextLinkRepository, &communicationMessageRepository, &agencyMembershipRepository, &mobileQuickNoteEntryRepository, &caregiverVisitAssignmentRepository, &branchBroadcastRepository, &patientPayerLinkRepository, &deviceMetadataSnapshotRepository, &visitExceptionRecordRepository, &completenessCheckResultRepository, &documentationTemplateRepository, &patientEpisodeAuthorizationRepository, &caregiverSkillRepository, &mobileIncidentReportRepository, &complianceChecklistDefinitionRepository, &caregiverGeographyPreferenceRepository, &mileagePaySettingRepository, &caregiverProfileRepository, &evvVerificationSessionRepository, &reviewAssignmentRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+         - @ConditionalOnBooleanProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
+
+   DataRepositoryMetricsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean did not find required type 'io.micrometer.core.instrument.MeterRegistry' (OnBeanCondition)
+
+   DataSourceAutoConfiguration.EmbeddedDatabaseConfiguration:
+      Did not match:
+         - EmbeddedDataSource spring.datasource.url is set (DataSourceAutoConfiguration.EmbeddedDatabaseCondition)
+
+   DataSourceCheckpointRestoreConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.crac.Resource' (OnClassCondition)
+
+   DataSourceConfiguration.Dbcp2:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.commons.dbcp2.BasicDataSource' (OnClassCondition)
+
+   DataSourceConfiguration.Generic:
+      Did not match:
+         - @ConditionalOnProperty (spring.datasource.type) did not find property 'spring.datasource.type' (OnPropertyCondition)
+
+   DataSourceConfiguration.OracleUcp:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'oracle.ucp.jdbc.PoolDataSourceImpl', 'oracle.jdbc.OracleConnection' (OnClassCondition)
+
+   DataSourceConfiguration.Tomcat:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.tomcat.jdbc.pool.DataSource' (OnClassCondition)
+
+   DataSourceHealthContributorAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.health.autoconfigure.contributor.ConditionalOnEnabledHealthIndicator' (OnClassCondition)
+
+   DataSourceJmxConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.jmx.enabled=true) found different value in property 'spring.jmx.enabled' (OnPropertyCondition)
+
+   DataSourcePoolMetadataProvidersConfiguration.CommonsDbcp2PoolDataSourceMetadataProviderConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.commons.dbcp2.BasicDataSource' (OnClassCondition)
+
+   DataSourcePoolMetadataProvidersConfiguration.OracleUcpPoolDataSourceMetadataProviderConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'oracle.ucp.jdbc.PoolDataSource', 'oracle.jdbc.OracleConnection' (OnClassCondition)
+
+   DataSourcePoolMetadataProvidersConfiguration.TomcatDataSourcePoolMetadataProviderConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.tomcat.jdbc.pool.DataSource' (OnClassCondition)
+
+   DataSourcePoolMetricsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.micrometer.core.instrument.MeterRegistry' (OnClassCondition)
+
+   DataSourceTransactionManagerAutoConfiguration.JdbcTransactionManagerConfiguration#transactionManager:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.transaction.TransactionManager; SearchStrategy: all) found beans of type 'org.springframework.transaction.TransactionManager' transactionManager (OnBeanCondition)
+
+   DevAgencyOwnerBootstrapRunner:
+      Did not match:
+         - @ConditionalOnProperty (app.dev-bootstrap.owner.enabled=true) did not find property 'enabled' (OnPropertyCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletConfiguration#multipartResolver:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.web.multipart.MultipartResolver; SearchStrategy: all) did not find any beans of type org.springframework.web.multipart.MultipartResolver (OnBeanCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration.OracleConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.flywaydb.database.oracle.OracleConfigurationExtension' (OnClassCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration.PostgresqlConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.flywaydb.database.postgresql.PostgreSQLConfigurationExtension' (OnClassCondition)
+
+   FlywayAutoConfiguration.FlywayConfiguration.SqlServerConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.flywaydb.database.sqlserver.SQLServerConfigurationExtension' (OnClassCondition)
+
+   FlywayEndpointAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint' (OnClassCondition)
+
+   GsonHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.google.gson.Gson' (OnClassCondition)
+
+   H2ConsoleAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.h2.console.enabled=true) did not find property 'spring.h2.console.enabled' (OnPropertyCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.h2.server.web.JakartaWebServlet' (OnClassCondition)
+         - found 'session' scope (OnWebApplicationCondition)
+
+   HibernateMetricsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.micrometer.core.instrument.MeterRegistry' (OnClassCondition)
+
+   Jackson2HttpMessageConvertersConfiguration.MappingJackson2HttpMessageConverterConfiguration:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on Jackson2HttpMessageConvertersConfiguration.PreferJackson2OrJacksonUnavailableCondition.JacksonUnavailable @ConditionalOnMissingBean (types: org.springframework.boot.http.converter.autoconfigure.JacksonHttpMessageConvertersConfiguration$JacksonJsonHttpMessageConvertersCustomizer; SearchStrategy: all) found beans of type 'org.springframework.boot.http.converter.autoconfigure.JacksonHttpMessageConvertersConfiguration$JacksonJsonHttpMessageConvertersCustomizer' jacksonJsonHttpMessageConvertersCustomizer; NestedCondition on Jackson2HttpMessageConvertersConfiguration.PreferJackson2OrJacksonUnavailableCondition.Jackson2Preferred @ConditionalOnProperty (spring.http.converters.preferred-json-mapper=jackson2) did not find property 'spring.http.converters.preferred-json-mapper' (Jackson2HttpMessageConvertersConfiguration.PreferJackson2OrJacksonUnavailableCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'com.fasterxml.jackson.databind.ObjectMapper' (OnClassCondition)
+
+   Jackson2HttpMessageConvertersConfiguration.MappingJackson2XmlHttpMessageConverterConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.fasterxml.jackson.dataformat.xml.XmlMapper' (OnClassCondition)
+
+   JacksonAutoConfiguration.CborConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'tools.jackson.dataformat.cbor.CBORMapper' (OnClassCondition)
+
+   JacksonAutoConfiguration.XmlConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'tools.jackson.dataformat.xml.XmlMapper' (OnClassCondition)
+
+   JacksonHttpMessageConvertersConfiguration.JacksonXmlHttpMessageConverterConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'tools.jackson.dataformat.xml.XmlMapper' (OnClassCondition)
+
+   JmxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.jmx.enabled=true) found different value in property 'spring.jmx.enabled' (OnPropertyCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.jmx.export.MBeanExporter' (OnClassCondition)
+
+   JndiDataSourceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.datasource.jndi-name) did not find property 'spring.datasource.jndi-name' (OnPropertyCondition)
+      Matched:
+         - @ConditionalOnClass found required classes 'javax.sql.DataSource', 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType' (OnClassCondition)
+
+   JndiJtaConfiguration:
+      Did not match:
+         - @ConditionalOnJndi JNDI environment is not available (OnJndiCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.transaction.jta.JtaTransactionManager' (OnClassCondition)
+
+   JpaBaseConfiguration.JpaWebConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.jpa.open-in-view=true) found different value in property 'spring.jpa.open-in-view' (OnPropertyCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+         - found 'session' scope (OnWebApplicationCondition)
+
+   JsonbHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.json.bind.Jsonb' (OnClassCondition)
+
+   KotlinSerializationHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'kotlinx.serialization.Serializable', 'kotlinx.serialization.json.Json' (OnClassCondition)
+
+   LoggingSecurityAlertEmailSender:
+      Did not match:
+         - @ConditionalOnProperty (app.email.security-alert-enabled=true) found different value in property 'security-alert-enabled' (OnPropertyCondition)
+
+   LoggingUserSessionService:
+      Did not match:
+         - @ConditionalOnMissingBean (types: com.homehealthcare.user.application.UserSessionService; SearchStrategy: all) found beans of type 'com.homehealthcare.user.application.UserSessionService' loggingUserSessionService, persistentUserSessionService (OnBeanCondition)
+
+   ManagementWebSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration' (OnClassCondition)
+
+   MessageSourceAutoConfiguration:
+      Did not match:
+         - ResourceBundle did not find bundle with basename messages (MessageSourceAutoConfiguration.ResourceBundleCondition)
+
+   MockMvcAutoConfiguration#dispatcherServlet:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found beans of type 'org.springframework.web.servlet.DispatcherServlet' dispatcherServlet (OnBeanCondition)
+
+   MockMvcAutoConfiguration#dispatcherServletPath:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.webmvc.autoconfigure.DispatcherServletPath; SearchStrategy: all) found beans of type 'org.springframework.boot.webmvc.autoconfigure.DispatcherServletPath' dispatcherServletRegistration (OnBeanCondition)
+
+   MockMvcWebClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.htmlunit.WebClient' (OnClassCondition)
+
+   MockMvcWebDriverAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.openqa.selenium.htmlunit.HtmlUnitDriver' (OnClassCondition)
+
+   ProjectInfoAutoConfiguration#buildProperties:
+      Did not match:
+         - @ConditionalOnResource did not find resource '${spring.info.build.location:classpath:META-INF/build-info.properties}' (OnResourceCondition)
+
+   ProjectInfoAutoConfiguration#gitProperties:
+      Did not match:
+         - GitResource did not find git info at classpath:git.properties (ProjectInfoAutoConfiguration.GitResourceAvailableCondition)
+
+   RSocketSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.rsocket.server.RSocketServerCustomizer' (OnClassCondition)
+
+   ReactiveManagementWebSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration' (OnClassCondition)
+
+   ReactiveUserDetailsServiceAutoConfiguration:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on ReactiveUserDetailsServiceAutoConfiguration.RSocketEnabledOrReactiveWebApplication.ReactiveWebApplicationCondition did not find reactive web application classes; NestedCondition on ReactiveUserDetailsServiceAutoConfiguration.RSocketEnabledOrReactiveWebApplication.RSocketSecurityEnabledCondition @ConditionalOnBean (types: org.springframework.messaging.rsocket.annotation.support.RSocketMessageHandler; SearchStrategy: all) did not find any beans of type org.springframework.messaging.rsocket.annotation.support.RSocketMessageHandler (ReactiveUserDetailsServiceAutoConfiguration.RSocketEnabledOrReactiveWebApplication)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.security.authentication.ReactiveAuthenticationManager' (OnClassCondition)
+         - AnyNestedCondition 1 matched 2 did not; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.PasswordConfigured @ConditionalOnProperty (spring.security.user.password) did not find property 'spring.security.user.password'; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.NameConfigured @ConditionalOnProperty (spring.security.user.name) did not find property 'spring.security.user.name'; NestedCondition on MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured.MissingAlternative @ConditionalOnMissingClass did not find unwanted classes 'org.springframework.security.oauth2.client.registration.ClientRegistrationRepository', 'org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector', 'org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository' (MissingAlternativeUserDetailsManagerOrUserPropertiesConfigured)
+
+   ReactiveWebSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Flux' (OnClassCondition)
+
+   SecurityAutoConfiguration.SecurityDataConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.data.repository.query.SecurityEvaluationContextExtension' (OnClassCondition)
+
+   ServletHttpExchangesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean did not find required type 'org.springframework.boot.actuate.web.exchanges.HttpExchangeRepository' (OnBeanCondition)
+
+   ServletManagementContextAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties' (OnClassCondition)
+
+   ServletMappingsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint' (OnClassCondition)
+
+   ServletWebSecurityAutoConfiguration.SecurityFilterChainConfiguration:
+      Did not match:
+         - AllNestedConditions 1 matched 1 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) found beans of type 'org.springframework.security.web.SecurityFilterChain' securityFilterChain; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+   ServletWebServerConfiguration#forwardedHeaderFilter:
+      Did not match:
+         - @ConditionalOnProperty (server.forward-headers-strategy=framework) did not find property 'server.forward-headers-strategy' (OnPropertyCondition)
+
+   SpringApplicationAdminJmxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.application.admin.enabled=true) did not find property 'spring.application.admin.enabled' (OnPropertyCondition)
+
+   TaskExecutorConfigurations.AsyncConfigurerWrapperConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans of type org.springframework.scheduling.annotation.AsyncConfigurer (OnBeanCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder' simpleAsyncTaskExecutorBuilder (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutorVirtualThreads:
+      Did not match:
+         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
+
+   TaskSchedulingAutoConfiguration#scheduledBeanLazyInitializationExcludeFilter:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.scheduling.config.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.scheduling.config.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder' simpleAsyncTaskSchedulerBuilder (OnBeanCondition)
+
+   TaskSchedulingConfigurations.TaskSchedulerConfiguration:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.scheduling.config.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.scheduling.config.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   TomcatMetricsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.micrometer.core.instrument.binder.tomcat.TomcatMetrics' (OnClassCondition)
+
+   TomcatReactiveManagementContextAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextFactory' (OnClassCondition)
+
+   TomcatReactiveWebServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnWebApplication did not find reactive web application classes (OnWebApplicationCondition)
+
+   TomcatServletManagementContextAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextFactory' (OnClassCondition)
+
+   TomcatServletWebServerAutoConfiguration#tomcatForwardedHeaderFilterCustomizer:
+      Did not match:
+         - @ConditionalOnProperty (server.forward-headers-strategy=framework) did not find property 'server.forward-headers-strategy' (OnPropertyCondition)
+
+   TomcatWebServerConfiguration:
+      Did not match:
+         - Application is deployed as a WAR file. (OnWarDeploymentCondition)
+
+   TransactionAutoConfiguration#transactionalOperator:
+      Did not match:
+         - @ConditionalOnSingleCandidate (types: org.springframework.transaction.ReactiveTransactionManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TransactionAutoConfiguration.AspectJTransactionManagementConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.transaction.aspectj.AbstractTransactionAspect; SearchStrategy: all) did not find any beans of type org.springframework.transaction.aspectj.AbstractTransactionAspect (OnBeanCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration.JdkDynamicAutoProxyConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.aop.proxy-target-class=false) did not find property 'spring.aop.proxy-target-class' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration#hiddenHttpMethodFilter:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.mvc.hiddenmethod.filter.enabled=true) did not find property 'spring.mvc.hiddenmethod.filter.enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ProblemDetailsErrorHandlingConfiguration:
+      Did not match:
+         - @ConditionalOnBooleanProperty (spring.mvc.problemdetails.enabled=true) did not find property 'spring.mvc.problemdetails.enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ResourceChainCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnEnabledResourceChain did not find class org.webjars.WebJarVersionLocator (OnEnabledResourceChainCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#beanNameViewResolver:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) found beans of type 'org.springframework.web.servlet.view.BeanNameViewResolver' beanNameViewResolver (OnBeanCondition)
+
+   WebMvcHealthEndpointExtensionAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.health.actuate.endpoint.HealthEndpoint' (OnClassCondition)
+
+   WebMvcMappingsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint' (OnClassCondition)
+
+   WebMvcObservationAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties' (OnClassCondition)
+
+   XADataSourceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.boot.jdbc.XADataSourceWrapper; SearchStrategy: all) did not find any beans of type org.springframework.boot.jdbc.XADataSourceWrapper (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required classes 'javax.sql.DataSource', 'jakarta.transaction.TransactionManager', 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType' (OnClassCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+
+    org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration
+
+    org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration
+
+    org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration
+
+
+
+2026-03-29T20:50:42.524-05:00  INFO 43427 --- [homehealthcare] [    Test worker] c.h.c.api.ComplianceApiIntegrationTest   : Started ComplianceApiIntegrationTest in 7.577 seconds (process running for 8.508)
+2026-03-29T20:50:42.525-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2026-03-29T20:50:42.527-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2026-03-29T20:50:42.846-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-29T20:50:42.905-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.911-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-29T20:50:42.916-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.919-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-29T20:50:42.920-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.920-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:42.924-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.925-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:42.932-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:42.934-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:42.935-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.936-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:42.936-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:42.937-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:42.937-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.938-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:42.938-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:42.939-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id,ba1_0.agency_id,ba1_0.agency_membership_id,ba1_0.branch_id,ba1_0.created_at,ba1_0.status,ba1_0.updated_at from branch_assignments ba1_0 where ba1_0.id=?
+2026-03-29T20:50:42.942-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branch_assignments (agency_id,agency_membership_id,branch_id,created_at,status,updated_at,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:42.943-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id,ba1_0.agency_id,ba1_0.agency_membership_id,ba1_0.branch_id,ba1_0.created_at,ba1_0.status,ba1_0.updated_at from branch_assignments ba1_0 where ba1_0.id=?
+2026-03-29T20:50:42.944-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branch_assignments (agency_id,agency_membership_id,branch_id,created_at,status,updated_at,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:42.945-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=?
+2026-03-29T20:50:42.952-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into patients (agency_id,created_at,date_of_birth,email,external_reference,first_name,language,last_name,middle_name,notes_summary,preferred_name,primary_phone,secondary_phone,sex_marker,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:42.953-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
+2026-03-29T20:50:42.956-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.026-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.034-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id from compliance_checklist_definitions ccd1_0 where ccd1_0.agency_id=? and ccd1_0.item_code=? fetch first ? rows only
+2026-03-29T20:50:43.035-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id,ccd1_0.active,ccd1_0.agency_id,ccd1_0.branch_id,ccd1_0.created_at,ccd1_0.description,ccd1_0.item_code,ccd1_0.service_line_id,ccd1_0.severity_label,ccd1_0.updated_at,ccd1_0.weight_score from compliance_checklist_definitions ccd1_0 where ccd1_0.id=?
+2026-03-29T20:50:43.038-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_definitions (active,agency_id,branch_id,created_at,description,item_code,service_line_id,severity_label,updated_at,weight_score,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.040-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.047-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.049-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.053-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id,ccd1_0.active,ccd1_0.agency_id,ccd1_0.branch_id,ccd1_0.created_at,ccd1_0.description,ccd1_0.item_code,ccd1_0.service_line_id,ccd1_0.severity_label,ccd1_0.updated_at,ccd1_0.weight_score from compliance_checklist_definitions ccd1_0 where ccd1_0.id=? and ccd1_0.agency_id=?
+2026-03-29T20:50:43.054-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.id=?
+2026-03-29T20:50:43.060-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.061-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_results (agency_id,branch_id,checklist_definition_id,context_period_end,context_period_start,created_at,documentation_requirement_id,evaluated_at,evaluation_category,evaluation_origin,evidence_source_id,evidence_source_type,evidence_summary,missing_reason,patient_id,result_code,result_status,satisfied_by_record_id,satisfied_by_record_type,service_line_id,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.062-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.065-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.068-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id from required_documentation_requirements rdr1_0 where rdr1_0.agency_id=? and rdr1_0.requirement_code=? fetch first ? rows only
+2026-03-29T20:50:43.069-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id,rdr1_0.active,rdr1_0.agency_id,rdr1_0.branch_id,rdr1_0.created_at,rdr1_0.description,rdr1_0.due_days,rdr1_0.episode_applicable,rdr1_0.patient_applicable,rdr1_0.recency_days,rdr1_0.requirement_code,rdr1_0.requires_attachment_evidence,rdr1_0.requires_signature_verification,rdr1_0.service_line_id,rdr1_0.source_category,rdr1_0.updated_at from required_documentation_requirements rdr1_0 where rdr1_0.id=?
+2026-03-29T20:50:43.072-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.072-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into required_documentation_requirements (active,agency_id,branch_id,created_at,description,due_days,episode_applicable,patient_applicable,recency_days,requirement_code,requires_attachment_evidence,requires_signature_verification,service_line_id,source_category,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.074-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.076-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.078-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.083-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id,rdr1_0.active,rdr1_0.agency_id,rdr1_0.branch_id,rdr1_0.created_at,rdr1_0.description,rdr1_0.due_days,rdr1_0.episode_applicable,rdr1_0.patient_applicable,rdr1_0.recency_days,rdr1_0.requirement_code,rdr1_0.requires_attachment_evidence,rdr1_0.requires_signature_verification,rdr1_0.service_line_id,rdr1_0.source_category,rdr1_0.updated_at from required_documentation_requirements rdr1_0 where rdr1_0.id=? and rdr1_0.agency_id=?
+2026-03-29T20:50:43.088-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select vdr1_0.id,vdr1_0.agency_id,vdr1_0.author_membership_id,vdr1_0.branch_id,vdr1_0.created_at,vdr1_0.last_editor_membership_id,vdr1_0.last_saved_at,vdr1_0.patient_id,vdr1_0.printable_summary_version,vdr1_0.selected_template_id,vdr1_0.started_at,vdr1_0.status,vdr1_0.submitted_at,vdr1_0.updated_at,vdr1_0.visit_occurrence_id from visit_documentation_records vdr1_0 where vdr1_0.agency_id=? and vdr1_0.patient_id=? order by vdr1_0.last_saved_at desc
+2026-03-29T20:50:43.090-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.id=?
+2026-03-29T20:50:43.092-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.093-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_results (agency_id,branch_id,checklist_definition_id,context_period_end,context_period_start,created_at,documentation_requirement_id,evaluated_at,evaluation_category,evaluation_origin,evidence_source_id,evidence_source_type,evidence_summary,missing_reason,patient_id,result_code,result_status,satisfied_by_record_id,satisfied_by_record_type,service_line_id,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.093-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.096-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.097-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.098-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.id=?
+2026-03-29T20:50:43.101-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.101-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into consent_acknowledgment_records (acknowledgment_type,agency_id,branch_id,capture_method,captured_by_membership_id,created_at,effective_at,expires_at,patient_id,revoked_at,status,supporting_artifact_id,supporting_artifact_type,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.102-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.104-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.105-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.107-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.id=?
+2026-03-29T20:50:43.111-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.111-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into certification_period_records (agency_id,branch_id,created_at,end_date,patient_id,patient_payer_link_id,program_context,record_state,source,start_date,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.112-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.146-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#createAcknowledgment(UUID, SaveAcknowledgmentRequest)
+2026-03-29T20:50:43.190-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [SaveAcknowledgmentRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, acknowledgmentType=RIGHT_TO (truncated)...]
+2026-03-29T20:50:43.198-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.202-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.203-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.204-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.204-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.205-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.id=?
+2026-03-29T20:50:43.207-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.207-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into consent_acknowledgment_records (acknowledgment_type,agency_id,branch_id,capture_method,captured_by_membership_id,created_at,effective_at,expires_at,patient_id,revoked_at,status,supporting_artifact_id,supporting_artifact_type,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.208-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.214-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.216-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ConsentAcknowledgmentResponse[id=f4089577-ee83-4e47-a11e-b774a17b4503, patientId=989bfd54-efdb-4edf- (truncated)...]
+2026-03-29T20:50:43.254-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#createCertificationPeriod(UUID, SaveCertificationPeriodRequest)
+2026-03-29T20:50:43.258-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [SaveCertificationPeriodRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, patientPayerLinkId=nul (truncated)...]
+2026-03-29T20:50:43.261-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.263-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.265-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.265-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.266-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.id=?
+2026-03-29T20:50:43.267-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.267-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into certification_period_records (agency_id,branch_id,created_at,end_date,patient_id,patient_payer_link_id,program_context,record_state,source,start_date,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.267-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.268-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.270-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [CertificationPeriodResponse[id=8b7d615b-938d-4254-8594-0017394960b6, patientId=989bfd54-efdb-4edf-bf (truncated)...]
+2026-03-29T20:50:43.274-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#createRiskReminder(UUID, SaveRiskReminderRequest)
+2026-03-29T20:50:43.278-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [SaveRiskReminderRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, visitOccurrenceId=null, docum (truncated)...]
+2026-03-29T20:50:43.280-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.283-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.284-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.284-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.286-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prr1_0.id,prr1_0.agency_id,prr1_0.branch_id,prr1_0.created_at,prr1_0.documentation_record_id,prr1_0.effective_at,prr1_0.expires_at,prr1_0.patient_id,prr1_0.resolved_at,prr1_0.risk_type,prr1_0.severity_label,prr1_0.source_context_type,prr1_0.source_record_id,prr1_0.status,prr1_0.summary,prr1_0.updated_at,prr1_0.visit_occurrence_id from patient_risk_reminders prr1_0 where prr1_0.id=?
+2026-03-29T20:50:43.288-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.289-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into patient_risk_reminders (agency_id,branch_id,created_at,documentation_record_id,effective_at,expires_at,patient_id,resolved_at,risk_type,severity_label,source_context_type,source_record_id,status,summary,updated_at,visit_occurrence_id,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.290-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.291-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.293-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [PatientRiskReminderResponse[id=3eff200d-500b-4c82-af8e-e8337341b23f, patientId=989bfd54-efdb-4edf-bf (truncated)...]
+2026-03-29T20:50:43.296-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#recalculateStatusProjection(UUID, RecalculateStatusProjectionRequest)
+2026-03-29T20:50:43.304-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [RecalculateStatusProjectionRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, serviceLineId=5e30 (truncated)...]
+2026-03-29T20:50:43.309-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.311-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.313-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.314-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.315-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=? and sl1_0.agency_id=?
+2026-03-29T20:50:43.318-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.patient_id=? order by ccr1_0.evaluated_at desc
+2026-03-29T20:50:43.321-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.patient_id=? order by car1_0.effective_at desc
+2026-03-29T20:50:43.324-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.patient_id=? order by cpr1_0.start_date desc
+2026-03-29T20:50:43.327-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prr1_0.id,prr1_0.agency_id,prr1_0.branch_id,prr1_0.created_at,prr1_0.documentation_record_id,prr1_0.effective_at,prr1_0.expires_at,prr1_0.patient_id,prr1_0.resolved_at,prr1_0.risk_type,prr1_0.severity_label,prr1_0.source_context_type,prr1_0.source_record_id,prr1_0.status,prr1_0.summary,prr1_0.updated_at,prr1_0.visit_occurrence_id from patient_risk_reminders prr1_0 where prr1_0.patient_id=? order by prr1_0.effective_at desc
+2026-03-29T20:50:43.330-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select csp1_0.id,csp1_0.active_risk_reminder_count,csp1_0.agency_id,csp1_0.branch_id,csp1_0.certification_period_status,csp1_0.checklist_fail_count,csp1_0.checklist_pass_count,csp1_0.checklist_warning_count,csp1_0.created_at,csp1_0.documentation_satisfied_count,csp1_0.documentation_unsatisfied_count,csp1_0.documentation_warning_count,csp1_0.evaluated_at,csp1_0.expired_acknowledgment_count,csp1_0.missing_acknowledgment_count,csp1_0.patient_id,csp1_0.readiness_status,csp1_0.service_line_id,csp1_0.updated_at from compliance_status_projections csp1_0 where csp1_0.patient_id=? order by csp1_0.evaluated_at desc
+2026-03-29T20:50:43.331-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select csp1_0.id,csp1_0.active_risk_reminder_count,csp1_0.agency_id,csp1_0.branch_id,csp1_0.certification_period_status,csp1_0.checklist_fail_count,csp1_0.checklist_pass_count,csp1_0.checklist_warning_count,csp1_0.created_at,csp1_0.documentation_satisfied_count,csp1_0.documentation_unsatisfied_count,csp1_0.documentation_warning_count,csp1_0.evaluated_at,csp1_0.expired_acknowledgment_count,csp1_0.missing_acknowledgment_count,csp1_0.patient_id,csp1_0.readiness_status,csp1_0.service_line_id,csp1_0.updated_at from compliance_status_projections csp1_0 where csp1_0.id=?
+2026-03-29T20:50:43.335-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.335-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_status_projections (active_risk_reminder_count,agency_id,branch_id,certification_period_status,checklist_fail_count,checklist_pass_count,checklist_warning_count,created_at,documentation_satisfied_count,documentation_unsatisfied_count,documentation_warning_count,evaluated_at,expired_acknowledgment_count,missing_acknowledgment_count,patient_id,readiness_status,service_line_id,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.336-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.337-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.341-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ComplianceStatusProjectionResponse[id=de2aa989-3d0f-4076-9f87-712e226e0e41, patientId=989bfd54-efdb- (truncated)...]
+2026-03-29T20:50:43.345-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getDashboardPatients(UUID, ComplianceReadinessStatus, CertificationPeriodStatus, String, int, int)
+2026-03-29T20:50:43.351-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.352-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.354-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select csp1_0.id,csp1_0.active_risk_reminder_count,csp1_0.agency_id,csp1_0.branch_id,csp1_0.certification_period_status,csp1_0.checklist_fail_count,csp1_0.checklist_pass_count,csp1_0.checklist_warning_count,csp1_0.created_at,csp1_0.documentation_satisfied_count,csp1_0.documentation_unsatisfied_count,csp1_0.documentation_warning_count,csp1_0.evaluated_at,csp1_0.expired_acknowledgment_count,csp1_0.missing_acknowledgment_count,csp1_0.patient_id,csp1_0.readiness_status,csp1_0.service_line_id,csp1_0.updated_at from compliance_status_projections csp1_0 where csp1_0.agency_id=? order by csp1_0.evaluated_at desc
+2026-03-29T20:50:43.357-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.359-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.386-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.396-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.407-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [PagedResponse[content=[ComplianceDashboardPatientSummaryResponse[patientId=989bfd54-efdb-4edf-bf04-4 (truncated)...]
+2026-03-29T20:50:43.421-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getPatientWorkspace(UUID, UUID, UUID)
+2026-03-29T20:50:43.422-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.424-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.425-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.425-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select csp1_0.id,csp1_0.active_risk_reminder_count,csp1_0.agency_id,csp1_0.branch_id,csp1_0.certification_period_status,csp1_0.checklist_fail_count,csp1_0.checklist_pass_count,csp1_0.checklist_warning_count,csp1_0.created_at,csp1_0.documentation_satisfied_count,csp1_0.documentation_unsatisfied_count,csp1_0.documentation_warning_count,csp1_0.evaluated_at,csp1_0.expired_acknowledgment_count,csp1_0.missing_acknowledgment_count,csp1_0.patient_id,csp1_0.readiness_status,csp1_0.service_line_id,csp1_0.updated_at from compliance_status_projections csp1_0 where csp1_0.patient_id=? order by csp1_0.evaluated_at desc
+2026-03-29T20:50:43.426-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.patient_id=? order by ccr1_0.evaluated_at desc
+2026-03-29T20:50:43.427-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.patient_id=? order by car1_0.effective_at desc
+2026-03-29T20:50:43.428-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.patient_id=? order by cpr1_0.start_date desc
+2026-03-29T20:50:43.428-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prr1_0.id,prr1_0.agency_id,prr1_0.branch_id,prr1_0.created_at,prr1_0.documentation_record_id,prr1_0.effective_at,prr1_0.expires_at,prr1_0.patient_id,prr1_0.resolved_at,prr1_0.risk_type,prr1_0.severity_label,prr1_0.source_context_type,prr1_0.source_record_id,prr1_0.status,prr1_0.summary,prr1_0.updated_at,prr1_0.visit_occurrence_id from patient_risk_reminders prr1_0 where prr1_0.patient_id=? order by prr1_0.effective_at desc
+2026-03-29T20:50:43.429-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.434-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [PatientComplianceWorkspaceResponse[projection=ComplianceStatusProjectionResponse[id=de2aa989-3d0f-40 (truncated)...]
+2026-03-29T20:50:43.442-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getChecklistResults(UUID, UUID, UUID)
+2026-03-29T20:50:43.444-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.445-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.446-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.446-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.patient_id=? order by ccr1_0.evaluated_at desc
+2026-03-29T20:50:43.447-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.447-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [[ComplianceChecklistResultResponse[id=2b7c2e56-d84a-42b5-a08d-f40c79febc7d, patientId=989bfd54-efdb- (truncated)...]
+2026-03-29T20:50:43.449-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getDocumentationResults(UUID, UUID, UUID)
+2026-03-29T20:50:43.450-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.451-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.453-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.453-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.patient_id=? order by ccr1_0.evaluated_at desc
+2026-03-29T20:50:43.454-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.454-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [[ComplianceChecklistResultResponse[id=1bc528f1-48ae-4fa7-815c-125d1faa17ac, patientId=989bfd54-efdb- (truncated)...]
+2026-03-29T20:50:43.456-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#updateAcknowledgment(UUID, UUID, SaveAcknowledgmentRequest)
+2026-03-29T20:50:43.456-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [SaveAcknowledgmentRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, acknowledgmentType=RIGHT_TO (truncated)...]
+2026-03-29T20:50:43.457-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.459-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.460-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.462-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.462-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.464-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.id=? and car1_0.agency_id=?
+2026-03-29T20:50:43.467-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.471-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update consent_acknowledgment_records set acknowledgment_type=?,agency_id=?,branch_id=?,capture_method=?,captured_by_membership_id=?,effective_at=?,expires_at=?,patient_id=?,revoked_at=?,status=?,supporting_artifact_id=?,supporting_artifact_type=?,updated_at=? where id=?
+2026-03-29T20:50:43.473-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.474-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.474-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ConsentAcknowledgmentResponse[id=d61492ff-2d0d-4c43-99a1-5636e6f753c7, patientId=989bfd54-efdb-4edf- (truncated)...]
+2026-03-29T20:50:43.475-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#closeCertificationPeriod(UUID, UUID, CloseCertificationPeriodRequest)
+2026-03-29T20:50:43.478-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [CloseCertificationPeriodRequest[branchId=9b14b74d-6268-4242-a7bb-1e79773b44fb, patientPayerLinkId=nu (truncated)...]
+2026-03-29T20:50:43.480-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.481-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.482-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.483-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.485-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.id=? and cpr1_0.agency_id=?
+2026-03-29T20:50:43.486-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.487-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.488-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update certification_period_records set agency_id=?,branch_id=?,end_date=?,patient_id=?,patient_payer_link_id=?,program_context=?,record_state=?,source=?,start_date=?,updated_at=? where id=?
+2026-03-29T20:50:43.488-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.489-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.489-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [CertificationPeriodResponse[id=9bc1ab6e-530a-4cd9-baa9-218d12e65ce0, patientId=989bfd54-efdb-4edf-bf (truncated)...]
+2026-03-29T20:50:43.491-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#resolveRiskReminder(UUID, UUID, OffsetDateTime)
+2026-03-29T20:50:43.494-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.496-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prr1_0.id,prr1_0.agency_id,prr1_0.branch_id,prr1_0.created_at,prr1_0.documentation_record_id,prr1_0.effective_at,prr1_0.expires_at,prr1_0.patient_id,prr1_0.resolved_at,prr1_0.risk_type,prr1_0.severity_label,prr1_0.source_context_type,prr1_0.source_record_id,prr1_0.status,prr1_0.summary,prr1_0.updated_at,prr1_0.visit_occurrence_id from patient_risk_reminders prr1_0 where prr1_0.id=? and prr1_0.agency_id=?
+2026-03-29T20:50:43.498-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.499-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.499-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : update patient_risk_reminders set agency_id=?,branch_id=?,documentation_record_id=?,effective_at=?,expires_at=?,patient_id=?,resolved_at=?,risk_type=?,severity_label=?,source_context_type=?,source_record_id=?,status=?,summary=?,updated_at=?,visit_occurrence_id=? where id=?
+2026-03-29T20:50:43.500-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.500-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.500-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [PatientRiskReminderResponse[id=3eff200d-500b-4c82-af8e-e8337341b23f, patientId=989bfd54-efdb-4edf-bf (truncated)...]
+2026-03-29T20:50:43.502-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getComplianceHistory(UUID, UUID)
+2026-03-29T20:50:43.503-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.504-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.504-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.505-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.505-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.506-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.patient_id=? order by car1_0.effective_at desc
+2026-03-29T20:50:43.507-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.507-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.508-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.patient_id=? order by cpr1_0.start_date desc
+2026-03-29T20:50:43.510-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.511-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.511-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select prr1_0.id,prr1_0.agency_id,prr1_0.branch_id,prr1_0.created_at,prr1_0.documentation_record_id,prr1_0.effective_at,prr1_0.expires_at,prr1_0.patient_id,prr1_0.resolved_at,prr1_0.risk_type,prr1_0.severity_label,prr1_0.source_context_type,prr1_0.source_record_id,prr1_0.status,prr1_0.summary,prr1_0.updated_at,prr1_0.visit_occurrence_id from patient_risk_reminders prr1_0 where prr1_0.patient_id=? order by prr1_0.effective_at desc
+2026-03-29T20:50:43.512-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.512-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.513-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.patient_id=? order by ccr1_0.evaluated_at desc
+2026-03-29T20:50:43.515-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.516-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.agency_id=? order by ae1_0.occurred_at
+2026-03-29T20:50:43.518-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.520-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [ComplianceHistoryResponse[timeline=[ComplianceHistoryEntryResponse[entryType=ACKNOWLEDGMENT, entityI (truncated)...]
+2026-03-29T20:50:43.530-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getChecklistDefinitionHistory(UUID)
+2026-03-29T20:50:43.531-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.532-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id,ccd1_0.active,ccd1_0.agency_id,ccd1_0.branch_id,ccd1_0.created_at,ccd1_0.description,ccd1_0.item_code,ccd1_0.service_line_id,ccd1_0.severity_label,ccd1_0.updated_at,ccd1_0.weight_score from compliance_checklist_definitions ccd1_0 where ccd1_0.id=? and ccd1_0.agency_id=?
+2026-03-29T20:50:43.533-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.agency_id=? order by ae1_0.occurred_at
+2026-03-29T20:50:43.534-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.534-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [[AuditEventResponse[id=667ff28f-b995-4934-8fe3-a3c18bbdf1ee, actionType=COMPLIANCE_CHECKLIST_DEFINIT (truncated)...]
+2026-03-29T20:50:43.535-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getDocumentationRequirementHistory(UUID)
+2026-03-29T20:50:43.537-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.539-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id,rdr1_0.active,rdr1_0.agency_id,rdr1_0.branch_id,rdr1_0.created_at,rdr1_0.description,rdr1_0.due_days,rdr1_0.episode_applicable,rdr1_0.patient_applicable,rdr1_0.recency_days,rdr1_0.requirement_code,rdr1_0.requires_attachment_evidence,rdr1_0.requires_signature_verification,rdr1_0.service_line_id,rdr1_0.source_category,rdr1_0.updated_at from required_documentation_requirements rdr1_0 where rdr1_0.id=? and rdr1_0.agency_id=?
+2026-03-29T20:50:43.541-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.agency_id=? order by ae1_0.occurred_at
+2026-03-29T20:50:43.542-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.542-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [[AuditEventResponse[id=65c142a8-05d7-4903-932e-db1602af5600, actionType=COMPLIANCE_DOCUMENTATION_REQ (truncated)...]
+2026-03-29T20:50:43.566-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select a1_0.id,a1_0.contact_email,a1_0.created_at,a1_0.deactivated_at,a1_0.mfa_policy_mode,a1_0.mfa_required_roles,a1_0.name,a1_0.slug,a1_0.status,a1_0.timezone,a1_0.updated_at from agencies a1_0 where a1_0.id=?
+2026-03-29T20:50:43.567-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agencies (contact_email,created_at,deactivated_at,mfa_policy_mode,mfa_required_roles,name,slug,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.568-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-29T20:50:43.570-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.571-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=?
+2026-03-29T20:50:43.572-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branches (address,agency_id,code,created_at,deactivated_at,name,status,timezone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.573-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:43.576-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.577-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:43.578-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:43.580-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:43.583-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.585-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:43.588-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:43.588-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select u1_0.id,u1_0.created_at,u1_0.deactivated_at,u1_0.email,u1_0.first_name,u1_0.last_login_at,u1_0.last_name,u1_0.mfa_enabled,u1_0.mfa_enrolled_at,u1_0.mfa_secret,u1_0.password_hash,u1_0.phone,u1_0.preferred_language,u1_0.status,u1_0.time_zone,u1_0.updated_at from users u1_0 where u1_0.id=?
+2026-03-29T20:50:43.591-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into users (created_at,deactivated_at,email,first_name,last_login_at,last_name,mfa_enabled,mfa_enrolled_at,mfa_secret,password_hash,phone,preferred_language,status,time_zone,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.592-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=?
+2026-03-29T20:50:43.594-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into agency_memberships (agency_id,created_at,role_key,status,updated_at,user_id,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:43.595-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id,ba1_0.agency_id,ba1_0.agency_membership_id,ba1_0.branch_id,ba1_0.created_at,ba1_0.status,ba1_0.updated_at from branch_assignments ba1_0 where ba1_0.id=?
+2026-03-29T20:50:43.597-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branch_assignments (agency_id,agency_membership_id,branch_id,created_at,status,updated_at,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:43.599-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id,ba1_0.agency_id,ba1_0.agency_membership_id,ba1_0.branch_id,ba1_0.created_at,ba1_0.status,ba1_0.updated_at from branch_assignments ba1_0 where ba1_0.id=?
+2026-03-29T20:50:43.601-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into branch_assignments (agency_id,agency_membership_id,branch_id,created_at,status,updated_at,id) values (?,?,?,?,?,?,?)
+2026-03-29T20:50:43.602-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=?
+2026-03-29T20:50:43.605-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into patients (agency_id,created_at,date_of_birth,email,external_reference,first_name,language,last_name,middle_name,notes_summary,preferred_name,primary_phone,secondary_phone,sex_marker,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.606-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select sl1_0.id,sl1_0.agency_id,sl1_0.code,sl1_0.created_at,sl1_0.description,sl1_0.display_order,sl1_0.effective_from,sl1_0.effective_to,sl1_0.name,sl1_0.status,sl1_0.updated_at from service_lines sl1_0 where sl1_0.id=?
+2026-03-29T20:50:43.608-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into service_lines (agency_id,code,created_at,description,display_order,effective_from,effective_to,name,status,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.610-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.613-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id from compliance_checklist_definitions ccd1_0 where ccd1_0.agency_id=? and ccd1_0.item_code=? fetch first ? rows only
+2026-03-29T20:50:43.615-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id,ccd1_0.active,ccd1_0.agency_id,ccd1_0.branch_id,ccd1_0.created_at,ccd1_0.description,ccd1_0.item_code,ccd1_0.service_line_id,ccd1_0.severity_label,ccd1_0.updated_at,ccd1_0.weight_score from compliance_checklist_definitions ccd1_0 where ccd1_0.id=?
+2026-03-29T20:50:43.618-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_definitions (active,agency_id,branch_id,created_at,description,item_code,service_line_id,severity_label,updated_at,weight_score,id) values (?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.620-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.625-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.627-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.630-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccd1_0.id,ccd1_0.active,ccd1_0.agency_id,ccd1_0.branch_id,ccd1_0.created_at,ccd1_0.description,ccd1_0.item_code,ccd1_0.service_line_id,ccd1_0.severity_label,ccd1_0.updated_at,ccd1_0.weight_score from compliance_checklist_definitions ccd1_0 where ccd1_0.id=? and ccd1_0.agency_id=?
+2026-03-29T20:50:43.632-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.id=?
+2026-03-29T20:50:43.635-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.636-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_results (agency_id,branch_id,checklist_definition_id,context_period_end,context_period_start,created_at,documentation_requirement_id,evaluated_at,evaluation_category,evaluation_origin,evidence_source_id,evidence_source_type,evidence_summary,missing_reason,patient_id,result_code,result_status,satisfied_by_record_id,satisfied_by_record_type,service_line_id,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.637-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.640-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.645-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id from required_documentation_requirements rdr1_0 where rdr1_0.agency_id=? and rdr1_0.requirement_code=? fetch first ? rows only
+2026-03-29T20:50:43.647-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id,rdr1_0.active,rdr1_0.agency_id,rdr1_0.branch_id,rdr1_0.created_at,rdr1_0.description,rdr1_0.due_days,rdr1_0.episode_applicable,rdr1_0.patient_applicable,rdr1_0.recency_days,rdr1_0.requirement_code,rdr1_0.requires_attachment_evidence,rdr1_0.requires_signature_verification,rdr1_0.service_line_id,rdr1_0.source_category,rdr1_0.updated_at from required_documentation_requirements rdr1_0 where rdr1_0.id=?
+2026-03-29T20:50:43.649-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.650-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into required_documentation_requirements (active,agency_id,branch_id,created_at,description,due_days,episode_applicable,patient_applicable,recency_days,requirement_code,requires_attachment_evidence,requires_signature_verification,service_line_id,source_category,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.651-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.658-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.661-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.664-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select rdr1_0.id,rdr1_0.active,rdr1_0.agency_id,rdr1_0.branch_id,rdr1_0.created_at,rdr1_0.description,rdr1_0.due_days,rdr1_0.episode_applicable,rdr1_0.patient_applicable,rdr1_0.recency_days,rdr1_0.requirement_code,rdr1_0.requires_attachment_evidence,rdr1_0.requires_signature_verification,rdr1_0.service_line_id,rdr1_0.source_category,rdr1_0.updated_at from required_documentation_requirements rdr1_0 where rdr1_0.id=? and rdr1_0.agency_id=?
+2026-03-29T20:50:43.667-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select vdr1_0.id,vdr1_0.agency_id,vdr1_0.author_membership_id,vdr1_0.branch_id,vdr1_0.created_at,vdr1_0.last_editor_membership_id,vdr1_0.last_saved_at,vdr1_0.patient_id,vdr1_0.printable_summary_version,vdr1_0.selected_template_id,vdr1_0.started_at,vdr1_0.status,vdr1_0.submitted_at,vdr1_0.updated_at,vdr1_0.visit_occurrence_id from visit_documentation_records vdr1_0 where vdr1_0.agency_id=? and vdr1_0.patient_id=? order by vdr1_0.last_saved_at desc
+2026-03-29T20:50:43.669-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ccr1_0.id,ccr1_0.agency_id,ccr1_0.branch_id,ccr1_0.checklist_definition_id,ccr1_0.context_period_end,ccr1_0.context_period_start,ccr1_0.created_at,ccr1_0.documentation_requirement_id,ccr1_0.evaluated_at,ccr1_0.evaluation_category,ccr1_0.evaluation_origin,ccr1_0.evidence_source_id,ccr1_0.evidence_source_type,ccr1_0.evidence_summary,ccr1_0.missing_reason,ccr1_0.patient_id,ccr1_0.result_code,ccr1_0.result_status,ccr1_0.satisfied_by_record_id,ccr1_0.satisfied_by_record_type,ccr1_0.service_line_id,ccr1_0.updated_at from compliance_checklist_results ccr1_0 where ccr1_0.id=?
+2026-03-29T20:50:43.673-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.676-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into compliance_checklist_results (agency_id,branch_id,checklist_definition_id,context_period_end,context_period_start,created_at,documentation_requirement_id,evaluated_at,evaluation_category,evaluation_origin,evidence_source_id,evidence_source_type,evidence_summary,missing_reason,patient_id,result_code,result_status,satisfied_by_record_id,satisfied_by_record_type,service_line_id,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.678-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.681-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.682-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.683-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select car1_0.id,car1_0.acknowledgment_type,car1_0.agency_id,car1_0.branch_id,car1_0.capture_method,car1_0.captured_by_membership_id,car1_0.created_at,car1_0.effective_at,car1_0.expires_at,car1_0.patient_id,car1_0.revoked_at,car1_0.status,car1_0.supporting_artifact_id,car1_0.supporting_artifact_type,car1_0.updated_at from consent_acknowledgment_records car1_0 where car1_0.id=?
+2026-03-29T20:50:43.686-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.687-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into consent_acknowledgment_records (acknowledgment_type,agency_id,branch_id,capture_method,captured_by_membership_id,created_at,effective_at,expires_at,patient_id,revoked_at,status,supporting_artifact_id,supporting_artifact_type,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.690-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.694-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select b1_0.id,b1_0.address,b1_0.agency_id,b1_0.code,b1_0.created_at,b1_0.deactivated_at,b1_0.name,b1_0.status,b1_0.timezone,b1_0.updated_at from branches b1_0 where b1_0.id=? and b1_0.agency_id=?
+2026-03-29T20:50:43.696-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.699-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select cpr1_0.id,cpr1_0.agency_id,cpr1_0.branch_id,cpr1_0.created_at,cpr1_0.end_date,cpr1_0.patient_id,cpr1_0.patient_payer_link_id,cpr1_0.program_context,cpr1_0.record_state,cpr1_0.source,cpr1_0.start_date,cpr1_0.updated_at from certification_period_records cpr1_0 where cpr1_0.id=?
+2026-03-29T20:50:43.701-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into audit_events (action_type,actor_email,actor_id,actor_type,agency_id,branch_id,metadata_json,occurred_at,outcome,target_id,target_type,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.701-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : insert into certification_period_records (agency_id,branch_id,created_at,end_date,patient_id,patient_payer_link_id,program_context,record_state,source,start_date,updated_at,id) values (?,?,?,?,?,?,?,?,?,?,?,?)
+2026-03-29T20:50:43.701-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ae1_0.id,ae1_0.action_type,ae1_0.actor_email,ae1_0.actor_id,ae1_0.actor_type,ae1_0.agency_id,ae1_0.branch_id,ae1_0.metadata_json,ae1_0.occurred_at,ae1_0.outcome,ae1_0.target_id,ae1_0.target_type from audit_events ae1_0 where ae1_0.id=?
+2026-03-29T20:50:43.703-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.homehealthcare.compliance.api.ComplianceController#getPatientWorkspace(UUID, UUID, UUID)
+2026-03-29T20:50:43.705-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select am1_0.id,am1_0.agency_id,am1_0.created_at,am1_0.role_key,am1_0.status,am1_0.updated_at,am1_0.user_id from agency_memberships am1_0 where am1_0.id=? and am1_0.agency_id=?
+2026-03-29T20:50:43.707-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select p1_0.id,p1_0.agency_id,p1_0.created_at,p1_0.date_of_birth,p1_0.email,p1_0.external_reference,p1_0.first_name,p1_0.language,p1_0.last_name,p1_0.middle_name,p1_0.notes_summary,p1_0.preferred_name,p1_0.primary_phone,p1_0.secondary_phone,p1_0.sex_marker,p1_0.status,p1_0.updated_at from patients p1_0 where p1_0.id=? and p1_0.agency_id=?
+2026-03-29T20:50:43.710-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] org.hibernate.SQL                        : select ba1_0.id from branch_assignments ba1_0 where ba1_0.agency_membership_id=? and ba1_0.branch_id=? and ba1_0.status=? fetch first ? rows only
+2026-03-29T20:50:43.714-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.homehealthcare.platform.api.PlatformApiExceptionHandler#handleUnauthorizedComplianceActor(UnauthorizedComplianceActorException)
+2026-03-29T20:50:43.715-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-03-29T20:50:43.715-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] m.m.a.RequestResponseBodyMethodProcessor : Writing [{error=Agency membership 74becaf4-24b4-4501-990c-e36f05e0dd0f is not authorized to view patient comp (truncated)...]
+2026-03-29T20:50:43.719-05:00 DEBUG 43427 --- [homehealthcare] [    Test worker] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.homehealthcare.compliance.application.UnauthorizedComplianceActorException: Agency membership 74becaf4-24b4-4501-990c-e36f05e0dd0f is not authorized to view patient compliance workspace in the compliance workspace.]
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/shiva/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.8/f09415827a71be7ed621c7bd02550678f28bc81c/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

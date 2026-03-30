@@ -191,3 +191,88 @@ tasks.register('epic9ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.messaging.api.MessagingApiIntegrationTest'
 	}
 }
+
+tasks.register('epic10ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 10 review API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.review.foundation.ReviewAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.review.foundation.PhaseBReviewWorkspaceServiceTest'
+		includeTestsMatching 'com.homehealthcare.review.api.ReviewApiIntegrationTest'
+	}
+}
+
+tasks.register('epic11ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 11 compliance API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.compliance.foundation.ComplianceAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.compliance.foundation.PhaseBComplianceWorkspaceServiceTest'
+		includeTestsMatching 'com.homehealthcare.compliance.api.ComplianceApiIntegrationTest'
+	}
+}
+
+tasks.register('epic12ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 12 patient-event API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.patientevent.foundation.PatientEventAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.patientevent.foundation.PhaseBPatientEventServiceTest'
+		includeTestsMatching 'com.homehealthcare.patientevent.api.PatientEventApiIntegrationTest'
+	}
+}
+
+tasks.register('epic13ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 13 care-progression API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.careprogression.foundation.CareProgressionAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.careprogression.api.CareProgressionApiIntegrationTest'
+	}
+}
+
+tasks.register('epic14ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 14 revenue-readiness API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.revenuereadiness.foundation.RevenueReadinessAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.revenuereadiness.foundation.PhaseBRevenueReadinessServiceTest'
+		includeTestsMatching 'com.homehealthcare.revenuereadiness.api.RevenueReadinessApiIntegrationTest'
+	}
+}
+
+tasks.register('epic15ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 15 analytics API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.analytics.foundation.AnalyticsAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.analytics.foundation.PhaseBAnalyticsServiceTest'
+		includeTestsMatching 'com.homehealthcare.analytics.api.AnalyticsApiIntegrationTest'
+		includeTestsMatching 'com.homehealthcare.security.authorization.AgencyAuthorizationGuardTest'
+		includeTestsMatching 'com.homehealthcare.platform.audit.api.AuditEventApiIntegrationTest'
+	}
+}

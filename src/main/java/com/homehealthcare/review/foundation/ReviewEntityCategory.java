@@ -1,0 +1,13 @@
+package com.homehealthcare.review.foundation;
+
+public enum ReviewEntityCategory {
+    REVIEW_WORK_ITEM,
+    REVIEW_ASSIGNMENT,
+    REVIEW_FINDING,
+    COMPLETENESS_CHECK_RESULT,
+    MISSING_FIELD_RESULT,
+    REVIEW_DECISION,
+    RETURN_FOR_FIX_EVENT,
+    SIGNOFF_REQUEST,
+    REVIEW_STATUS_PROJECTION
+}

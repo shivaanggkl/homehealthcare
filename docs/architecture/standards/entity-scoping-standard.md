@@ -51,6 +51,11 @@ Use this pattern for:
 - read receipts
 - staff groups
 - staff group members
+- review findings
+- completeness check results
+- missing field results
+- review decisions
+- signoff requests
 - EVV verification sessions
 - EVV clock events
 - device metadata snapshots
@@ -62,6 +67,7 @@ Use this pattern for:
 - supervisor notification events
 - escalation requests
 - EVV compliance projections
+- dashboard metric definitions
 
 Standard:
 
@@ -81,10 +87,41 @@ Use this pattern for:
 - visit documentation records
 - documentation field responses
 - task completion responses
+- review work items
+- review assignments
+- return-for-fix events
 - branch broadcasts
 - branch alerts
 - branch-specific staffing data
 - branch-level dashboards
+- compliance profiles
+- compliance status projections
+- compliance checklist results
+- consent acknowledgment records
+- certification period records
+- patient risk reminders
+- incident records
+- infection records
+- wound records
+- patient-event evidence links
+- patient-event follow-up assignments
+- patient-event escalation records
+- patient-event alert events
+- patient-event history entries
+- revenue-readiness projections
+- readiness validation results
+- revenue exception flags
+- payroll export rows
+- invoice export rows
+- authorization-usage snapshots
+- payer/service summary projections
+- dashboard metric snapshots
+- branch performance summaries
+- utilization summaries
+- backlog summaries
+- readiness/compliance summaries
+- metric trend snapshots
+- dashboard refresh requests
 
 Standard:
 
@@ -201,6 +238,28 @@ For branch-scoped records:
 - validate the branch exists
 - validate the branch belongs to the same agency
 - reject writes when agency and branch do not match
+
+## Epic 11 compliance scoping note
+
+Epic 11 compliance entities may combine patient scope, branch scope, and source-record references.
+
+Rules:
+
+- patient-level compliance records must preserve `agency_id` and `branch_id` when the underlying patient workflow is branch-bound
+- compliance projections, reminders, acknowledgments, and certification records must link back to patient and source record identifiers instead of copying full source payloads
+- checklist definitions and global documentation requirements may remain agency-scoped when not tied to one branch
+- services must validate that patient, branch, and source-record context all belong to the same agency before persisting derived compliance outputs
+
+## Epic 12 patient-event scoping note
+
+Epic 12 patient-event entities may combine patient scope, branch scope, visit context, caregiver context, documentation references, and attachment evidence.
+
+Rules:
+
+- incident, infection, wound, evidence, follow-up, escalation, alert, and history records must preserve `agency_id` and `branch_id` when the underlying patient workflow is branch-bound
+- patient-event entities must link back to patient, visit, documentation, and artifact identifiers instead of copying full source payloads
+- longitudinal history entries must stay append-only and preserve source record identity
+- services must validate that patient, branch, and linked source records all belong to the same agency before persisting Epic 12 outputs
 
 For agency-owned records:
 

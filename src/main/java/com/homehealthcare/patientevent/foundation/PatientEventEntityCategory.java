@@ -1,0 +1,12 @@
+package com.homehealthcare.patientevent.foundation;
+
+public enum PatientEventEntityCategory {
+    INCIDENT_RECORD,
+    INFECTION_RECORD,
+    WOUND_RECORD,
+    PATIENT_EVENT_EVIDENCE_LINK,
+    PATIENT_EVENT_FOLLOW_UP_ASSIGNMENT,
+    PATIENT_EVENT_ESCALATION_RECORD,
+    PATIENT_EVENT_ALERT_EVENT,
+    PATIENT_EVENT_HISTORY_ENTRY
+}
