@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.homehealthcare.messaging.foundation.MessagingAuditServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-29T23:21:12.582Z" hostname="Shivangs-MacBook-Pro.local" time="0.428">
+  <properties/>
+  <testcase name="threadAuditUsesStandardizedEpic9ActionAndTargetType()" classname="com.homehealthcare.messaging.foundation.MessagingAuditServiceTest" time="0.418"/>
+  <testcase name="messagingFoundationContractsCoverExpectedThreadDeliveryAndEscalationVocabulary()" classname="com.homehealthcare.messaging.foundation.MessagingAuditServiceTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

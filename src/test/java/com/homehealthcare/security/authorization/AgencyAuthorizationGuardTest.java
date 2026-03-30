@@ -32,6 +32,11 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isTrue();
         assertThat(guard.hasPermission(branchAdmin, AgencyPermission.DRAFT_VISIT_DOCUMENTATION)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.VIEW_MESSAGING_WORKSPACE)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.SEND_SECURE_MESSAGES)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_STAFF_GROUPS)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.SEND_BRANCH_BROADCASTS)).isTrue();
+        assertThat(guard.hasPermission(branchAdmin, AgencyPermission.MANAGE_MESSAGE_ESCALATIONS)).isTrue();
     }
 
     @Test
@@ -66,6 +71,11 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(caregiver, AgencyPermission.SUBMIT_VISIT_DOCUMENTATION)).isTrue();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isFalse();
         assertThat(guard.hasPermission(caregiver, AgencyPermission.GENERATE_PRINTABLE_DOCUMENTATION_SUMMARY)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.VIEW_MESSAGING_WORKSPACE)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SEND_SECURE_MESSAGES)).isTrue();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_STAFF_GROUPS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.SEND_BRANCH_BROADCASTS)).isFalse();
+        assertThat(guard.hasPermission(caregiver, AgencyPermission.MANAGE_MESSAGE_ESCALATIONS)).isFalse();
         assertThatThrownBy(() -> guard.requirePermission(
                 caregiver,
                 AgencyPermission.MANAGE_USER_STATUS,
@@ -83,6 +93,8 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_SCHEDULE_VISITS)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.RESOLVE_MISSED_VISITS)).isFalse();
         assertThat(guard.hasPermission(owner, AgencyPermission.MANAGE_DOCUMENTATION_TEMPLATES)).isFalse();
+        assertThat(guard.hasPermission(owner, AgencyPermission.VIEW_MESSAGING_WORKSPACE)).isFalse();
+        assertThat(guard.hasPermission(owner, AgencyPermission.SEND_SECURE_MESSAGES)).isFalse();
     }
 
     @Test
@@ -98,6 +110,7 @@ class AgencyAuthorizationGuardTest {
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_SCHEDULE_CONFLICTS)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_MISSED_VISITS)).isFalse();
         assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_DOCUMENTATION_WORKSPACE)).isFalse();
+        assertThat(guard.hasPermission(auditor, AgencyPermission.VIEW_MESSAGING_WORKSPACE)).isFalse();
     }
 
     private AgencyMembership membership(AgencyRole role, boolean active) {

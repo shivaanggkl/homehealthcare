@@ -1,0 +1,434 @@
+Epic 12 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 12 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 12 title
+
+Incident, infection, and wound workflows
+
+Epic 12 feature scope from the requirements
+
+- incident logging
+- infection log
+- wound record
+- attachments/photos
+- follow-up owner
+- due dates
+- escalation and alerts
+- longitudinal history
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, attachment-storage foundations, and notification foundations
+- Epic 3 is complete and provides patient records, contact context, and patient-scoped history surfaces that incident, infection, and wound workflows can link to
+- Epic 5 is complete and provides visit and scheduling context that incidents and follow-up work may reference
+- Epic 6 and Epic 7 are complete and provide mobile capture, field artifacts, incidents, EVV exceptions, and signature context that Epic 12 can extend into structured longitudinal workflows
+- Epic 8 is complete and provides documentation records and attachment linkage that may provide supporting evidence for incidents and wound history
+- Epic 9 is complete and provides secure coordination patterns that Epic 12 may reference for escalation/follow-up without duplicating messaging
+- Epic 11 is complete and provides compliance/risk reminder patterns that may consume Epic 12 outputs later but should not redefine them here
+- Epic 12 focuses on structured operational and clinical event tracking with follow-up ownership and history, not the care-goal progression engine from Epic 13 and not revenue-readiness workflows from Epic 14
+- wound and infection workflows should support longitudinal patient history rather than being treated as one-off notes or message threads
+
+Scope rule
+
+- Include only Epic 12 backend work
+- Cover incident, infection, wound, attachment linkage, follow-up ownership, due dates, escalation/alert state, longitudinal-history models, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull generalized messaging, goals/interventions, or billing workflows from other epics into Epic 12
+
+Status legend
+
+- NOT STARTED: no Epic 12 implementation exists yet
+
+========================================================================
+BE12-01 — Define incident, infection, and wound domain architecture
+Related Epic 12 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent Epic 12 domain so incidents, infections, wounds, follow-up tasks, and longitudinal history all follow one lifecycle and authorization model.
+
+Recommended acceptance criteria
+
+- Epic 12 entities are defined explicitly, including:
+  - incident record
+  - infection record
+  - wound record
+  - attachment/photo link
+  - follow-up assignment
+  - escalation state
+  - alert event
+  - longitudinal history entry
+- source/linkage rules are documented across patient, visit, caregiver, branch, documentation, and mobile artifact contexts
+- lifecycle states are defined for incident, infection, wound, follow-up, and escalation records
+- audit expectations are defined for record creation, update, escalation, ownership changes, due-date changes, and closure
+
+========================================================================
+BE12-02 — Create incident logging and lifecycle model
+Related Epic 12 features: incident logging
+Current status: NOT STARTED
+
+Story
+As operations and clinical staff, I need explicit incident records so patient and visit incidents are durable, queryable, and actionable.
+
+Recommended acceptance criteria
+
+- incident record model exists
+- incident supports:
+  - patient id
+  - visit id optional
+  - branch id
+  - incident type
+  - severity optional
+  - occurred_at
+  - reported_at
+  - narrative summary
+  - status open/in_review/resolved/closed optional
+  - reported_by optional
+- incident can reference mobile or documentation evidence where relevant
+- incident lifecycle transitions are validated
+- incident creation and updates are auditable and test-covered
+
+========================================================================
+BE12-03 — Create infection log and lifecycle model
+Related Epic 12 features: infection log
+Current status: NOT STARTED
+
+Story
+As clinical operations, I need structured infection records so infection-related events are tracked as a longitudinal workflow rather than scattered notes.
+
+Recommended acceptance criteria
+
+- infection record model exists
+- infection supports:
+  - patient id
+  - onset date optional
+  - identified_at
+  - infection type or category
+  - status active/resolved/monitoring optional
+  - summary
+  - related incident optional
+  - resolved_at optional
+- multiple infection records over time are supported per patient
+- infection updates preserve history rather than overwriting the past
+- infection lifecycle is auditable and test-covered
+
+========================================================================
+BE12-04 — Create wound record and longitudinal wound-history model
+Related Epic 12 features: wound record, longitudinal history
+Current status: NOT STARTED
+
+Story
+As clinical staff, I need structured wound records with longitudinal history so wound progression can be reviewed over time instead of getting lost in flat documentation.
+
+Recommended acceptance criteria
+
+- wound record model exists
+- wound supports:
+  - patient id
+  - wound type or site
+  - identified_at
+  - current status
+  - baseline summary optional
+  - active/resolved state
+- wound history entry model exists
+- history supports:
+  - wound id
+  - captured_at
+  - observation summary
+  - measurement fields optional
+  - status/progression marker optional
+  - captured_by optional
+- wound history is append-oriented and queryable over time
+- wound creation and longitudinal updates are auditable and test-covered
+
+========================================================================
+BE12-05 — Create attachment and photo linkage model for incident/infection/wound evidence
+Related Epic 12 features: attachments/photos
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit evidence linkage so attachments and photos can support incidents, infections, and wound records without leaking storage internals.
+
+Recommended acceptance criteria
+
+- evidence-link model exists for incident, infection, wound, and wound-history records
+- linkage can reference existing patient/mobile/documentation attachment stores where appropriate
+- evidence supports:
+  - attachment id
+  - source type
+  - linked target type
+  - linked target id
+  - created_at
+  - created_by optional
+- authorization rules prevent unrelated evidence access
+- evidence linkage is auditable and test-covered
+
+========================================================================
+BE12-06 — Create follow-up owner and due-date model
+Related Epic 12 features: follow-up owner, due dates
+Current status: NOT STARTED
+
+Story
+As operations, I need explicit follow-up ownership and due dates so unresolved incidents, infections, and wounds do not disappear without accountability.
+
+Recommended acceptance criteria
+
+- follow-up assignment model exists
+- follow-up supports:
+  - target type and target id
+  - owner membership or role
+  - assigned_at
+  - due_at
+  - completion_at optional
+  - follow-up note optional
+  - status open/completed/cancelled optional
+- one active follow-up can exist per target or multiple follow-ups are explicitly modeled and validated
+- overdue state can be projected
+- follow-up assignment and due-date changes are auditable and test-covered
+
+========================================================================
+BE12-07 — Implement escalation and alert model
+Related Epic 12 features: escalation and alerts
+Current status: NOT STARTED
+
+Story
+As operations and clinical leadership, I need explicit escalation and alert records so high-risk incidents, infections, and wound changes can be routed and reviewed consistently.
+
+Recommended acceptance criteria
+
+- escalation model exists for Epic 12 targets
+- escalation supports:
+  - target type and target id
+  - escalation status
+  - severity optional
+  - tag or reason optional
+  - escalated_by
+  - escalated_at
+  - cleared_by optional
+  - cleared_at optional
+- alert event contract exists for new high-severity records, overdue follow-up, and material wound/infection changes where applicable
+- escalation lifecycle is auditable and test-covered
+
+========================================================================
+BE12-08 — Implement longitudinal history projection across incident, infection, and wound records
+Related Epic 12 features: longitudinal history
+Current status: NOT STARTED
+
+Story
+As clinicians and reviewers, I need a longitudinal history projection so patient event history can be reviewed chronologically across related Epic 12 workflows.
+
+Recommended acceptance criteria
+
+- longitudinal history projection exists at patient level
+- projection can include:
+  - incident events
+  - infection events
+  - wound creation and wound-history entries
+  - follow-up and escalation milestones
+  - linked evidence events optional
+- history is queryable in chronological order with event typing
+- projection is derived deterministically from source records
+- history projection is auditable and test-covered
+
+========================================================================
+BE12-09 — Implement secure authorization and privacy rules for Epic 12 workflows
+Related Epic 12 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for incident, infection, and wound data so only appropriate roles can see or act on sensitive patient event records.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view Epic 12 workspace
+  - create incident, infection, and wound records
+  - link evidence
+  - assign follow-up
+  - escalate or clear escalation
+  - resolve or close records
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- privacy-sensitive patient detail is exposed only as necessary for authorized workflows
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE12-10 — Define Epic 12 audit taxonomy and alert-event contract
+Related Epic 12 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and alert-event contract so Epic 12 state changes are observable and later workflows can build on stable events.
+
+Recommended acceptance criteria
+
+- Epic 12 audit actions are defined for at least:
+  - incident_created
+  - incident_updated
+  - infection_created
+  - infection_updated
+  - wound_created
+  - wound_history_added
+  - evidence_linked
+  - followup_assigned
+  - escalation_created
+  - escalation_cleared
+  - record_resolved
+- alert-event contract is defined for high-severity incidents, overdue follow-up, active infection alerts, and wound-progression alerts where appropriate
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and event publication are test-covered
+
+========================================================================
+BE12-11 — Extend permission matrix for incident, infection, and wound roles
+Related Epic 12 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 12 permissions so visibility and mutation actions are role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_patient_event_workspace
+  - create_incident_records
+  - manage_infection_records
+  - manage_wound_records
+  - link_patient_event_evidence
+  - assign_patient_event_followup
+  - escalate_patient_events
+  - resolve_patient_events
+- permissions map cleanly to likely roles such as:
+  - caregiver optional for limited creation
+  - scheduler/coordinator optional for incident follow-up
+  - QA / clinical reviewer
+  - branch admin optional
+  - agency owner optional
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE12-12 — Build incident, infection, and wound APIs
+Related Epic 12 features: incident logging, infection log, wound record
+Current status: NOT STARTED
+
+Story
+As the frontend and operations teams, I need Epic 12 record APIs so incidents, infections, and wounds can be created, listed, updated, and resolved reliably.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - incident list/create/read/update/resolve
+  - infection list/create/read/update/resolve
+  - wound list/create/read/update/resolve
+  - wound-history entry list/create
+- APIs support patient and branch-aware filtering where relevant
+- invalid lifecycle transitions return controlled errors
+- mutation APIs are auditable and test-covered
+
+========================================================================
+BE12-13 — Build evidence, follow-up, and escalation APIs
+Related Epic 12 features: attachments/photos, follow-up owner, due dates, escalation and alerts
+Current status: NOT STARTED
+
+Story
+As the frontend and leadership teams, I need APIs for evidence linkage, follow-up ownership, and escalation so Epic 12 work can be managed operationally.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - evidence link/unlink/list
+  - follow-up assign/update/complete
+  - escalation create/clear
+  - overdue or active follow-up summary optional
+- responses include refreshed target state where appropriate
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE12-14 — Build longitudinal history and dashboard APIs
+Related Epic 12 features: longitudinal history, escalation and alerts
+Current status: NOT STARTED
+
+Story
+As the frontend and reviewers, I need longitudinal history and summary APIs so patient event history and current alerts can be reviewed cleanly.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - patient event timeline
+  - patient event summary/dashboard
+  - active escalations or alerts summary
+- history output is structured for UI timeline use
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- history and summary APIs are authorization-aware and test-covered
+
+========================================================================
+BE12-15 — Add Epic 12 regression coverage and CI entrypoint
+Related Epic 12 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 12 so incident, infection, and wound workflows remain stable as goals and revenue features land.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - incident create/update/resolve
+  - infection create/update/resolve
+  - wound create/update/history
+  - evidence linkage
+  - follow-up assignment
+  - escalation lifecycle
+  - patient timeline or summary
+- authorization-denial coverage exists for protected Epic 12 actions
+- audit assertions exist for representative Epic 12 mutations
+- dedicated Gradle task exists for Epic 12 regression execution
+- CI runs the Epic 12 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — patient-event domain foundation
+
+- `BE12-01`
+- `BE12-10`
+- `BE12-11`
+
+Phase B — core incident, infection, and wound model
+
+- `BE12-02`
+- `BE12-03`
+- `BE12-04`
+- `BE12-05`
+- `BE12-06`
+- `BE12-07`
+- `BE12-08`
+- `BE12-09`
+
+Phase C — public API layer
+
+- `BE12-12`
+- `BE12-13`
+- `BE12-14`
+
+Phase D — hardening
+
+- `BE12-15`
+
+========================================================================
+Definition of done for Epic 12 backend
+
+Epic 12 backend is done only when:
+
+- incident, infection, wound, evidence, follow-up, escalation, and longitudinal-history domain models exist with clear lifecycle rules
+- incident, infection, wound, and patient-timeline APIs are available for real operational use
+- follow-up ownership, due-date, evidence, and escalation actions are implemented through audited APIs
+- longitudinal patient event history is available through structured backend contracts
+- role-based authorization and tenant or branch-aware privacy rules are enforced for sensitive patient event data
+- attachments/photos are linked safely without exposing storage internals
+- patient event history and alert context are queryable through backend APIs suitable for operational review
+- core Epic 12 workflows are regression-covered

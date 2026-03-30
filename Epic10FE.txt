@@ -1,0 +1,335 @@
+Epic 10 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 10 from `Requirements.txt` into a frontend delivery backlog for the QA and review workspace.
+
+Epic 10 title
+
+QA / review workspace
+
+Epic 10 feature scope from the requirements
+
+- review queue
+- returned-for-fix workflow
+- approve / reject / request-signoff
+- completeness checks
+- missing-field detection
+- exception queue
+- audit trail of edits
+- role-based review assignment
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 3 frontend and backend are complete and provide patient workspaces and patient context that review screens may reference
+- Epic 5 frontend and backend are complete and provide visit and schedule context that QA screens may link back into
+- Epic 6 and Epic 7 frontend and backend are complete and provide field execution, EVV, missed-visit, and exception outputs that may appear in reviewable work
+- Epic 8 frontend and backend are complete and provide the primary documentation records, draft/submit flows, printable summaries, and attachment linkage that QA will review
+- Epic 9 frontend and backend are complete and provide secure coordination patterns that Epic 10 may link to for reviewer follow-up
+- Epic 10 frontend should support focused reviewer triage and decision-making, not the broader clinical compliance dashboard from Epic 11 or revenue-readiness workflows from Epic 14
+- review screens should stay privacy-aware and show only the minimum patient, visit, and document context needed for triage and decision-making
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 10 backend APIs
+
+========================================================================
+FE10-01 — Review workspace information architecture and route model
+Related Epic 10 features: all
+Backend status: BLOCKED
+
+Story
+As a reviewer or operations lead, I want the QA workspace routes to fit naturally into the app so queue triage, review detail, and returned-for-fix work are easy to find.
+
+Frontend acceptance criteria
+
+- protected review workspace route exists
+- dedicated routes exist for:
+  - review queue
+  - exception queue
+  - review item detail
+  - returned-for-fix or resubmission visibility
+  - reviewer assignment views where appropriate
+- unsupported or unauthorized review routes render controlled states
+- queue and detail routes can link back into related patient, visit, documentation, EVV, and messaging context where authorized
+
+========================================================================
+FE10-02 — Review queue triage UX
+Related Epic 10 features: review queue
+Backend status: BLOCKED
+
+Story
+As a QA reviewer, I want a review queue so I can triage pending work, identify priority items, and open the right records quickly.
+
+Frontend acceptance criteria
+
+- review queue screen exists
+- queue shows at least:
+  - source type
+  - patient or visit context where appropriate
+  - status
+  - assigned reviewer
+  - age or entered-queue time
+  - priority or urgency where present
+- queue supports loading, empty, and failure states clearly
+- review queue uses real backend APIs rather than placeholder local state
+
+========================================================================
+FE10-03 — Review detail and findings UX
+Related Epic 10 features: completeness checks, missing-field detection
+Backend status: BLOCKED
+
+Story
+As a reviewer, I want detailed review findings so I can see what is missing or incomplete without reconstructing the entire record manually.
+
+Frontend acceptance criteria
+
+- review detail screen exists
+- detail screen shows:
+  - review item summary
+  - completeness results
+  - missing-field findings
+  - linked source summary
+  - key status indicators
+- findings are grouped clearly by severity, section, or rule where practical
+- detail route uses backend APIs rather than placeholder local state
+- loading, empty, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE10-04 — Reviewer assignment UX
+Related Epic 10 features: role-based review assignment
+Backend status: BLOCKED
+
+Story
+As an operations lead or reviewer, I want reviewer assignment workflows so queue ownership is explicit and easy to manage.
+
+Frontend acceptance criteria
+
+- assignment and reassignment controls exist where authorized
+- screen shows current reviewer, assignment time, and assignment history summary where supported
+- eligible reviewer options are limited to authorized choices from backend contracts
+- assignment mutations use real backend APIs
+- validation, pending, success, and unauthorized states are shown clearly
+
+========================================================================
+FE10-05 — Approve, reject, and return-for-fix UX
+Related Epic 10 features: returned-for-fix workflow, approve / reject
+Backend status: BLOCKED
+
+Story
+As a reviewer, I want structured decision workflows so work can be approved, rejected, or returned for correction cleanly.
+
+Frontend acceptance criteria
+
+- approve, reject, and return-for-fix actions exist where authorized
+- return-for-fix flow supports:
+  - reason entry
+  - correction guidance optional
+  - visible returned state after save
+- review decisions use backend APIs rather than placeholder local state
+- invalid lifecycle transitions show controlled errors
+- destructive or high-impact actions are confirmed clearly
+
+========================================================================
+FE10-06 — Signoff-request workflow UX
+Related Epic 10 features: request-signoff
+Backend status: BLOCKED
+
+Story
+As a reviewer, I want a signoff-request flow so records needing higher-level review can be escalated without losing ownership or context.
+
+Frontend acceptance criteria
+
+- signoff-request action exists where authorized
+- signoff UI shows:
+  - requested target or role
+  - request note optional
+  - current signoff status
+- signoff workflow uses backend APIs
+- request and completion states are shown clearly
+
+========================================================================
+FE10-07 — Exception-queue and exception-detail UX
+Related Epic 10 features: exception queue
+Backend status: BLOCKED
+
+Story
+As QA, I want an exception queue so high-risk or unusual review items can be prioritized separately from standard review work.
+
+Frontend acceptance criteria
+
+- exception queue screen exists
+- exception queue can show:
+  - exception type
+  - severity
+  - source context
+  - status
+  - assigned reviewer optional
+- exception detail can route into the relevant review item or source context
+- exception queue uses backend APIs rather than placeholder local state
+
+========================================================================
+FE10-08 — Returned-for-fix and resubmission visibility UX
+Related Epic 10 features: returned-for-fix workflow
+Backend status: BLOCKED
+
+Story
+As QA and operations, I want returned and resubmitted work to be visible clearly so correction loops do not disappear into the general queue.
+
+Frontend acceptance criteria
+
+- returned-for-fix state is visually distinct in queue and detail views
+- resubmitted work can be identified clearly
+- reviewer can see prior return reason and correction summary where backend supports it
+- routes link back into the corrected source record where authorized
+- returned/resubmitted visibility uses backend state rather than local-only UI flags
+
+========================================================================
+FE10-09 — Shared review workspace foundation
+Related Epic 10 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared QA workspace framework so queue, detail, findings, assignment, and decision surfaces stay consistent.
+
+Frontend acceptance criteria
+
+- reusable review layout exists for:
+  - queue tables or cards
+  - findings list
+  - decision panel
+  - assignment panel
+  - status banner
+  - source-context summary
+- modules can opt into reviewer, assigner, and read-only behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE10-10 — Shared review mutation and resubmission UX
+Related Epic 10 features: approve / reject / request-signoff, returned-for-fix workflow
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for assignment, decision, return, and signoff actions so review behavior stays predictable and safe.
+
+Frontend acceptance criteria
+
+- review mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- high-impact actions such as reject or return-for-fix are confirmed clearly
+- refreshed queue/detail state is shown after backend success
+- failed review mutations remain understandable and retryable where practical
+
+========================================================================
+FE10-11 — Coordinator and reviewer command-center visibility
+Related Epic 10 features: review queue, exception queue, role-based review assignment
+Backend status: BLOCKED
+
+Story
+As a QA lead or operations coordinator, I want focused review visibility so backlog, exceptions, assignments, and return loops are easy to triage.
+
+Frontend acceptance criteria
+
+- authorized coordinator/reviewer summary screen exists
+- summary can show:
+  - pending review count
+  - exception count
+  - returned-for-fix count
+  - unassigned or overdue review work where supported
+- summary links route into the relevant review surface
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE10-12 — Audit-sensitive and privacy-aware review UX
+Related Epic 10 features: audit trail of edits
+Backend status: BLOCKED
+
+Story
+As a reviewer and admin, I want QA workspace UX to feel controlled and privacy-aware so sensitive review decisions and source-record changes are handled appropriately.
+
+Frontend acceptance criteria
+
+- review mutations communicate that they are controlled operations
+- success states indicate that key review actions are logged where appropriate
+- patient, visit, and documentation detail in queues stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware review screens can point authorized users to later audit activity without cluttering everyday triage
+
+========================================================================
+FE10-13 — Mobile and tablet hardening for review workflows
+Related Epic 10 features: all
+Backend status: BLOCKED
+
+Story
+As a reviewer or operations user, I want review screens to remain usable on smaller devices so urgent QA follow-up does not require a large desktop screen for basic action.
+
+Frontend acceptance criteria
+
+- core review screens work on common tablet and narrow laptop widths
+- queue, findings, assignment, and decision actions remain usable on smaller screens
+- keyboard and form interactions do not break critical screens
+- no critical Epic 10 screen breaks layout on smaller viewports
+
+========================================================================
+FE10-14 — Frontend regression coverage for Epic 10 flows
+Related Epic 10 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for QA and review flows so later compliance, incident, and revenue work does not destabilize Epic 10.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 10 routes
+- happy-path interaction coverage exists for representative queue, detail, assignment, and decision flows
+- validation, unauthorized, and failure states are covered
+- returned-for-fix and signoff-request behavior is covered where practical
+- command-center visibility is covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared review UI foundation
+
+- `FE10-01`
+- `FE10-09`
+- `FE10-10`
+
+Phase B — core review workflows
+
+- `FE10-02`
+- `FE10-03`
+- `FE10-04`
+- `FE10-05`
+- `FE10-06`
+- `FE10-07`
+- `FE10-08`
+
+Phase C — coordinator-facing review visibility
+
+- `FE10-11`
+
+Phase D — audit-aware UX
+
+- `FE10-12`
+
+Phase E — hardening
+
+- `FE10-13`
+- `FE10-14`
+
+========================================================================
+Definition of done for Epic 10 frontend
+
+Epic 10 frontend is done only when:
+
+- review queue, exception queue, detail, assignment, signoff, and return-for-fix screens are reachable through coherent protected routes
+- queue, findings, assignment, decision, and signoff flows use real backend APIs rather than placeholder local state
+- completeness and missing-field findings are shown clearly and consistently
+- returned, resubmitted, assigned, approved, rejected, and signoff-requested states are visible and understandable
+- coordinator-facing review visibility exists for authorized users
+- privacy-sensitive patient, visit, and documentation context is minimized appropriately
+- review screens are usable on smaller operational devices
+- core Epic 10 screens are regression-covered

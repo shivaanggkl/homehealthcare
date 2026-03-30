@@ -1,0 +1,320 @@
+Epic 11 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 11 from `Requirements.txt` into a frontend delivery backlog for the clinical compliance workspace.
+
+Epic 11 title
+
+Clinical compliance workspace
+
+Epic 11 feature scope from the requirements
+
+- care-plan completeness checklist
+- required documentation tracking
+- consent/right-to-care acknowledgments
+- certification period awareness
+- patient risk reminders
+- compliance status dashboard
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epic 3 frontend and backend are complete and provide patient workspaces and patient context that compliance screens may reference
+- Epic 5 frontend and backend are complete and provide visit and scheduling context that compliance screens may link back into where appropriate
+- Epic 7 frontend and backend are complete and provide EVV, signature, and visit-exception context that may inform compliance state
+- Epic 8 frontend and backend are complete and provide documentation records, required-field enforcement, printable summaries, and attachments that form a major part of compliance evaluation
+- Epic 10 frontend and backend are complete and provide QA/review patterns, but Epic 11 should focus on clinical compliance visibility and management rather than duplicating the generic QA queue
+- Epic 11 frontend should support focused compliance operations and dashboard visibility, not the incident/wound longitudinal workspace from Epic 12 or revenue-readiness workflow from Epic 14
+- compliance screens should stay privacy-aware and show only the minimum patient, visit, and documentation detail needed for operational compliance work
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 11 backend APIs
+
+========================================================================
+FE11-01 — Compliance workspace information architecture and route model
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As a compliance lead or clinical reviewer, I want the compliance workspace routes to fit naturally into the app so dashboard, patient detail, reminders, and checklist work are easy to find.
+
+Frontend acceptance criteria
+
+- protected compliance workspace route exists
+- dedicated routes exist for:
+  - compliance dashboard
+  - patient compliance detail
+  - checklist and documentation-gap detail
+  - acknowledgment management
+  - certification-period management
+  - risk-reminder management
+- unsupported or unauthorized compliance routes render controlled states
+- compliance routes can link back into related patient, documentation, QA, EVV, and scheduling context where authorized
+
+========================================================================
+FE11-02 — Compliance dashboard UX
+Related Epic 11 features: compliance status dashboard
+Backend status: BLOCKED
+
+Story
+As operations leadership, I want a compliance dashboard so branch and patient readiness issues are visible without opening every record individually.
+
+Frontend acceptance criteria
+
+- compliance dashboard screen exists
+- dashboard can show at least:
+  - compliance status summary
+  - branch-level counts
+  - certification state cues
+  - risk reminder presence
+  - missing-documentation or checklist gap counts
+- dashboard supports loading, empty, and failure states clearly
+- dashboard uses real backend APIs rather than placeholder local state
+
+========================================================================
+FE11-03 — Patient compliance detail and checklist UX
+Related Epic 11 features: care-plan completeness checklist, required documentation tracking
+Backend status: BLOCKED
+
+Story
+As a reviewer, I want patient compliance detail so I can see checklist results and documentation gaps without reconstructing the entire clinical story manually.
+
+Frontend acceptance criteria
+
+- patient compliance detail screen exists
+- detail screen shows:
+  - overall compliance status
+  - checklist results
+  - required-documentation gaps
+  - certification state
+  - active risk reminders
+- findings are grouped clearly by severity, section, or rule where practical
+- detail route uses backend APIs rather than placeholder local state
+- loading, empty, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE11-04 — Consent and right-to-care acknowledgment UX
+Related Epic 11 features: consent/right-to-care acknowledgments
+Backend status: BLOCKED
+
+Story
+As compliance operations, I want acknowledgment workflows so missing, current, and expired patient acknowledgments are visible and manageable.
+
+Frontend acceptance criteria
+
+- acknowledgment list and editor exist
+- acknowledgment UI supports:
+  - type
+  - effective date
+  - expiration optional
+  - capture method optional
+  - current status
+- acknowledgment mutations use real backend APIs
+- validation, pending, success, and unauthorized states are shown clearly
+
+========================================================================
+FE11-05 — Certification-period awareness UX
+Related Epic 11 features: certification period awareness
+Backend status: BLOCKED
+
+Story
+As operations, I want certification-period visibility so expiring, missing, or invalid periods are easy to identify and correct.
+
+Frontend acceptance criteria
+
+- certification-period list and editor exist
+- UI shows:
+  - current period
+  - upcoming expiration
+  - expired or missing status
+  - payer or program context where available
+- certification mutations use backend APIs
+- invalid lifecycle or date transitions show controlled errors
+
+========================================================================
+FE11-06 — Patient risk-reminder UX
+Related Epic 11 features: patient risk reminders
+Backend status: BLOCKED
+
+Story
+As clinical operations, I want structured patient risk reminders so high-risk signals are visible and actionable without staying buried in notes.
+
+Frontend acceptance criteria
+
+- risk-reminder list and editor exist
+- reminder UI supports:
+  - risk type
+  - severity optional
+  - summary
+  - effective and expiration dates where applicable
+  - active/resolved state
+- reminder mutations use backend APIs
+- reminders surface clearly in both patient detail and compliance summary views
+
+========================================================================
+FE11-07 — Required-documentation gap and evidence UX
+Related Epic 11 features: required documentation tracking
+Backend status: BLOCKED
+
+Story
+As compliance staff, I want clear visibility into missing or satisfied documentation requirements so follow-up work is targeted and explainable.
+
+Frontend acceptance criteria
+
+- documentation-gap view exists within compliance detail
+- UI can show:
+  - requirement code or label
+  - satisfied/missing/warning state
+  - satisfied-by reference where available
+  - missing reason where available
+- links route into the relevant documentation or patient context where authorized
+- documentation-gap visibility uses backend APIs rather than frontend-only heuristics
+
+========================================================================
+FE11-08 — Shared compliance workspace foundation
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared compliance workspace framework so dashboard, detail, checklist, acknowledgment, and reminder surfaces stay consistent.
+
+Frontend acceptance criteria
+
+- reusable compliance layout exists for:
+  - dashboard summary cards
+  - patient compliance summary
+  - checklist findings list
+  - reminder panel
+  - acknowledgment panel
+  - certification panel
+  - status banners
+- modules can opt into reviewer, admin-edit, and read-only behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE11-09 — Shared compliance mutation and recalculation UX
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for acknowledgments, certification, reminders, and recalculation actions so compliance behavior stays predictable and safe.
+
+Frontend acceptance criteria
+
+- compliance mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- recalculation actions are confirmed clearly where appropriate
+- refreshed compliance state is shown after backend success
+- failed compliance mutations remain understandable and retryable where practical
+
+========================================================================
+FE11-10 — Coordinator and compliance-lead command-center visibility
+Related Epic 11 features: compliance status dashboard, patient risk reminders, certification period awareness
+Backend status: BLOCKED
+
+Story
+As a compliance lead or operations coordinator, I want focused compliance visibility so missing acknowledgments, expiring certification windows, documentation gaps, and active risks are easy to triage.
+
+Frontend acceptance criteria
+
+- authorized compliance summary screen exists
+- summary can show:
+  - patients with compliance gaps
+  - expiring or expired certification periods
+  - missing acknowledgments
+  - active high-severity risk reminders
+- summary links route into the relevant compliance surface
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE11-11 — Audit-sensitive and privacy-aware compliance UX
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As a compliance reviewer and admin, I want compliance workspace UX to feel controlled and privacy-aware so sensitive patient-compliance state is handled appropriately.
+
+Frontend acceptance criteria
+
+- sensitive compliance mutations communicate that they are controlled operations
+- success states indicate that key compliance actions are logged where appropriate
+- patient and documentation detail shown in dashboards and lists stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware compliance screens can point authorized users to later audit activity without cluttering everyday use
+
+========================================================================
+FE11-12 — Mobile and tablet hardening for compliance workflows
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As a compliance or operations user, I want compliance screens to remain usable on smaller devices so urgent follow-up does not require desktop-only layouts.
+
+Frontend acceptance criteria
+
+- core compliance screens work on common tablet and narrow laptop widths
+- dashboard cards, checklist findings, and mutation actions remain usable on smaller screens
+- keyboard and form interactions do not break critical screens
+- no critical Epic 11 screen breaks layout on smaller viewports
+
+========================================================================
+FE11-13 — Frontend regression coverage for Epic 11 flows
+Related Epic 11 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for compliance flows so later incident, goals, and revenue work does not destabilize Epic 11.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 11 routes
+- happy-path interaction coverage exists for representative dashboard, patient detail, acknowledgment, certification, and reminder flows
+- validation, unauthorized, and failure states are covered
+- recalculation and command-center visibility behavior is covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared compliance UI foundation
+
+- `FE11-01`
+- `FE11-08`
+- `FE11-09`
+
+Phase B — core compliance workflows
+
+- `FE11-02`
+- `FE11-03`
+- `FE11-04`
+- `FE11-05`
+- `FE11-06`
+- `FE11-07`
+
+Phase C — coordinator-facing compliance visibility
+
+- `FE11-10`
+
+Phase D — audit-aware UX
+
+- `FE11-11`
+
+Phase E — hardening
+
+- `FE11-12`
+- `FE11-13`
+
+========================================================================
+Definition of done for Epic 11 frontend
+
+Epic 11 frontend is done only when:
+
+- compliance dashboard, patient detail, checklist, acknowledgment, certification, and risk-reminder screens are reachable through coherent protected routes
+- dashboard, checklist, acknowledgment, certification, reminder, and recalculation flows use real backend APIs rather than placeholder local state
+- compliance gaps, checklist results, certification state, and risk reminders are shown clearly and consistently
+- coordinator-facing compliance visibility exists for authorized users
+- privacy-sensitive patient and documentation context is minimized appropriately
+- compliance screens are usable on smaller operational devices
+- core Epic 11 screens are regression-covered

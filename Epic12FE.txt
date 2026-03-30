@@ -1,0 +1,332 @@
+Epic 12 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 12 from `Requirements.txt` into a frontend delivery backlog for incident, infection, and wound workflows.
+
+Epic 12 title
+
+Incident, infection, and wound workflows
+
+Epic 12 feature scope from the requirements
+
+- incident logging
+- infection log
+- wound record
+- attachments/photos
+- follow-up owner
+- due dates
+- escalation and alerts
+- longitudinal history
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, audit-view, and attachment-aware patterns
+- Epic 3 frontend and backend are complete and provide patient workspaces and patient context that Epic 12 screens will extend
+- Epic 5 frontend and backend are complete and provide visit context that incidents and follow-up work may link back into
+- Epic 6 and Epic 7 frontend and backend are complete and provide mobile capture, field artifacts, incident-reporting patterns, and EVV exception context that Epic 12 can build on
+- Epic 8 frontend and backend are complete and provide documentation and attachment-link patterns that Epic 12 may reuse for evidence handling
+- Epic 9 frontend and backend are complete and provide secure coordination patterns that may be linked for follow-up without duplicating messaging inside Epic 12
+- Epic 12 frontend should support structured patient-event workflows and longitudinal visibility, not the goal progression workspace from Epic 13 or revenue workflow from Epic 14
+- Epic 12 screens should stay privacy-aware and show only the minimum patient, visit, and evidence detail needed for operational and clinical follow-up
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 12 backend APIs
+
+========================================================================
+FE12-01 — Patient-event workspace information architecture and route model
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As a reviewer, coordinator, or clinician, I want incident, infection, and wound routes to fit naturally into the app so patient-event work is easy to find and manage.
+
+Frontend acceptance criteria
+
+- protected patient-event workspace route exists
+- dedicated routes exist for:
+  - incident list/detail
+  - infection log/detail
+  - wound list/detail
+  - patient event timeline
+  - follow-up or escalation visibility
+- unsupported or unauthorized Epic 12 routes render controlled states
+- routes can link back into related patient, visit, documentation, and messaging context where authorized
+
+========================================================================
+FE12-02 — Incident logging and incident-detail UX
+Related Epic 12 features: incident logging
+Backend status: BLOCKED
+
+Story
+As operations or clinical staff, I want incident screens so patient and visit incidents can be logged, reviewed, and updated cleanly.
+
+Frontend acceptance criteria
+
+- incident list and detail screens exist
+- incident UI supports:
+  - incident type
+  - severity optional
+  - occurred/reported times
+  - summary
+  - status
+  - related patient and visit context where applicable
+- incident create/update/resolve flows use real backend APIs rather than placeholder local state
+- loading, empty, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE12-03 — Infection log UX
+Related Epic 12 features: infection log
+Backend status: BLOCKED
+
+Story
+As clinical operations, I want an infection log so infection-related patient events can be reviewed longitudinally and updated consistently.
+
+Frontend acceptance criteria
+
+- infection list and detail screens exist
+- infection UI supports:
+  - infection type or category
+  - onset or identified dates
+  - summary
+  - status
+  - related incident optional
+- infection create/update/resolve flows use backend APIs
+- longitudinal infection entries are visible where supported
+
+========================================================================
+FE12-04 — Wound record and longitudinal wound-history UX
+Related Epic 12 features: wound record, longitudinal history
+Backend status: BLOCKED
+
+Story
+As clinical staff, I want wound record screens with history so wound progression is visible over time instead of buried in flat notes.
+
+Frontend acceptance criteria
+
+- wound list and detail screens exist
+- wound detail shows:
+  - wound type or site
+  - current status
+  - baseline summary optional
+  - append-only wound history entries
+- wound create/update/resolve and history-entry flows use backend APIs
+- history is shown clearly in chronological order
+
+========================================================================
+FE12-05 — Attachments and photo evidence UX
+Related Epic 12 features: attachments/photos
+Backend status: BLOCKED
+
+Story
+As staff, I want attachment and photo evidence UX so patient-event records can be supported with visual or document evidence safely.
+
+Frontend acceptance criteria
+
+- evidence list and link flow exist for incident, infection, and wound records where supported
+- upload/link/download actions reuse secure backend evidence APIs
+- UI does not expose storage-provider internals or unnecessary backend metadata
+- validation, pending, success, and failure states are shown clearly
+
+========================================================================
+FE12-06 — Follow-up ownership and due-date UX
+Related Epic 12 features: follow-up owner, due dates
+Backend status: BLOCKED
+
+Story
+As operations, I want explicit follow-up ownership and due-date workflows so unresolved patient-event work stays accountable.
+
+Frontend acceptance criteria
+
+- follow-up owner and due-date controls exist where authorized
+- UI shows:
+  - current owner
+  - due date
+  - overdue state
+  - follow-up status
+- follow-up assignment/update/complete flows use backend APIs
+- validation, pending, success, and unauthorized states are shown clearly
+
+========================================================================
+FE12-07 — Escalation and alert UX
+Related Epic 12 features: escalation and alerts
+Backend status: BLOCKED
+
+Story
+As leadership and reviewers, I want escalation and alert visibility so high-risk patient-event records are easy to identify and route.
+
+Frontend acceptance criteria
+
+- escalation state is visually distinct in list and detail views
+- authorized escalation and clear actions exist where supported
+- active alert visibility exists in patient-event summary screens
+- escalation flows use real backend APIs rather than placeholder local state
+
+========================================================================
+FE12-08 — Patient-event timeline and longitudinal history UX
+Related Epic 12 features: longitudinal history
+Backend status: BLOCKED
+
+Story
+As clinicians and reviewers, I want a patient-event timeline so incident, infection, wound, follow-up, and escalation history can be reviewed in one place.
+
+Frontend acceptance criteria
+
+- patient-event timeline screen exists
+- timeline can show:
+  - incidents
+  - infections
+  - wound creation and wound-history entries
+  - follow-up milestones
+  - escalation milestones
+- timeline uses backend APIs rather than frontend-only reconstruction
+- empty, loading, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE12-09 — Shared patient-event workspace foundation
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared Epic 12 framework so incident, infection, wound, evidence, and timeline surfaces stay consistent.
+
+Frontend acceptance criteria
+
+- reusable patient-event layout exists for:
+  - event list
+  - event detail
+  - timeline
+  - evidence panel
+  - follow-up panel
+  - escalation badge
+  - status banners
+- modules can opt into clinician, coordinator, reviewer, and read-only behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE12-10 — Shared mutation and follow-up workflow UX
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for create, update, resolve, follow-up, and escalation actions so Epic 12 behavior stays predictable and safe.
+
+Frontend acceptance criteria
+
+- patient-event mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- high-impact actions such as resolve or escalation-clear are confirmed clearly
+- refreshed list/detail/timeline state is shown after backend success
+- failed mutations remain understandable and retryable where practical
+
+========================================================================
+FE12-11 — Coordinator and reviewer patient-event visibility
+Related Epic 12 features: follow-up owner, due dates, escalation and alerts
+Backend status: BLOCKED
+
+Story
+As a coordinator or reviewer, I want focused patient-event visibility so open incidents, active infections, escalated wounds, and overdue follow-up are easy to triage.
+
+Frontend acceptance criteria
+
+- authorized patient-event summary screen exists
+- summary can show:
+  - open incident count
+  - active infection count
+  - escalated event count
+  - overdue follow-up count
+- summary links route into the relevant Epic 12 surface
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE12-12 — Audit-sensitive and privacy-aware patient-event UX
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As a reviewer and admin, I want Epic 12 UX to feel controlled and privacy-aware so sensitive patient-event records and evidence are handled appropriately.
+
+Frontend acceptance criteria
+
+- sensitive patient-event mutations communicate that they are controlled operations
+- success states indicate that key incident, infection, wound, follow-up, and escalation actions are logged where appropriate
+- patient, visit, and evidence detail shown in lists stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware Epic 12 screens can point authorized users to later audit activity without cluttering everyday use
+
+========================================================================
+FE12-13 — Mobile and tablet hardening for patient-event workflows
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As an operations or clinical user, I want Epic 12 screens to remain usable on smaller devices so urgent patient-event follow-up does not require desktop-only layouts.
+
+Frontend acceptance criteria
+
+- core Epic 12 screens work on common tablet and narrow laptop widths
+- event lists, evidence panels, timeline entries, and mutation actions remain usable on smaller screens
+- keyboard and form interactions do not break critical screens
+- no critical Epic 12 screen breaks layout on smaller viewports
+
+========================================================================
+FE12-14 — Frontend regression coverage for Epic 12 flows
+Related Epic 12 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 12 flows so goals, compliance, and revenue work does not destabilize patient-event workflows.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 12 routes
+- happy-path interaction coverage exists for representative incident, infection, wound, evidence, and follow-up flows
+- validation, unauthorized, and failure states are covered
+- escalation and timeline visibility behavior is covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared patient-event UI foundation
+
+- `FE12-01`
+- `FE12-09`
+- `FE12-10`
+
+Phase B — core patient-event workflows
+
+- `FE12-02`
+- `FE12-03`
+- `FE12-04`
+- `FE12-05`
+- `FE12-06`
+- `FE12-07`
+- `FE12-08`
+
+Phase C — coordinator-facing patient-event visibility
+
+- `FE12-11`
+
+Phase D — audit-aware UX
+
+- `FE12-12`
+
+Phase E — hardening
+
+- `FE12-13`
+- `FE12-14`
+
+========================================================================
+Definition of done for Epic 12 frontend
+
+Epic 12 frontend is done only when:
+
+- incident, infection, wound, evidence, follow-up, and patient-timeline screens are reachable through coherent protected routes
+- incident, infection, wound, evidence, follow-up, and escalation flows use real backend APIs rather than placeholder local state
+- longitudinal patient-event history is shown clearly and consistently
+- coordinator-facing patient-event visibility exists for authorized users
+- privacy-sensitive patient and evidence context is minimized appropriately
+- Epic 12 screens are usable on smaller operational devices
+- core Epic 12 screens are regression-covered

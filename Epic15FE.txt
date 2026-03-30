@@ -1,0 +1,318 @@
+Epic 15 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 15 from `Requirements.txt` into a frontend delivery backlog for dashboard and analytics.
+
+Epic 15 title
+
+Dashboard and analytics
+
+Epic 15 feature scope from the requirements
+
+- today’s visits
+- unfilled visits
+- late starts
+- missed visits
+- documentation aging
+- QA backlog
+- caregiver utilization
+- branch performance
+- revenue readiness count
+- compliance exceptions
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, and audit-view patterns
+- Epics 3 through 14 are complete enough to provide the source operational domains that Epic 15 summarizes instead of redefining
+- Epic 5 provides the scheduling and visit context used for visit-load, unfilled, and late-start analytics
+- Epic 7 provides missed-visit and related EVV exception context
+- Epic 8 provides documentation status and age context
+- Epic 10 provides QA backlog context
+- Epic 11 provides compliance-exception context
+- Epic 14 provides revenue-readiness context
+- Epic 15 frontend should support command-center visibility and drilldown, not re-implement the underlying operational mutation workflows already owned by earlier epics
+- analytics screens should stay privacy-aware and show only the minimum patient, caregiver, payer, and branch detail needed for operational leadership use
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 15 backend APIs
+
+========================================================================
+FE15-01 — Analytics workspace information architecture and route model
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As an owner, admin, or operations lead, I want dashboard and analytics routes to fit naturally into the app so command-center visibility and drilldowns are easy to find.
+
+Frontend acceptance criteria
+
+- protected analytics workspace route exists
+- dedicated routes exist for:
+  - dashboard summary
+  - operational drilldown
+  - branch performance view
+  - caregiver utilization view
+  - revenue/compliance summary drilldown
+- unsupported or unauthorized Epic 15 routes render controlled states
+- analytics routes can link back into relevant source workspaces where authorized
+
+========================================================================
+FE15-02 — Dashboard summary UX
+Related Epic 15 features: today’s visits, unfilled visits, late starts, missed visits, documentation aging, QA backlog, revenue readiness count, compliance exceptions
+Backend status: BLOCKED
+
+Story
+As leadership, I want a command-center dashboard so the most important operational, quality, compliance, and revenue-readiness signals are visible in one place.
+
+Frontend acceptance criteria
+
+- dashboard summary screen exists
+- summary can show at least:
+  - today’s visits
+  - unfilled visits
+  - late starts
+  - missed visits
+  - documentation aging
+  - QA backlog
+  - revenue readiness count
+  - compliance exceptions
+- summary uses real backend APIs rather than placeholder local state
+- loading, empty, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE15-03 — Operational drilldown UX
+Related Epic 15 features: today’s visits, unfilled visits, late starts, missed visits
+Backend status: BLOCKED
+
+Story
+As operations, I want drilldown views for operational metrics so I can move from a count to the actual affected work quickly.
+
+Frontend acceptance criteria
+
+- drilldown views exist for core operational metrics
+- drilldowns can show:
+  - affected visit context
+  - branch
+  - current status
+  - actionable links back into source workflows where authorized
+- drilldowns use backend APIs rather than frontend-only reconstruction
+
+========================================================================
+FE15-04 — Documentation-aging and QA-backlog UX
+Related Epic 15 features: documentation aging, QA backlog
+Backend status: BLOCKED
+
+Story
+As leadership and QA, I want documentation-aging and QA-backlog views so bottlenecks are visible and actionable.
+
+Frontend acceptance criteria
+
+- documentation-aging and QA-backlog drilldown views exist
+- UI can show:
+  - age posture or bucket where supported
+  - current status
+  - source context
+  - links into documentation or QA workspaces where authorized
+- views use backend APIs rather than local-only calculations
+
+========================================================================
+FE15-05 — Caregiver-utilization UX
+Related Epic 15 features: caregiver utilization
+Backend status: BLOCKED
+
+Story
+As operations leadership, I want caregiver-utilization views so staffing load and capacity are visible without manual schedule analysis.
+
+Frontend acceptance criteria
+
+- caregiver-utilization screen exists
+- utilization UI can show:
+  - caregiver
+  - assigned or completed visit counts
+  - scheduled duration or units where supported
+  - utilization posture
+- utilization visibility uses backend APIs
+
+========================================================================
+FE15-06 — Branch-performance UX
+Related Epic 15 features: branch performance
+Backend status: BLOCKED
+
+Story
+As agency leadership, I want branch-performance views so branches can be compared consistently across core operating metrics.
+
+Frontend acceptance criteria
+
+- branch-performance screen exists
+- performance UI can show:
+  - branch-level metric comparison
+  - operational posture
+  - quality/backlog posture where supported
+  - links into branch-filtered drilldowns where authorized
+- branch-performance visibility uses backend APIs
+
+========================================================================
+FE15-07 — Revenue-readiness and compliance summary UX
+Related Epic 15 features: revenue readiness count, compliance exceptions
+Backend status: BLOCKED
+
+Story
+As leadership, I want readiness and compliance summary views so non-operational blockers are visible in the same command-center surface.
+
+Frontend acceptance criteria
+
+- revenue/compliance summary panels or drilldowns exist
+- UI can show:
+  - revenue readiness counts
+  - compliance exception counts
+  - branch or status segmentation where supported
+- summary links route into the relevant Epic 11 or Epic 14 surfaces where authorized
+- views use backend APIs rather than frontend-only heuristics
+
+========================================================================
+FE15-08 — Shared analytics workspace foundation
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared Epic 15 framework so summary cards, drilldowns, tables, and ranking views stay consistent.
+
+Frontend acceptance criteria
+
+- reusable analytics layout exists for:
+  - summary cards
+  - drilldown tables or cards
+  - branch ranking views
+  - utilization summaries
+  - status banners
+  - trend callouts optional
+- modules can opt into owner, branch-admin, reviewer, and read-only behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE15-09 — Shared analytics refresh and filter UX
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one refresh and filter pattern for dashboards and drilldowns so Epic 15 behavior stays predictable and easy to scan.
+
+Frontend acceptance criteria
+
+- analytics refresh and filtering use a consistent pending/success/failure pattern
+- branch/date/status filters behave consistently across dashboard and drilldowns
+- retry behavior is explicit for recoverable failures
+- refreshed summary/drilldown state is shown after backend success
+- failed refresh actions remain understandable and retryable where practical
+
+========================================================================
+FE15-10 — Leadership and coordinator command-center visibility
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As an owner, branch admin, or coordinator, I want focused command-center visibility so the most important operational and business signals are easy to triage.
+
+Frontend acceptance criteria
+
+- authorized command-center summary screen exists
+- summary can show:
+  - operational counts
+  - backlog counts
+  - utilization posture
+  - revenue/compliance counts
+- summary links route into the relevant Epic 15 and source workspaces
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE15-11 — Audit-sensitive and privacy-aware analytics UX
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As an admin or leadership user, I want Epic 15 UX to feel controlled and privacy-aware so analytics detail is useful without exposing unnecessary sensitive context.
+
+Frontend acceptance criteria
+
+- analytics refresh or export-adjacent actions communicate that they are controlled operations where appropriate
+- success states indicate that key refresh actions are logged where appropriate
+- patient, caregiver, payer, and branch detail shown in dashboards stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware analytics screens can point authorized users to later audit activity without cluttering everyday use
+
+========================================================================
+FE15-12 — Mobile and tablet hardening for dashboard workflows
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As an owner or operations user, I want Epic 15 screens to remain usable on smaller devices so command-center review does not require desktop-only layouts.
+
+Frontend acceptance criteria
+
+- core Epic 15 screens work on common tablet and narrow laptop widths
+- summary cards, drilldown tables, ranking views, and filter controls remain usable on smaller screens
+- keyboard and form interactions do not break critical screens
+- no critical Epic 15 screen breaks layout on smaller viewports
+
+========================================================================
+FE15-13 — Frontend regression coverage for Epic 15 flows
+Related Epic 15 features: all
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 15 flows so analytics and command-center features remain stable as the product grows.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 15 routes
+- happy-path interaction coverage exists for representative dashboard, drilldown, branch-performance, utilization, and revenue/compliance summary flows
+- validation, unauthorized, and failure states are covered
+- command-center visibility and filter behavior are covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared analytics UI foundation
+
+- `FE15-01`
+- `FE15-08`
+- `FE15-09`
+
+Phase B — core dashboard and drilldown workflows
+
+- `FE15-02`
+- `FE15-03`
+- `FE15-04`
+- `FE15-05`
+- `FE15-06`
+- `FE15-07`
+
+Phase C — leadership-facing command-center visibility
+
+- `FE15-10`
+
+Phase D — audit-aware UX
+
+- `FE15-11`
+
+Phase E — hardening
+
+- `FE15-12`
+- `FE15-13`
+
+========================================================================
+Definition of done for Epic 15 frontend
+
+Epic 15 frontend is done only when:
+
+- dashboard, drilldown, branch-performance, utilization, and revenue/compliance summary screens are reachable through coherent protected routes
+- summary, drilldown, branch-performance, utilization, and filter/refresh flows use real backend APIs rather than placeholder local state
+- operational, backlog, utilization, revenue, and compliance outcomes are shown clearly and consistently
+- leadership-facing command-center visibility exists for authorized users
+- privacy-sensitive patient, caregiver, payer, and branch context is minimized appropriately
+- Epic 15 screens are usable on smaller operational devices
+- core Epic 15 screens are regression-covered

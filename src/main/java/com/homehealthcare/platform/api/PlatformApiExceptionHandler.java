@@ -7,6 +7,8 @@ import com.homehealthcare.documentation.application.UnauthorizedDocumentationAct
 import com.homehealthcare.evv.application.EvvConflictException;
 import com.homehealthcare.evv.application.EvvEntityNotFoundException;
 import com.homehealthcare.evv.application.UnauthorizedEvvActorException;
+import com.homehealthcare.messaging.application.MessagingConflictException;
+import com.homehealthcare.messaging.application.MessagingEntityNotFoundException;
 import com.homehealthcare.mobile.application.MobileConflictException;
 import com.homehealthcare.mobile.application.MobileEntityNotFoundException;
 import java.time.DateTimeException;
@@ -57,6 +59,18 @@ class PlatformApiExceptionHandler {
     @ExceptionHandler(DocumentationConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     Map<String, String> handleDocumentationConflict(DocumentationConflictException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(MessagingConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    Map<String, String> handleMessagingConflict(MessagingConflictException exception) {
+        return Map.of("error", exception.getMessage());
+    }
+
+    @ExceptionHandler(MessagingEntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Map<String, String> handleMessagingNotFound(MessagingEntityNotFoundException exception) {
         return Map.of("error", exception.getMessage());
     }
 

@@ -13,6 +13,7 @@
 - `docs/architecture/adr/0009-epic-6-mobile-execution-foundation.md` records the approved shared foundation for Epic 6 caregiver mobile modules.
 - `docs/architecture/adr/0010-epic-7-evv-foundation.md` records the approved shared foundation for Epic 7 EVV and exception modules.
 - `docs/architecture/adr/0011-epic-8-documentation-domain-foundation.md` records the approved shared foundation for Epic 8 notes, forms, and task-completion modules.
+- `docs/architecture/adr/0012-epic-9-messaging-foundation.md` records the approved shared foundation for Epic 9 messaging and coordination modules.
 - `docs/architecture/erd/e1-s01-tenancy-model.mmd` is the source ERD for the tenancy foundation.
 - `docs/architecture/standards/entity-scoping-standard.md` defines `agency_id` and `branch_id` standards for future entities.
 - `docs/architecture/standards/migration-pattern.md` defines the migration checklist for tenant-aware tables.
@@ -38,6 +39,8 @@
 - `docs/architecture/standards/evv-lifecycle-standard.md` defines the shared verification lifecycle, geofence outcomes, and guardrail rules for Epic 7 EVV entities.
 - `docs/architecture/standards/documentation-domain-standard.md` defines shared categories, field types, and audit expectations for Epic 8 documentation modules.
 - `docs/architecture/standards/documentation-lifecycle-standard.md` defines the shared documentation lifecycle, submission, and printable-summary guardrail rules for Epic 8 documentation entities.
+- `docs/architecture/standards/messaging-domain-standard.md` defines shared thread, delivery, escalation, and audit expectations for Epic 9 messaging modules.
+- `docs/architecture/standards/messaging-lifecycle-standard.md` defines the shared lifecycle, participant, and guardrail rules for Epic 9 messaging entities.
 - `docs/architecture/standards/web-security-hardening-standard.md` defines headers, CSRF, CORS, and secret-exposure rules for browser clients.
 - `docs/architecture/standards/mfa-admin-guardrails.md` defines admin MFA visibility and enforcement rules for `E1-S26`.
 - `docs/architecture/standards/tenant-isolation-guardrails.md` defines repository and service isolation rules for `E1-S07`.

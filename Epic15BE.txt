@@ -1,0 +1,402 @@
+Epic 15 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 15 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 15 title
+
+Dashboard and analytics
+
+Epic 15 feature scope from the requirements
+
+- today’s visits
+- unfilled visits
+- late starts
+- missed visits
+- documentation aging
+- QA backlog
+- caregiver utilization
+- branch performance
+- revenue readiness count
+- compliance exceptions
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 through Epic 14 are complete enough to provide the source domain data that Epic 15 aggregates rather than redefines
+- Epic 5 provides schedule, visit, open-shift, and staffing context used for today’s visits, unfilled visits, and late-start metrics
+- Epic 7 provides missed-visit and EVV exception context relevant to operational dashboard signals
+- Epic 8 provides documentation record state and timing needed for documentation aging metrics
+- Epic 10 provides QA backlog and review-work metrics
+- Epic 11 provides compliance exception and dashboard-ready compliance state
+- Epic 14 provides revenue-readiness state for financial-operational summary metrics
+- Epic 15 focuses on analytics-ready projections and dashboard aggregation, not operational mutation workflows already covered by earlier epics
+- analytics should prioritize operational usefulness, fast queryability, and branch-aware visibility over deep BI tooling or ad hoc report builders in the first pass
+
+Scope rule
+
+- Include only Epic 15 backend work
+- Cover dashboard metric definitions, aggregation projections, branch and role-aware summary APIs, trend/history support where practical, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull custom report builder, data warehouse, or unrelated workflow mutation scope into Epic 15
+
+Status legend
+
+- NOT STARTED: no Epic 15 implementation exists yet
+
+========================================================================
+BE15-01 — Define dashboard and analytics domain architecture
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent analytics domain so dashboard metrics and branch performance summaries are derived consistently from operational source records.
+
+Recommended acceptance criteria
+
+- Epic 15 analytics entities or projections are defined explicitly, including:
+  - dashboard metric definition
+  - dashboard metric snapshot
+  - branch performance summary
+  - utilization summary
+  - backlog summary
+  - readiness/compliance summary
+  - metric trend or history snapshot optional
+- source-of-truth linkage is documented across scheduling, EVV, documentation, QA, compliance, and revenue-readiness domains
+- metric refresh expectations are defined for near-real-time vs scheduled recalculation where applicable
+- audit expectations are defined for metric recalculation and dashboard snapshot generation
+
+========================================================================
+BE15-02 — Create today’s visits and unfilled-visits metric model
+Related Epic 15 features: today’s visits, unfilled visits
+Current status: NOT STARTED
+
+Story
+As operations, I need structured visit-count metrics so the dashboard can show today’s scheduled load and unfilled work accurately.
+
+Recommended acceptance criteria
+
+- metric or projection exists for today’s visits
+- metric or projection exists for unfilled visits
+- definitions are explicit and test-covered for at least:
+  - today’s scheduled visit count
+  - today’s completed vs remaining count optional
+  - unfilled visit count based on no active assignment or open-shift state
+- branch filtering is supported
+- metrics are auditable and queryable
+
+========================================================================
+BE15-03 — Create late-start and missed-visit metric model
+Related Epic 15 features: late starts, missed visits
+Current status: NOT STARTED
+
+Story
+As operations leadership, I need late-start and missed-visit metrics so time-sensitive delivery failures are visible immediately.
+
+Recommended acceptance criteria
+
+- metric or projection exists for late-start visits
+- metric or projection exists for missed visits
+- definitions are explicit and test-covered for at least:
+  - late-start threshold logic
+  - missed-visit inclusion rules
+  - branch/date filtering
+- metric outputs can support both counts and drilldown lists
+- metric logic is auditable and test-covered
+
+========================================================================
+BE15-04 — Create documentation-aging and QA backlog metric model
+Related Epic 15 features: documentation aging, QA backlog
+Current status: NOT STARTED
+
+Story
+As leadership, I need documentation-aging and QA backlog metrics so operational and review bottlenecks are visible in one dashboard layer.
+
+Recommended acceptance criteria
+
+- metric or projection exists for documentation aging
+- metric or projection exists for QA backlog
+- definitions are explicit and test-covered for at least:
+  - age buckets or aging posture optional
+  - pending review counts
+  - returned-for-fix counts optional
+  - overdue review counts optional
+- metric outputs support branch and status filtering
+- metric logic is auditable and test-covered
+
+========================================================================
+BE15-05 — Create caregiver-utilization metric model
+Related Epic 15 features: caregiver utilization
+Current status: NOT STARTED
+
+Story
+As operations, I need caregiver-utilization metrics so staffing load and capacity can be reviewed without rebuilding schedule math manually.
+
+Recommended acceptance criteria
+
+- utilization projection exists per caregiver and in aggregate
+- utilization can summarize at least:
+  - assigned visit count
+  - completed visit count optional
+  - scheduled duration or units
+  - utilization posture optional
+- branch filtering is supported
+- utilization definitions are explicit and test-covered
+- utilization projections are auditable and queryable
+
+========================================================================
+BE15-06 — Create branch-performance metric model
+Related Epic 15 features: branch performance
+Current status: NOT STARTED
+
+Story
+As leadership, I need branch-performance summaries so branch-level operational posture can be compared consistently.
+
+Recommended acceptance criteria
+
+- branch-performance projection exists
+- branch performance can summarize at least:
+  - today’s visits
+  - unfilled visits
+  - late starts
+  - missed visits
+  - documentation aging posture
+  - QA backlog posture
+- branch comparison output is structured for dashboard ranking or tables
+- projection logic is auditable and test-covered
+
+========================================================================
+BE15-07 — Create revenue-readiness and compliance-exception summary model
+Related Epic 15 features: revenue readiness count, compliance exceptions
+Current status: NOT STARTED
+
+Story
+As leadership, I need readiness and compliance summary metrics so financial and compliance blockers are visible in the same command-center layer as operational metrics.
+
+Recommended acceptance criteria
+
+- metric or projection exists for revenue-readiness counts
+- metric or projection exists for compliance-exception counts
+- definitions are explicit and test-covered for at least:
+  - readiness ready/blocked/warning counts
+  - active compliance exception counts
+  - branch/status filters
+- metric outputs support drilldown to the source workspaces
+- projection logic is auditable and test-covered
+
+========================================================================
+BE15-08 — Build dashboard aggregation and trend snapshot model
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a unified dashboard aggregation layer so command-center screens can load consistent snapshots instead of recomputing every metric ad hoc.
+
+Recommended acceptance criteria
+
+- unified dashboard snapshot model or projection exists
+- snapshot can include at least:
+  - operational metrics
+  - review/backlog metrics
+  - utilization metrics
+  - revenue-readiness metrics
+  - compliance metrics
+- trend snapshot support exists where practical for key metrics such as day-over-day or recent-history summaries
+- snapshot generation is deterministic and test-covered
+- snapshot generation is auditable
+
+========================================================================
+BE15-09 — Implement secure authorization and privacy rules for dashboard and analytics data
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for analytics data so dashboard visibility is limited by agency, branch, role, and operational need.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view analytics workspace
+  - view branch performance
+  - view caregiver utilization
+  - view QA/backlog metrics
+  - view revenue/compliance summary metrics
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- patient- and caregiver-identifiable detail is exposed only as necessary for authorized dashboards
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE15-10 — Define Epic 15 audit taxonomy and metric-refresh contract
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and metric-refresh contract so dashboard recalculation and summary generation are observable and stable.
+
+Recommended acceptance criteria
+
+- Epic 15 audit actions are defined for at least:
+  - dashboard_snapshot_generated
+  - metric_refresh_triggered
+  - branch_performance_refreshed
+  - utilization_summary_refreshed
+  - qa_backlog_summary_refreshed
+  - revenue_readiness_summary_refreshed
+  - compliance_summary_refreshed
+- metric-refresh contract is defined for scheduled and on-demand refresh behavior where applicable
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and refresh publication are test-covered
+
+========================================================================
+BE15-11 — Extend permission matrix for analytics and command-center roles
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 15 permissions so dashboard and analytics visibility is role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_analytics_workspace
+  - view_branch_performance_metrics
+  - view_caregiver_utilization_metrics
+  - view_qa_backlog_metrics
+  - view_revenue_readiness_metrics
+  - view_compliance_exception_metrics
+  - refresh_dashboard_metrics
+- permissions map cleanly to likely roles such as:
+  - agency owner
+  - branch admin
+  - scheduler/coordinator optional
+  - QA / clinical reviewer optional
+  - billing/back office optional
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE15-12 — Build dashboard summary and drilldown APIs
+Related Epic 15 features: today’s visits, unfilled visits, late starts, missed visits, documentation aging, QA backlog, revenue readiness count, compliance exceptions
+Current status: NOT STARTED
+
+Story
+As the frontend and leadership teams, I need summary and drilldown APIs so the dashboard can show both high-level metrics and actionable detail.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - dashboard summary
+  - metric drilldown for operational counts
+  - QA/backlog drilldown
+  - revenue/compliance drilldown
+- APIs support filters such as:
+  - branch
+  - date window
+  - metric type
+  - status where applicable
+- responses expose enough detail for operational triage without leaking unnecessary internal fields
+- authorization is enforced and test-covered
+
+========================================================================
+BE15-13 — Build branch-performance and caregiver-utilization APIs
+Related Epic 15 features: caregiver utilization, branch performance
+Current status: NOT STARTED
+
+Story
+As the frontend and leadership teams, I need branch and caregiver analytics APIs so performance and utilization can be reviewed consistently.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - branch performance summary
+  - caregiver utilization summary
+  - optional branch/caregiver trend views
+- responses are structured for tables, ranking views, and summary cards
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE15-14 — Build dashboard history and metric-refresh APIs
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As leadership and admins, I need dashboard history and refresh APIs so analytics state can be reviewed and refreshed in a controlled way.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - dashboard snapshot history optional
+  - metric refresh trigger where authorized
+  - recent metric-refresh status optional
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- history and refresh APIs are authorization-aware and test-covered
+
+========================================================================
+BE15-15 — Add Epic 15 regression coverage and CI entrypoint
+Related Epic 15 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 15 so analytics and dashboard features remain stable as the platform matures.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - dashboard summary
+  - operational drilldowns
+  - branch-performance summary
+  - caregiver-utilization summary
+  - revenue/compliance summary
+  - metric refresh trigger
+- authorization-denial coverage exists for protected Epic 15 actions
+- audit assertions exist for representative Epic 15 refresh or generation actions
+- dedicated Gradle task exists for Epic 15 regression execution
+- CI runs the Epic 15 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — analytics domain foundation
+
+- `BE15-01`
+- `BE15-10`
+- `BE15-11`
+
+Phase B — core metric and aggregation model
+
+- `BE15-02`
+- `BE15-03`
+- `BE15-04`
+- `BE15-05`
+- `BE15-06`
+- `BE15-07`
+- `BE15-08`
+- `BE15-09`
+
+Phase C — public API layer
+
+- `BE15-12`
+- `BE15-13`
+- `BE15-14`
+
+Phase D — hardening
+
+- `BE15-15`
+
+========================================================================
+Definition of done for Epic 15 backend
+
+Epic 15 backend is done only when:
+
+- metric definitions, snapshots, branch-performance summaries, utilization summaries, backlog summaries, and readiness/compliance summaries exist with clear source-of-truth rules
+- dashboard, drilldown, branch-performance, and caregiver-utilization APIs are available for real operational use
+- metric refresh and dashboard snapshot actions are implemented through audited APIs
+- operational, QA, compliance, and revenue-readiness counts are available through structured backend contracts
+- role-based authorization and tenant or branch-aware privacy rules are enforced for analytics data
+- dashboard drilldown and summary outputs are queryable through backend APIs suitable for command-center use
+- dashboard aggregation is deterministic and derived from source records rather than ad hoc frontend logic
+- core Epic 15 analytics flows are regression-covered

@@ -1,0 +1,431 @@
+Epic 11 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 11 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 11 title
+
+Clinical compliance workspace
+
+Epic 11 feature scope from the requirements
+
+- care-plan completeness checklist
+- required documentation tracking
+- consent/right-to-care acknowledgments
+- certification period awareness
+- patient risk reminders
+- compliance status dashboard
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 is complete and provides patient records, service context, payer context, and patient-scoped lifecycle data needed for compliance evaluation
+- Epic 5 is complete and provides visit and schedule data that compliance tracking may reference for documentation and follow-up timing
+- Epic 7 is complete and provides EVV, signature, and visit-exception outputs that can contribute to compliance posture but should not be re-modeled here
+- Epic 8 is complete and provides documentation templates, visit documentation records, required-field enforcement, printable summaries, and attachment linkage that are central to compliance evaluation
+- Epic 10 is complete and provides QA/review queue foundations, but Epic 11 should focus on clinical compliance state and checklist evaluation rather than duplicating general QA workflow
+- Epic 11 focuses on internal compliance readiness and documentation completeness, not full physician-order workflow, claims workflow, or Medicare-heavy enterprise billing depth from later epics
+- care-plan and compliance tracking should be explicitly model-driven and configurable enough for branch-aware maturity without becoming a fully generic rules engine in the first pass
+- certification-period awareness should support operational visibility and validation, even if deeper skilled-home-health regulatory coverage evolves later
+
+Scope rule
+
+- Include only Epic 11 backend work
+- Cover compliance domain models, checklist and required-document evaluation, consent acknowledgment tracking, certification-period awareness, patient risk reminders, compliance dashboard projections, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull QA review queue, incident/infection/wound workflows, goals engine, or billing workflow scope from other epics into Epic 11
+
+Status legend
+
+- NOT STARTED: no Epic 11 implementation exists yet
+
+========================================================================
+BE11-01 — Define clinical compliance domain architecture
+Related Epic 11 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent clinical compliance domain so checklists, acknowledgments, certification windows, risks, and status projections follow one lifecycle and authorization model.
+
+Recommended acceptance criteria
+
+- Epic 11 entities are defined explicitly, including:
+  - compliance profile
+  - compliance checklist definition
+  - compliance checklist result
+  - required documentation requirement
+  - consent acknowledgment record
+  - certification period record
+  - patient risk reminder
+  - compliance status projection
+- compliance source/linkage rules are documented across patient, branch, payer, visit, documentation, EVV, and QA contexts
+- lifecycle states are defined for checklist items, acknowledgments, reminders, and overall compliance status
+- audit expectations are defined for checklist changes, consent capture, certification changes, risk reminder changes, and compliance recalculation
+
+========================================================================
+BE11-02 — Create care-plan completeness checklist model
+Related Epic 11 features: care-plan completeness checklist
+Current status: NOT STARTED
+
+Story
+As compliance operations, I need a structured care-plan completeness checklist so agencies can evaluate whether required plan-of-care elements are present and current.
+
+Recommended acceptance criteria
+
+- care-plan compliance checklist definition model exists
+- checklist supports:
+  - branch scope optional
+  - service context optional
+  - checklist item code
+  - description
+  - severity or weight optional
+  - active/inactive state
+- checklist result model exists per patient or patient-period compliance context
+- checklist results support:
+  - item status pass/fail/warning/not_applicable
+  - evaluated_at
+  - evidence source optional
+  - reviewer or system origin
+- checklist evaluation is auditable and test-covered
+
+========================================================================
+BE11-03 — Create required-documentation tracking model
+Related Epic 11 features: required documentation tracking
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit required-documentation tracking so missing or stale documentation can be surfaced as compliance gaps instead of hidden assumptions.
+
+Recommended acceptance criteria
+
+- required-documentation requirement model exists
+- requirement supports:
+  - source category
+  - requirement code
+  - description
+  - branch scope optional
+  - patient or episode applicability optional
+  - due or recency policy optional
+- compliance result supports:
+  - satisfied/unsatisfied/warning state
+  - satisfied_by record optional
+  - missing reason optional
+  - evaluated_at
+- documentation tracking can reference Epic 8 documentation records and related signatures or attachments where relevant
+- tracking logic is auditable and test-covered
+
+========================================================================
+BE11-04 — Create consent and right-to-care acknowledgment model
+Related Epic 11 features: consent/right-to-care acknowledgments
+Current status: NOT STARTED
+
+Story
+As operations, I need explicit consent and acknowledgment records so agencies can prove required acknowledgments exist and know when they are missing or outdated.
+
+Recommended acceptance criteria
+
+- consent acknowledgment model exists
+- acknowledgment supports:
+  - patient id
+  - acknowledgment type
+  - effective_at
+  - expires_at optional
+  - captured_by optional
+  - capture method optional
+  - supporting artifact or signature reference optional
+  - active/revoked state optional
+- multiple acknowledgment types are supported without creating unrelated one-off tables
+- missing or expired acknowledgments can feed compliance status
+- acknowledgment changes are auditable and test-covered
+
+========================================================================
+BE11-05 — Create certification-period awareness model
+Related Epic 11 features: certification period awareness
+Current status: NOT STARTED
+
+Story
+As the platform, I need certification-period tracking so agencies can see when patient compliance context is entering, within, or leaving a required certification window.
+
+Recommended acceptance criteria
+
+- certification period model exists
+- certification period supports:
+  - patient id
+  - payer or program context optional
+  - start date
+  - end date
+  - active/closed state
+  - source optional
+- invalid date windows are rejected
+- current, upcoming-expiry, expired, and missing-period states can be projected
+- certification changes are auditable and test-covered
+
+========================================================================
+BE11-06 — Create patient risk-reminder model
+Related Epic 11 features: patient risk reminders
+Current status: NOT STARTED
+
+Story
+As compliance and clinical operations, I need structured patient risk reminders so important risk signals do not remain buried in narrative notes.
+
+Recommended acceptance criteria
+
+- patient risk reminder model exists
+- reminder supports:
+  - patient id
+  - risk type
+  - severity optional
+  - summary
+  - effective_at
+  - expires_at optional
+  - source context optional
+  - active/resolved state
+- reminders can be linked to patient, visit, documentation, or incident context where relevant
+- reminders can feed dashboard and compliance-summary projections
+- reminder lifecycle is auditable and test-covered
+
+========================================================================
+BE11-07 — Build compliance status projection and dashboard aggregation model
+Related Epic 11 features: compliance status dashboard
+Current status: NOT STARTED
+
+Story
+As operations leadership, I need a structured compliance-status projection so dashboard and workspace views can summarize readiness without recomputing everything ad hoc.
+
+Recommended acceptance criteria
+
+- compliance-status projection exists per patient or patient-context
+- projection can summarize at least:
+  - checklist pass/fail state
+  - required-documentation gaps
+  - missing or expired acknowledgment state
+  - certification period state
+  - active patient risk reminders
+  - overall compliance severity or readiness state
+- projection can be recalculated deterministically from source records
+- projection supports branch and status aggregation for dashboard use
+- projection logic is auditable and test-covered
+
+========================================================================
+BE11-08 — Implement secure authorization and privacy rules for compliance workspace
+Related Epic 11 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for compliance data so only appropriate roles can see or act on patient compliance state and related clinical reminders.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view compliance workspace
+  - view compliance dashboard
+  - manage checklist definitions
+  - manage acknowledgment records
+  - manage certification periods
+  - manage risk reminders
+  - recalculate compliance state
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- privacy-sensitive patient data is exposed only as necessary for authorized compliance use
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE11-09 — Define Epic 11 audit taxonomy and compliance-event contract
+Related Epic 11 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and compliance-event contract so compliance-state changes are observable and later workflows can build on stable events.
+
+Recommended acceptance criteria
+
+- Epic 11 audit actions are defined for at least:
+  - checklist_definition_saved
+  - checklist_result_recalculated
+  - documentation_requirement_saved
+  - acknowledgment_recorded
+  - acknowledgment_revoked optional
+  - certification_period_saved
+  - risk_reminder_saved
+  - risk_reminder_resolved
+  - compliance_projection_recalculated
+- compliance event contract is defined for reminders, expirations, missing acknowledgments, and compliance-state change where appropriate
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and event publication are test-covered
+
+========================================================================
+BE11-10 — Extend permission matrix for compliance and clinical reviewer roles
+Related Epic 11 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 11 permissions so compliance visibility and mutation actions are role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_compliance_workspace
+  - view_compliance_dashboard
+  - manage_compliance_checklists
+  - manage_required_documentation_rules
+  - manage_patient_acknowledgments
+  - manage_certification_periods
+  - manage_patient_risk_reminders
+  - recalculate_compliance_status
+- permissions map cleanly to likely roles such as:
+  - QA / clinical reviewer
+  - branch admin optional
+  - agency owner optional
+  - external compliance reviewer optional
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE11-11 — Build compliance dashboard and patient-compliance APIs
+Related Epic 11 features: compliance status dashboard, care-plan completeness checklist, required documentation tracking
+Current status: NOT STARTED
+
+Story
+As the frontend and operations teams, I need compliance APIs so dashboard, patient summary, and checklist findings can be queried reliably.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - compliance dashboard summary
+  - patient compliance summary
+  - checklist results
+  - required-documentation results
+- dashboard APIs support filters such as:
+  - branch
+  - compliance status
+  - certification state
+  - risk severity optional
+- responses expose enough detail for operational triage without leaking unnecessary internal fields
+- authorization is enforced and test-covered
+
+========================================================================
+BE11-12 — Build acknowledgment, certification-period, and risk-reminder APIs
+Related Epic 11 features: consent/right-to-care acknowledgments, certification period awareness, patient risk reminders
+Current status: NOT STARTED
+
+Story
+As the frontend and compliance teams, I need APIs for acknowledgments, certification windows, and reminders so the compliance workspace can maintain core patient-compliance records.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - acknowledgment list/create/update/deactivate
+  - certification period list/create/update/close
+  - risk reminder list/create/update/resolve
+- invalid lifecycle or date transitions return controlled errors
+- responses include refreshed patient compliance context where appropriate
+- mutation APIs are auditable and test-covered
+
+========================================================================
+BE11-13 — Build checklist-definition and recalculation APIs
+Related Epic 11 features: care-plan completeness checklist, required documentation tracking
+Current status: NOT STARTED
+
+Story
+As admins and reviewers, I need checklist-definition and recalculation APIs so compliance rules can be managed and results refreshed when source data changes.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - checklist definition list/create/update/deactivate
+  - required-documentation rule list/create/update/deactivate
+  - compliance recalculation trigger where authorized
+- recalculation uses current source-record state rather than stale cached assumptions
+- responses are structured for UI consumption and status banners
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE11-14 — Build compliance history and audit-context APIs
+Related Epic 11 features: compliance status dashboard, audit trail
+Current status: NOT STARTED
+
+Story
+As compliance leadership, I need compliance history APIs so acknowledgment changes, certification changes, reminder changes, and checklist evolution are visible during later audit and follow-up.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - patient compliance history timeline
+  - acknowledgment history
+  - certification-period history
+  - risk-reminder history
+  - checklist or requirement change history where applicable
+- history output can reference linked source edit context through existing audit infrastructure
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- history APIs are authorization-aware and test-covered
+
+========================================================================
+BE11-15 — Add Epic 11 regression coverage and CI entrypoint
+Related Epic 11 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 11 so compliance state and reminder workflows remain stable as incident, goals, and revenue features land.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - compliance dashboard
+  - patient compliance summary
+  - checklist evaluation
+  - required-documentation tracking
+  - acknowledgment mutation
+  - certification-period mutation
+  - risk-reminder mutation
+  - compliance recalculation
+- authorization-denial coverage exists for protected compliance actions
+- audit assertions exist for representative compliance mutations
+- dedicated Gradle task exists for Epic 11 regression execution
+- CI runs the Epic 11 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — compliance domain foundation
+
+- `BE11-01`
+- `BE11-09`
+- `BE11-10`
+
+Phase B — core compliance and reminder model
+
+- `BE11-02`
+- `BE11-03`
+- `BE11-04`
+- `BE11-05`
+- `BE11-06`
+- `BE11-07`
+- `BE11-08`
+
+Phase C — public API layer
+
+- `BE11-11`
+- `BE11-12`
+- `BE11-13`
+- `BE11-14`
+
+Phase D — hardening
+
+- `BE11-15`
+
+========================================================================
+Definition of done for Epic 11 backend
+
+Epic 11 backend is done only when:
+
+- care-plan checklist, required-documentation, acknowledgment, certification-period, risk-reminder, and compliance-projection domain models exist with clear lifecycle rules
+- compliance dashboard and patient-compliance APIs are available for real operational queries
+- acknowledgment, certification, risk-reminder, and recalculation actions are implemented through audited APIs
+- compliance gaps, checklist results, and risk reminders are available through structured backend contracts
+- role-based authorization and tenant or branch-aware privacy rules are enforced for compliance data
+- compliance history and audit context are queryable through backend APIs suitable for operational review
+- compliance projection is deterministic and explicitly derived from source records rather than ad hoc frontend logic
+- core Epic 11 compliance flows are regression-covered

@@ -1,0 +1,326 @@
+Epic 14 Frontend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 14 from `Requirements.txt` into a frontend delivery backlog for revenue readiness and basic financial ops.
+
+Epic 14 title
+
+Revenue readiness and basic financial ops
+
+Epic 14 feature scope from the requirements
+
+Early version
+
+- visit completion validation
+- signed visit validation
+- exception flags
+- export-ready invoices/payroll data
+- authorization usage
+- payer/service summary
+
+Later version, intentionally out of scope for this backlog
+
+- claim generation
+- physician signature tracking
+- denial worklists
+- remittance posting
+
+Planning assumptions
+
+- Epic 1 frontend and backend are complete and provide auth, session, RBAC, protected-route, audit-view, and export-aware patterns
+- Epic 3 frontend and backend are complete and provide patient and payer context that Epic 14 screens may reference
+- Epic 5 frontend and backend are complete and provide visit and scheduling context that revenue-readiness screens will summarize
+- Epic 7 frontend and backend are complete and provide EVV and signature context that contributes to signed-visit validation
+- Epic 8 frontend and backend are complete and provide documentation state that contributes to visit completion validation
+- Epic 10 and Epic 11 frontend and backend are complete and provide QA/compliance context that may influence readiness but should not redefine the revenue-readiness workflow
+- Epic 14 frontend should support upstream readiness, blocker visibility, and export handoff, not full claims, denials, remittance, or physician-order workflow
+- Epic 14 screens should stay privacy-aware and show only the minimum patient, payer, and visit detail needed for operational finance work
+
+Status legend
+
+- BLOCKED: frontend should wait for the corresponding Epic 14 backend APIs
+
+========================================================================
+FE14-01 — Revenue-readiness workspace information architecture and route model
+Related Epic 14 features: all early-version features
+Backend status: BLOCKED
+
+Story
+As a back-office user, owner, or operations lead, I want revenue-readiness routes to fit naturally into the app so blockers, exports, and usage context are easy to find.
+
+Frontend acceptance criteria
+
+- protected revenue-readiness workspace route exists
+- dedicated routes exist for:
+  - readiness list
+  - readiness detail
+  - exception queue or blocker list
+  - payroll export view
+  - invoice export view
+  - authorization-usage summary
+- unsupported or unauthorized Epic 14 routes render controlled states
+- routes can link back into related patient, visit, documentation, QA, EVV, and payer context where authorized
+
+========================================================================
+FE14-02 — Revenue-readiness list and detail UX
+Related Epic 14 features: visit completion validation, signed visit validation, payer/service summary
+Backend status: BLOCKED
+
+Story
+As operations and back office, I want readiness screens so ready, warning, and blocked visits are visible before billing or payroll handoff.
+
+Frontend acceptance criteria
+
+- readiness list and detail screens exist
+- readiness UI can show at least:
+  - visit context
+  - readiness state
+  - completion validation state
+  - signature validation state
+  - payer/service summary
+  - active blocker summary
+- readiness screens use real backend APIs rather than placeholder local state
+- loading, empty, failure, and unauthorized states are handled clearly
+
+========================================================================
+FE14-03 — Revenue exception-flag UX
+Related Epic 14 features: exception flags
+Backend status: BLOCKED
+
+Story
+As back-office and operations users, I want clear exception-flag visibility so blockers are understandable and actionable upstream.
+
+Frontend acceptance criteria
+
+- revenue exception list or blocker panel exists
+- exception UI can show:
+  - exception type
+  - severity
+  - related visit or patient context
+  - active/cleared state
+  - reason summary
+- exception visibility uses backend APIs rather than frontend-only heuristics
+
+========================================================================
+FE14-04 — Payroll export preview and generation UX
+Related Epic 14 features: export-ready payroll data
+Backend status: BLOCKED
+
+Story
+As back office, I want payroll export preview and generation screens so payroll-ready visit output can be reviewed before handoff.
+
+Frontend acceptance criteria
+
+- payroll export preview screen exists
+- preview can show at least:
+  - visit/caregiver context
+  - units or duration
+  - readiness state
+  - filtered blocked records where applicable
+- authorized export generation action exists
+- preview/generate flow uses backend APIs
+- validation, pending, success, and failure states are shown clearly
+
+========================================================================
+FE14-05 — Invoice export preview and generation UX
+Related Epic 14 features: export-ready invoices data
+Backend status: BLOCKED
+
+Story
+As back office, I want invoice export preview and generation screens so invoice-ready visit output can be reviewed before downstream handoff.
+
+Frontend acceptance criteria
+
+- invoice export preview screen exists
+- preview can show at least:
+  - visit/patient/payer context
+  - service line
+  - units or duration
+  - readiness state
+- authorized export generation action exists
+- preview/generate flow uses backend APIs
+- blocked or invalid export attempts show controlled errors or clearly filtered output
+
+========================================================================
+FE14-06 — Authorization-usage UX
+Related Epic 14 features: authorization usage
+Backend status: BLOCKED
+
+Story
+As operations, I want authorization-usage visibility so nearing-limit or overage issues are visible before finance handoff.
+
+Frontend acceptance criteria
+
+- authorization-usage summary screen or panel exists
+- UI can show:
+  - authorization id
+  - authorized units
+  - used units
+  - remaining units
+  - nearing-limit or overage indicators
+- usage visibility uses backend APIs rather than frontend-only calculations
+
+========================================================================
+FE14-07 — Payer and service summary UX
+Related Epic 14 features: payer/service summary
+Backend status: BLOCKED
+
+Story
+As back-office staff, I want payer and service summary context so invoice-ready review does not require reconstructing payer/service linkage manually.
+
+Frontend acceptance criteria
+
+- payer/service summary is visible in readiness detail or export preview
+- summary can show:
+  - payer
+  - service line
+  - authorization context where available
+  - branch
+- summary uses backend APIs and remains linked to the relevant readiness record
+
+========================================================================
+FE14-08 — Shared revenue-readiness workspace foundation
+Related Epic 14 features: all early-version features
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one shared Epic 14 framework so readiness, blocker, export, and usage surfaces stay consistent.
+
+Frontend acceptance criteria
+
+- reusable revenue-readiness layout exists for:
+  - readiness list/detail
+  - blocker panel
+  - export preview
+  - usage summary
+  - payer/service summary
+  - readiness status banners
+- modules can opt into back-office, owner, reviewer, and read-only behavior cleanly
+- loading, empty, validation, and unauthorized states are standardized
+
+========================================================================
+FE14-09 — Shared export and readiness mutation UX
+Related Epic 14 features: export-ready invoices/payroll data, exception flags
+Backend status: BLOCKED
+
+Story
+As the frontend team, I want one mutation pattern for export generation and readiness refresh so Epic 14 behavior stays predictable and safe.
+
+Frontend acceptance criteria
+
+- export and recalculation mutations use a consistent pending/success/failure pattern
+- retry behavior is explicit for recoverable failures
+- high-impact actions such as export generation are confirmed clearly
+- refreshed readiness/export state is shown after backend success
+- failed export or refresh actions remain understandable and retryable where practical
+
+========================================================================
+FE14-10 — Coordinator and back-office revenue visibility
+Related Epic 14 features: visit completion validation, signed visit validation, exception flags, authorization usage
+Backend status: BLOCKED
+
+Story
+As a coordinator, owner, or back-office lead, I want focused revenue-readiness visibility so blocked visits, missing signatures, and authorization issues are easy to triage.
+
+Frontend acceptance criteria
+
+- authorized revenue summary screen exists
+- summary can show:
+  - blocked readiness count
+  - missing-signature count
+  - completion-failure count
+  - authorization-usage warning count
+- summary links route into the relevant Epic 14 surfaces
+- unauthorized users receive controlled `403` behavior
+
+========================================================================
+FE14-11 — Audit-sensitive and privacy-aware revenue-readiness UX
+Related Epic 14 features: all early-version features
+Backend status: BLOCKED
+
+Story
+As a back-office user and admin, I want Epic 14 UX to feel controlled and privacy-aware so operational finance state and export actions are handled appropriately.
+
+Frontend acceptance criteria
+
+- sensitive readiness and export mutations communicate that they are controlled operations
+- success states indicate that key readiness and export actions are logged where appropriate
+- patient, payer, and visit detail shown in lists stays minimal and context-appropriate
+- internal-only backend metadata is not exposed unnecessarily
+- audit-aware Epic 14 screens can point authorized users to later audit activity without cluttering everyday use
+
+========================================================================
+FE14-12 — Mobile and tablet hardening for revenue-readiness workflows
+Related Epic 14 features: all early-version features
+Backend status: BLOCKED
+
+Story
+As an owner or operations user, I want Epic 14 screens to remain usable on smaller devices so blocker review and export prep do not require desktop-only layouts.
+
+Frontend acceptance criteria
+
+- core Epic 14 screens work on common tablet and narrow laptop widths
+- readiness lists, blocker panels, usage summaries, and export actions remain usable on smaller screens
+- keyboard and form interactions do not break critical screens
+- no critical Epic 14 screen breaks layout on smaller viewports
+
+========================================================================
+FE14-13 — Frontend regression coverage for Epic 14 flows
+Related Epic 14 features: all early-version features
+Backend status: BLOCKED
+
+Story
+As engineering, I want regression coverage for Epic 14 flows so later full revenue-cycle features do not destabilize early readiness workflows.
+
+Frontend acceptance criteria
+
+- route-guard coverage exists for Epic 14 routes
+- happy-path interaction coverage exists for representative readiness, blocker, usage, payroll-export, and invoice-export flows
+- validation, unauthorized, and failure states are covered
+- revenue-summary visibility behavior is covered where practical
+
+========================================================================
+Implementation phases
+
+Phase A — shared revenue-readiness UI foundation
+
+- `FE14-01`
+- `FE14-08`
+- `FE14-09`
+
+Phase B — core readiness and export workflows
+
+- `FE14-02`
+- `FE14-03`
+- `FE14-04`
+- `FE14-05`
+- `FE14-06`
+- `FE14-07`
+
+Phase C — coordinator-facing revenue visibility
+
+- `FE14-10`
+
+Phase D — audit-aware UX
+
+- `FE14-11`
+
+Phase E — hardening
+
+- `FE14-12`
+- `FE14-13`
+
+========================================================================
+Definition of done for Epic 14 frontend
+
+Epic 14 frontend is done only when:
+
+- readiness, blocker, export, authorization-usage, and payer/service summary screens are reachable through coherent protected routes
+- readiness, blocker, usage, payroll-export, invoice-export, and refresh flows use real backend APIs rather than placeholder local state
+- ready/blocked/warning, missing-signature, completion, and usage-warning outcomes are shown clearly and consistently
+- coordinator-facing revenue visibility exists for authorized users
+- privacy-sensitive patient, payer, and visit context is minimized appropriately
+- Epic 14 screens are usable on smaller operational devices
+- core Epic 14 early-version screens are regression-covered

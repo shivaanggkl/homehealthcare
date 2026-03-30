@@ -1,0 +1,14 @@
+package com.homehealthcare.messaging.foundation;
+
+public enum MessagingEntityCategory {
+    COMMUNICATION_THREAD,
+    COMMUNICATION_MESSAGE,
+    THREAD_PARTICIPANT,
+    MESSAGE_READ_RECEIPT,
+    STAFF_GROUP,
+    STAFF_GROUP_MEMBER,
+    BRANCH_BROADCAST,
+    ESCALATION_MARKER,
+    COORDINATION_CONTEXT_LINK,
+    DELIVERY_PROJECTION
+}

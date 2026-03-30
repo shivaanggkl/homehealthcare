@@ -1,0 +1,465 @@
+Epic 10 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 10 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 10 title
+
+QA / review workspace
+
+Epic 10 feature scope from the requirements
+
+- review queue
+- returned-for-fix workflow
+- approve / reject / request-signoff
+- completeness checks
+- missing-field detection
+- exception queue
+- audit trail of edits
+- role-based review assignment
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 is complete and provides patient records and patient context needed for reviewable operational work
+- Epic 5 is complete and provides visit, assignment, and schedule records that can generate QA-relevant reviewable work
+- Epic 6 is complete and provides mobile execution outputs that may enter QA review after field completion
+- Epic 7 is complete and provides EVV, missed-visit, exception, and signature verification outputs that QA may need to inspect but should not redefine
+- Epic 8 is complete and provides documentation templates, visit documentation records, draft/submit behavior, printable summaries, and attachment linkage that form the primary Epic 10 review input
+- Epic 9 is complete and provides secure communication and escalation context that Epic 10 may reference for reviewer coordination
+- Epic 10 focuses on internal QA and review workflow, not the deeper clinical compliance dashboard from Epic 11, not incident/infection/wound longitudinal workflows from Epic 12, and not final billing or claims workflow from Epic 14
+- Epic 10 should support work becoming reviewable, assigned, returned, corrected, approved, or rejected in a controlled lifecycle that is auditable and role-aware
+- completeness and missing-field detection should rely on explicit backend rules and record projections rather than frontend-only heuristics
+
+Scope rule
+
+- Include only Epic 10 backend work
+- Cover review queue domain models, completeness and exception evaluation, review assignment, return-for-fix, approve/reject/request-signoff actions, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull full compliance checklist engine, physician-order workflows, billing workflows, or analytics backlog scope from later epics into Epic 10
+
+Status legend
+
+- NOT STARTED: no Epic 10 implementation exists yet
+
+========================================================================
+BE10-01 — Define QA and review domain architecture
+Related Epic 10 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent QA/review domain so reviewable work, completeness findings, assignment, and return loops follow one lifecycle and authorization model.
+
+Recommended acceptance criteria
+
+- Epic 10 entities are defined explicitly, including:
+  - review work item
+  - review assignment
+  - review finding
+  - completeness check result
+  - missing-field result
+  - review decision
+  - return-for-fix event
+  - signoff request
+- reviewable source types are defined for at least:
+  - visit documentation record
+  - EVV verification or exception output
+  - missed-visit record
+  - visit-level execution artifact or summary
+- lifecycle states are defined for at least:
+  - pending review
+  - assigned
+  - in review
+  - returned for fix
+  - resubmitted
+  - approved
+  - rejected
+  - signoff requested
+  - signoff completed optional
+- ownership, assignment, branch scope, and patient/visit/document linkage rules are documented
+- audit expectations are defined for queue generation, assignment, decision, return-for-fix, signoff request, and completeness recalculation
+
+========================================================================
+BE10-02 — Create review work-item and queue model
+Related Epic 10 features: review queue, exception queue
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit review work items so QA can query and prioritize reviewable operational records consistently.
+
+Recommended acceptance criteria
+
+- review work-item entity exists
+- work item supports:
+  - source type
+  - source record id
+  - branch id
+  - patient id optional
+  - visit id optional
+  - review status
+  - priority optional
+  - entered_queue_at
+  - due_at optional
+  - last_activity_at
+- queue supports both ordinary reviewable records and exception-driven review items
+- duplicate active queue entries for the same source record are prevented or explicitly controlled
+- historical queue records remain queryable after resolution
+- queue lifecycle behavior is auditable and test-covered
+
+========================================================================
+BE10-03 — Create completeness-check and missing-field evaluation model
+Related Epic 10 features: completeness checks, missing-field detection
+Current status: NOT STARTED
+
+Story
+As QA, I need explicit completeness and missing-field results so review decisions are based on structured findings rather than ad hoc inspection.
+
+Recommended acceptance criteria
+
+- completeness-check result model exists
+- missing-field result model exists
+- results can store:
+  - evaluated source type
+  - evaluated source id
+  - rule code
+  - severity
+  - status pass/fail/warning
+  - field path or logical section optional
+  - reviewer-visible explanation
+- evaluation supports at least:
+  - required documentation fields
+  - incomplete task/task-response states where relevant
+  - missing signature state where available
+  - missing attachment/linkage state where required
+  - open EVV or execution exceptions where relevant
+- findings can be recalculated on resubmission
+- findings are auditable and test-covered
+
+========================================================================
+BE10-04 — Create review assignment and role-based ownership model
+Related Epic 10 features: role-based review assignment
+Current status: NOT STARTED
+
+Story
+As operations leadership, I need role-aware review assignment so QA work is routed to the right reviewer without exposing or allowing unrelated review access.
+
+Recommended acceptance criteria
+
+- review assignment entity exists
+- assignment supports:
+  - work item id
+  - assigned reviewer membership
+  - assigned by
+  - assigned at
+  - released or reassigned at optional
+  - assignment note optional
+- one active assignment exists per active work item unless explicitly designed otherwise
+- authorization rules restrict who can self-assign, assign others, or reassign
+- assignment respects agency and branch scope
+- assignment changes are auditable and test-covered
+
+========================================================================
+BE10-05 — Create review decision and returned-for-fix workflow model
+Related Epic 10 features: returned-for-fix workflow, approve / reject / request-signoff
+Current status: NOT STARTED
+
+Story
+As QA, I need explicit review decisions and return loops so review outcomes are durable, explainable, and easy to act on.
+
+Recommended acceptance criteria
+
+- review decision model exists
+- supported decisions include at least:
+  - approve
+  - reject
+  - return_for_fix
+  - request_signoff
+- decision supports:
+  - decided_by
+  - decided_at
+  - reason code optional
+  - reviewer notes optional
+- returned-for-fix workflow stores:
+  - target source record
+  - return reason
+  - required corrections optional
+  - returned_by
+  - returned_at
+  - resolved or resubmitted markers
+- work item status transitions are validated and test-covered
+- decision and return events are auditable
+
+========================================================================
+BE10-06 — Create reviewable exception model and exception-queue classification
+Related Epic 10 features: exception queue
+Current status: NOT STARTED
+
+Story
+As QA, I need structured review exceptions so high-risk or unusual records can be prioritized separately from ordinary completeness review.
+
+Recommended acceptance criteria
+
+- review exception model exists or explicit exception classification is added to review work items
+- exception supports:
+  - exception type
+  - severity
+  - source linkage
+  - detected_at
+  - resolved_at optional
+  - resolution note optional
+- exception queue can distinguish at least:
+  - missing signature
+  - missing required documentation
+  - EVV or visit exception carryover
+  - returned-with-open-finding
+  - reviewer escalation optional
+- exception filtering is queryable through the public API
+- exception detection and lifecycle are auditable and test-covered
+
+========================================================================
+BE10-07 — Implement signoff-request and secondary-review model
+Related Epic 10 features: request-signoff
+Current status: NOT STARTED
+
+Story
+As a reviewer, I need signoff-request support so records needing higher-level validation can move forward without breaking the review chain.
+
+Recommended acceptance criteria
+
+- signoff request model exists
+- signoff request supports:
+  - work item id
+  - requested from membership or role
+  - requested by
+  - requested at
+  - status pending/completed/declined optional
+  - signoff note optional
+- signoff request can coexist with review assignment without corrupting ownership
+- signoff completion or decline updates work-item lifecycle correctly
+- signoff activity is auditable and test-covered
+
+========================================================================
+BE10-08 — Implement secure authorization and privacy rules for review workspace
+Related Epic 10 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for review data so only appropriate reviewers and operations roles can see or act on queue items and findings.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view QA queue
+  - view exception queue
+  - assign review work
+  - approve, reject, return for fix, or request signoff
+  - view underlying patient/visit/document detail through review APIs
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- users cannot act on unrelated review items outside their permitted scope
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE10-09 — Define Epic 10 audit taxonomy and reviewer-notification contract
+Related Epic 10 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and reviewer-notification contract so QA activity is observable and later notification fanout builds on stable events.
+
+Recommended acceptance criteria
+
+- Epic 10 audit actions are defined for at least:
+  - review_item_created
+  - review_assigned
+  - review_reassigned
+  - review_started optional
+  - review_returned_for_fix
+  - review_approved
+  - review_rejected
+  - signoff_requested
+  - signoff_completed
+  - completeness_recalculated
+- reviewer-notification event contract is defined for assignment, return-for-fix, signoff request, and resubmission
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and event publication are test-covered
+
+========================================================================
+BE10-10 — Extend permission matrix for QA and reviewer roles
+Related Epic 10 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 10 permissions so QA queue access and decision actions are role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_review_workspace
+  - view_exception_queue
+  - assign_review_work
+  - perform_review_decisions
+  - request_review_signoff
+  - view_review_audit_context
+- permissions map cleanly to likely roles such as:
+  - QA / clinical reviewer
+  - branch admin optional
+  - agency owner optional
+  - external compliance reviewer where applicable
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE10-11 — Build public review-queue and exception-queue APIs
+Related Epic 10 features: review queue, exception queue
+Current status: NOT STARTED
+
+Story
+As the frontend and operations teams, I need queue APIs so reviewable work can be listed, filtered, and opened reliably.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - review queue list
+  - exception queue list
+  - review work-item detail
+- queue APIs support filters such as:
+  - branch
+  - assigned reviewer
+  - review status
+  - source type
+  - exception type or severity
+  - due or age windows optional
+- queue responses expose enough summary data for triage without leaking unnecessary protected fields
+- authorization is enforced and test-covered
+
+========================================================================
+BE10-12 — Build review assignment and decision APIs
+Related Epic 10 features: role-based review assignment, approve / reject / request-signoff, returned-for-fix workflow
+Current status: NOT STARTED
+
+Story
+As the frontend and reviewers, I need assignment and decision APIs so review actions are durable and permission-aware.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - assign reviewer
+  - reassign reviewer
+  - release assignment optional
+  - approve work item
+  - reject work item
+  - return for fix
+  - request signoff
+  - complete signoff optional
+- invalid lifecycle transitions return controlled errors
+- responses include refreshed work-item state and active findings summary
+- assignment and decision APIs are auditable and test-covered
+
+========================================================================
+BE10-13 — Build completeness and missing-field evaluation APIs
+Related Epic 10 features: completeness checks, missing-field detection
+Current status: NOT STARTED
+
+Story
+As the frontend and QA teams, I need structured evaluation APIs so completeness findings can be displayed consistently and recalculated after corrections.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - get completeness results for a work item
+  - get missing-field results for a work item
+  - trigger recalculation where authorized
+- evaluation output is structured for UI consumption and printable review summaries
+- recalculation respects current source-record state rather than stale cached assumptions
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE10-14 — Build review history and audit-context APIs
+Related Epic 10 features: audit trail of edits
+Current status: NOT STARTED
+
+Story
+As QA and leadership, I need review history APIs so review decisions, return loops, assignments, and source edits are visible during later audit and handoff.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - review history timeline
+  - work-item decision history
+  - assignment history
+  - signoff history where applicable
+- history output can reference linked source-record edit context through existing audit infrastructure
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- history APIs are authorization-aware and test-covered
+
+========================================================================
+BE10-15 — Add Epic 10 regression coverage and CI entrypoint
+Related Epic 10 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 10 so review queue and decision workflows remain stable as later compliance and revenue features land.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - queue listing
+  - exception listing
+  - assignment
+  - approve
+  - reject
+  - return for fix
+  - signoff request
+  - completeness evaluation
+- authorization-denial coverage exists for protected review actions
+- audit assertions exist for representative review mutations
+- dedicated Gradle task exists for Epic 10 regression execution
+- CI runs the Epic 10 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — review domain foundation
+
+- `BE10-01`
+- `BE10-09`
+- `BE10-10`
+
+Phase B — core review and completeness model
+
+- `BE10-02`
+- `BE10-03`
+- `BE10-04`
+- `BE10-05`
+- `BE10-06`
+- `BE10-07`
+- `BE10-08`
+
+Phase C — public API layer
+
+- `BE10-11`
+- `BE10-12`
+- `BE10-13`
+- `BE10-14`
+
+Phase D — hardening
+
+- `BE10-15`
+
+========================================================================
+Definition of done for Epic 10 backend
+
+Epic 10 backend is done only when:
+
+- review queue, assignment, completeness, missing-field, exception, decision, and signoff domain models exist with clear lifecycle rules
+- review queue and exception queue APIs are available for real operational triage
+- approve, reject, return-for-fix, assign, and signoff actions are implemented through audited APIs
+- completeness and missing-field outcomes are available through structured backend contracts
+- role-based review assignment and tenant or branch-aware authorization are enforced
+- review history and audit context are queryable through backend APIs suitable for review UX
+- returned-for-fix and resubmission behavior are explicitly modeled rather than treated as ad hoc notes
+- core Epic 10 review flows are regression-covered

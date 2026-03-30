@@ -1,0 +1,430 @@
+Epic 14 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 14 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 14 title
+
+Revenue readiness and basic financial ops
+
+Epic 14 feature scope from the requirements
+
+Early version
+
+- visit completion validation
+- signed visit validation
+- exception flags
+- export-ready invoices/payroll data
+- authorization usage
+- payer/service summary
+
+Later version, intentionally out of scope for this backlog
+
+- claim generation
+- physician signature tracking
+- denial worklists
+- remittance posting
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, exportability foundations, and notification foundations
+- Epic 3 is complete and provides patient records, payer linkage, authorization data, and patient service context needed for revenue-readiness checks
+- Epic 5 is complete and provides visit, assignment, open-shift, reschedule, and cancellation records that form the operational revenue-readiness input
+- Epic 7 is complete and provides EVV, signature verification, missed-visit, and exception outputs that contribute to signed-visit and completion readiness
+- Epic 8 is complete and provides visit documentation records, submission state, printable summaries, and required-field enforcement that contribute to completion readiness
+- Epic 10 and Epic 11 are complete and provide QA/compliance review and documentation completeness context that may feed readiness signals but should not be re-modeled here
+- Epic 14 focuses on upstream revenue readiness and exportable operational finance outputs, not full claims processing, remittance workflows, or enterprise revenue-cycle automation
+- revenue readiness should detect operational blockers before billing rather than introducing a full billing system in the first pass
+- export-ready output should support agency operational handoff without assuming payer-integrated claim submission in scope
+
+Scope rule
+
+- Include only Epic 14 backend work
+- Cover readiness validation, signed-visit validation, exception flags, export-ready payroll/invoice output, authorization usage tracking, payer/service summaries, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull later claim-generation, denial, remittance, or physician-order workflow scope into the early Epic 14 backlog
+
+Status legend
+
+- NOT STARTED: no Epic 14 implementation exists yet
+
+========================================================================
+BE14-01 — Define revenue-readiness and financial-ops domain architecture
+Related Epic 14 features: all early-version features
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent Epic 14 domain so readiness checks, signed-visit validation, export records, authorization usage, and payer/service summaries follow one lifecycle and authorization model.
+
+Recommended acceptance criteria
+
+- Epic 14 entities or projections are defined explicitly, including:
+  - revenue-readiness record or projection
+  - readiness validation result
+  - exception flag
+  - payroll export row
+  - invoice export row
+  - authorization-usage snapshot
+  - payer/service summary projection
+- linkage rules are documented across visit, patient, payer, authorization, documentation, EVV, and QA/compliance contexts
+- lifecycle or status states are defined for readiness and export states
+- audit expectations are defined for readiness recalculation, export generation, exception-flag changes, and usage summary refresh
+
+========================================================================
+BE14-02 — Create visit completion validation model
+Related Epic 14 features: visit completion validation
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit visit completion validation so visits that are not operationally complete can be blocked from revenue-ready output.
+
+Recommended acceptance criteria
+
+- visit completion validation model or projection exists
+- validation can evaluate at least:
+  - visit status completion
+  - required documentation submission state
+  - unresolved QA return state optional
+  - critical Epic 12/7 exceptions optional where required
+- validation supports pass/fail/warning output with reason codes
+- validation is queryable per visit and recalculable
+- validation logic is auditable and test-covered
+
+========================================================================
+BE14-03 — Create signed-visit validation model
+Related Epic 14 features: signed visit validation
+Current status: NOT STARTED
+
+Story
+As operations, I need explicit signed-visit validation so visits missing required signatures or verification do not advance as revenue-ready by mistake.
+
+Recommended acceptance criteria
+
+- signed-visit validation model or projection exists
+- validation can evaluate at least:
+  - required caregiver signature presence where applicable
+  - patient signature presence where applicable
+  - EVV/signature verification linkage where available
+  - signature validity state optional
+- validation supports pass/fail/warning output with reason codes
+- validation is queryable per visit and recalculable
+- validation logic is auditable and test-covered
+
+========================================================================
+BE14-04 — Create revenue exception-flag model
+Related Epic 14 features: exception flags
+Current status: NOT STARTED
+
+Story
+As operations and billing-adjacent users, I need structured revenue exception flags so blockers are visible upstream instead of discovered only during invoicing or payroll handoff.
+
+Recommended acceptance criteria
+
+- revenue exception-flag model exists or explicit exception classification is added to readiness projections
+- exception flag supports:
+  - target type and target id
+  - exception type
+  - severity
+  - detected_at
+  - cleared_at optional
+  - reason code or summary
+- exception flag types support at least:
+  - incomplete visit
+  - missing signature
+  - missing documentation
+  - unresolved authorization issue
+  - payer or service mismatch optional
+- exception flag lifecycle is auditable and test-covered
+
+========================================================================
+BE14-05 — Create export-ready invoice and payroll output model
+Related Epic 14 features: export-ready invoices/payroll data
+Current status: NOT STARTED
+
+Story
+As the backend, I need explicit export-ready output records so agencies can hand off invoice- and payroll-ready data safely without a full claims engine.
+
+Recommended acceptance criteria
+
+- export-ready payroll row model or projection exists
+- export-ready invoice row model or projection exists
+- export output can include at least:
+  - visit id
+  - patient id optional where appropriate
+  - caregiver id optional where appropriate
+  - branch id
+  - service line
+  - scheduled/performed dates or times
+  - payer context for invoice output
+  - units or duration
+  - readiness status
+- output excludes visits that fail required readiness gates unless explicitly configured otherwise
+- export generation is auditable and test-covered
+
+========================================================================
+BE14-06 — Create authorization-usage tracking model
+Related Epic 14 features: authorization usage
+Current status: NOT STARTED
+
+Story
+As operations, I need authorization-usage tracking so service utilization against authorized units is visible before revenue handoff.
+
+Recommended acceptance criteria
+
+- authorization-usage snapshot or projection exists
+- usage can summarize at least:
+  - authorization id
+  - authorized units
+  - used units
+  - remaining units
+  - overage or nearing-limit indicator optional
+- usage derives from completed or counted visit activity rather than manual entry
+- invalid or missing authorization linkage is surfaced as readiness issues where appropriate
+- usage tracking is auditable and test-covered
+
+========================================================================
+BE14-07 — Create payer and service summary projection
+Related Epic 14 features: payer/service summary
+Current status: NOT STARTED
+
+Story
+As the backend, I need payer and service summary projections so invoice-ready context is available without rebuilding payer/service logic at export time.
+
+Recommended acceptance criteria
+
+- payer/service summary projection exists per visit or readiness record
+- summary can include at least:
+  - payer linkage
+  - service line
+  - authorization context optional
+  - branch
+  - patient
+  - rate context optional if available later
+- summary is derived deterministically from source records
+- summary supports list, detail, and export use
+- summary logic is auditable and test-covered
+
+========================================================================
+BE14-08 — Build revenue-readiness projection and gate evaluation
+Related Epic 14 features: visit completion validation, signed visit validation, exception flags, authorization usage
+Current status: NOT STARTED
+
+Story
+As leadership, I need a structured revenue-readiness projection so visits can be classified as ready, blocked, or warning before downstream finance work begins.
+
+Recommended acceptance criteria
+
+- revenue-readiness projection exists per visit
+- projection can summarize at least:
+  - completion validation state
+  - signature validation state
+  - active revenue exception flags
+  - authorization-usage posture
+  - payer/service summary
+  - overall readiness state ready/blocked/warning
+- projection is derived deterministically from source records
+- readiness can be recalculated on demand or after source changes
+- projection logic is auditable and test-covered
+
+========================================================================
+BE14-09 — Implement secure authorization and privacy rules for revenue-readiness data
+Related Epic 14 features: all early-version features
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for revenue-readiness and export data so only appropriate roles can view or generate operational finance outputs.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view revenue-readiness workspace
+  - view readiness exceptions
+  - view export-ready payroll data
+  - view export-ready invoice data
+  - generate exports
+  - recalculate readiness
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- patient and payer detail is exposed only as necessary for authorized financial operations
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE14-10 — Define Epic 14 audit taxonomy and export-event contract
+Related Epic 14 features: all early-version features
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and export-event contract so readiness and export actions are observable and later revenue workflows can build on stable events.
+
+Recommended acceptance criteria
+
+- Epic 14 audit actions are defined for at least:
+  - readiness_recalculated
+  - completion_validation_updated
+  - signature_validation_updated
+  - revenue_exception_flagged
+  - revenue_exception_cleared
+  - authorization_usage_recalculated
+  - payroll_export_generated
+  - invoice_export_generated
+- export event contract is defined for downstream handoff and notification hooks where appropriate
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and event publication are test-covered
+
+========================================================================
+BE14-11 — Extend permission matrix for billing-adjacent and back-office roles
+Related Epic 14 features: all early-version features
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 14 permissions so readiness and export actions are role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_revenue_readiness_workspace
+  - view_revenue_exception_flags
+  - view_payroll_export_data
+  - view_invoice_export_data
+  - generate_revenue_exports
+  - recalculate_revenue_readiness
+- permissions map cleanly to likely roles such as:
+  - billing/back office
+  - branch admin optional
+  - agency owner optional
+  - QA / clinical reviewer optional for read-only readiness context
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE14-12 — Build revenue-readiness and exception APIs
+Related Epic 14 features: visit completion validation, signed visit validation, exception flags, payer/service summary
+Current status: NOT STARTED
+
+Story
+As the frontend and operations teams, I need revenue-readiness APIs so readiness state and blockers can be queried reliably.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - readiness list
+  - readiness detail
+  - readiness exception list
+  - payer/service summary detail
+- APIs support filters such as:
+  - branch
+  - readiness state
+  - exception type
+  - payer
+  - service line
+  - date window optional
+- responses expose enough detail for operational triage without leaking unnecessary internal fields
+- authorization is enforced and test-covered
+
+========================================================================
+BE14-13 — Build export and authorization-usage APIs
+Related Epic 14 features: export-ready invoices/payroll data, authorization usage
+Current status: NOT STARTED
+
+Story
+As the frontend and back-office teams, I need export and usage APIs so payroll/invoice handoff and authorization utilization can be managed cleanly.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - payroll export preview/generate
+  - invoice export preview/generate
+  - authorization-usage summary
+  - readiness recalculation trigger where authorized
+- export APIs can return downloadable or exportable structured output
+- invalid export attempts for blocked visits return controlled errors or filtered output
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE14-14 — Build revenue history and handoff-context APIs
+Related Epic 14 features: export-ready invoices/payroll data, exception flags
+Current status: NOT STARTED
+
+Story
+As back-office leadership, I need readiness and export history APIs so operational finance handoffs can be reviewed and traced later.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - readiness history timeline
+  - export generation history
+  - exception-flag history
+  - authorization-usage history optional
+- history output can reference linked source edit context through existing audit infrastructure
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- history APIs are authorization-aware and test-covered
+
+========================================================================
+BE14-15 — Add Epic 14 regression coverage and CI entrypoint
+Related Epic 14 features: all early-version features
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 14 so later full revenue-cycle depth does not destabilize early revenue-readiness workflows.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - readiness evaluation
+  - signed-visit validation
+  - revenue exception flagging
+  - authorization-usage summary
+  - payroll export preview/generate
+  - invoice export preview/generate
+  - readiness history query
+- authorization-denial coverage exists for protected Epic 14 actions
+- audit assertions exist for representative Epic 14 mutations
+- dedicated Gradle task exists for Epic 14 regression execution
+- CI runs the Epic 14 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — revenue-readiness domain foundation
+
+- `BE14-01`
+- `BE14-10`
+- `BE14-11`
+
+Phase B — core readiness and export model
+
+- `BE14-02`
+- `BE14-03`
+- `BE14-04`
+- `BE14-05`
+- `BE14-06`
+- `BE14-07`
+- `BE14-08`
+- `BE14-09`
+
+Phase C — public API layer
+
+- `BE14-12`
+- `BE14-13`
+- `BE14-14`
+
+Phase D — hardening
+
+- `BE14-15`
+
+========================================================================
+Definition of done for Epic 14 backend
+
+Epic 14 backend is done only when:
+
+- readiness validation, signature validation, revenue exception, export output, authorization-usage, and payer/service summary domain models or projections exist with clear lifecycle rules
+- revenue-readiness, exception, export, and authorization-usage APIs are available for real operational use
+- readiness recalculation and export actions are implemented through audited APIs
+- ready/blocked/warning outcomes are available through structured backend contracts
+- role-based authorization and tenant or branch-aware privacy rules are enforced for operational finance data
+- export-ready invoice and payroll output is generated safely without assuming full claims processing in scope
+- readiness and handoff history are queryable through backend APIs suitable for operational review
+- core Epic 14 early-version workflows are regression-covered

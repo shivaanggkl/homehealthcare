@@ -1,0 +1,420 @@
+Epic 13 Backend Backlog
+HomeHealthCare
+
+Purpose
+
+This document converts Epic 13 from `Requirements.txt` into a backend delivery backlog.
+
+Epic 13 title
+
+Goals, tasks, and care progression
+
+Epic 13 feature scope from the requirements
+
+- goal templates
+- interventions/tasks
+- target dates
+- completed / unmet / not attained states
+- progress notes
+- version history
+- care-plan sync
+
+Planning assumptions
+
+- Epic 1 is complete and provides auth, session management, RBAC, tenancy, audit, branch-aware authorization, and notification foundations
+- Epic 3 is complete and provides patient records and patient-scoped clinical context that goals and interventions attach to
+- Epic 5 is complete and provides visit and scheduling context that may reference interventions or completion progress
+- Epic 8 is complete and provides documentation templates, task completion, and progress-note-adjacent capture patterns that Epic 13 can reuse without duplicating
+- Epic 11 is complete and provides compliance and care-plan completeness context that may consume care-goal state later but should not redefine goal progression here
+- Epic 12 is complete and provides incident/infection/wound workflows that may influence care progression but should remain distinct Epic 12 records
+- Epic 13 focuses on goal templates, patient-specific goals, interventions/tasks, target dates, outcome states, progress notes, version history, and care-plan synchronization, not revenue workflow or physician-order workflow from later epics
+- goal and intervention workflows should be simpler and more operationally usable than legacy enterprise screens while still preserving history and auditability
+- care-plan sync should support durable linkage between patient care-plan state and goal/intervention records rather than fragile frontend-only composition
+
+Scope rule
+
+- Include only Epic 13 backend work
+- Cover goal templates, patient goal records, intervention/task records, target-date tracking, progression states, progress notes, version history, care-plan synchronization, APIs, authorization, audit, and tests
+- Do not include frontend-only tasks
+- Do not pull wound workflows, generalized documentation engines, or billing workflows from other epics into Epic 13
+
+Status legend
+
+- NOT STARTED: no Epic 13 implementation exists yet
+
+========================================================================
+BE13-01 — Define goals and care-progression domain architecture
+Related Epic 13 features: all
+Current status: NOT STARTED
+
+Story
+As the platform architect, I need a coherent goals-and-progression domain so templates, patient goals, interventions, progress notes, and version history follow one lifecycle and authorization model.
+
+Recommended acceptance criteria
+
+- Epic 13 entities are defined explicitly, including:
+  - goal template
+  - patient goal
+  - intervention or care task
+  - progress note
+  - goal version
+  - intervention version optional
+  - care-plan sync link
+  - goal status projection
+- linkage rules are documented across patient, branch, care-plan, visit, documentation, and reviewer contexts
+- lifecycle states are defined for templates, patient goals, interventions, and progress records
+- audit expectations are defined for template changes, goal creation, intervention changes, progress updates, state transitions, and care-plan sync
+
+========================================================================
+BE13-02 — Create goal-template model
+Related Epic 13 features: goal templates
+Current status: NOT STARTED
+
+Story
+As the backend, I need reusable goal templates so agencies can standardize common care goals without rebuilding them from scratch for every patient.
+
+Recommended acceptance criteria
+
+- goal-template model exists
+- template supports:
+  - name
+  - description optional
+  - branch scope optional
+  - service context optional
+  - active/inactive state
+  - target outcome guidance optional
+- template can define default intervention/task scaffolding where appropriate
+- template changes are version-aware or explicitly history-preserving
+- template lifecycle is auditable and test-covered
+
+========================================================================
+BE13-03 — Create patient-goal model and target-date tracking
+Related Epic 13 features: target dates, completed / unmet / not attained states
+Current status: NOT STARTED
+
+Story
+As clinical operations, I need patient-specific goals with target dates and progression states so care progression is measurable and reviewable over time.
+
+Recommended acceptance criteria
+
+- patient-goal model exists
+- patient goal supports:
+  - patient id
+  - source template optional
+  - goal title
+  - goal description optional
+  - target date optional
+  - current status
+  - created_at
+  - resolved_at optional
+  - owner optional
+- supported progression states include at least:
+  - active
+  - completed
+  - unmet
+  - not_attained
+  - cancelled optional
+- invalid state transitions are rejected
+- target-date updates and state transitions are auditable and test-covered
+
+========================================================================
+BE13-04 — Create intervention and care-task model
+Related Epic 13 features: interventions/tasks
+Current status: NOT STARTED
+
+Story
+As care teams, I need interventions or tasks linked to goals so goal progression is operationalized into trackable work.
+
+Recommended acceptance criteria
+
+- intervention/task model exists
+- intervention supports:
+  - patient goal id
+  - title
+  - description optional
+  - active/inactive state
+  - target date optional
+  - completion or progression state optional
+  - owner optional
+- multiple interventions can be linked to one patient goal
+- interventions can be derived from a template or created ad hoc
+- intervention changes are auditable and test-covered
+
+========================================================================
+BE13-05 — Create progress-note model for goals and interventions
+Related Epic 13 features: progress notes
+Current status: NOT STARTED
+
+Story
+As clinicians, I need structured progress notes tied to goals and interventions so care progression has durable narrative and status context.
+
+Recommended acceptance criteria
+
+- progress-note model exists
+- progress note supports:
+  - patient goal id
+  - intervention id optional
+  - note text
+  - captured_at
+  - captured_by
+  - progression summary optional
+  - status impact optional
+- multiple progress notes over time are supported
+- progress notes do not overwrite prior entries
+- progress-note changes are auditable and test-covered
+
+========================================================================
+BE13-06 — Implement goal and intervention version-history model
+Related Epic 13 features: version history
+Current status: NOT STARTED
+
+Story
+As reviewers and clinicians, I need version history for goals and interventions so material changes can be understood over time.
+
+Recommended acceptance criteria
+
+- goal version model exists
+- version history captures at least:
+  - title/description changes
+  - target-date changes
+  - status changes
+  - intervention additions/removals optional
+  - changed_by
+  - changed_at
+- history is append-oriented and queryable chronologically
+- version generation is deterministic and test-covered
+- version changes are auditable
+
+========================================================================
+BE13-07 — Implement care-plan synchronization model
+Related Epic 13 features: care-plan sync
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit care-plan synchronization so patient goals and interventions stay linked to the broader care-plan context without fragile manual copying.
+
+Recommended acceptance criteria
+
+- care-plan sync link model exists
+- sync supports:
+  - patient goal id
+  - care-plan identifier or external context
+  - sync status
+  - last_synced_at optional
+  - sync source optional
+- care-plan sync can project whether a goal is aligned, unsynced, or stale
+- sync does not corrupt historical goal versions
+- care-plan sync changes are auditable and test-covered
+
+========================================================================
+BE13-08 — Build goal-progression status projection
+Related Epic 13 features: completed / unmet / not attained states, progress notes
+Current status: NOT STARTED
+
+Story
+As operations and clinicians, I need a structured progression projection so goal and intervention state can be summarized without recomputing everything ad hoc.
+
+Recommended acceptance criteria
+
+- progression status projection exists per patient goal
+- projection can summarize at least:
+  - current goal state
+  - target-date posture on-track/at-risk/overdue optional
+  - intervention completion posture optional
+  - latest progress-note summary
+  - care-plan sync state
+- projection is derived deterministically from source records
+- projection supports list and dashboard-style queries
+- projection logic is auditable and test-covered
+
+========================================================================
+BE13-09 — Implement secure authorization and privacy rules for goal and progression data
+Related Epic 13 features: all
+Current status: NOT STARTED
+
+Story
+As the backend, I need strict authorization for goal and progression data so only appropriate roles can see or mutate patient care goals and history.
+
+Recommended acceptance criteria
+
+- authorization rules enforce who can:
+  - view goal workspace
+  - manage goal templates
+  - create or update patient goals
+  - manage interventions
+  - add progress notes
+  - update progression state
+  - manage care-plan sync
+- tenant isolation is enforced
+- branch-aware access rules are enforced where relevant
+- privacy-sensitive patient detail is exposed only as necessary for authorized workflows
+- controlled authorization errors are returned
+- authorization rules are test-covered
+
+========================================================================
+BE13-10 — Define Epic 13 audit taxonomy and progression-event contract
+Related Epic 13 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need a consistent audit and progression-event contract so goal and intervention changes are observable and later workflows can build on stable events.
+
+Recommended acceptance criteria
+
+- Epic 13 audit actions are defined for at least:
+  - goal_template_saved
+  - patient_goal_created
+  - patient_goal_updated
+  - intervention_saved
+  - progress_note_added
+  - goal_state_changed
+  - target_date_changed
+  - goal_version_recorded
+  - careplan_sync_updated
+- progression-event contract is defined for state changes, overdue targets, and sync drift where appropriate
+- audit events can be queried through the existing audit log infrastructure
+- audit taxonomy and event publication are test-covered
+
+========================================================================
+BE13-11 — Extend permission matrix for goal and care-progression roles
+Related Epic 13 features: all
+Current status: NOT STARTED
+
+Story
+As the platform, I need explicit Epic 13 permissions so goal visibility and mutation actions are role-aware and auditable.
+
+Recommended acceptance criteria
+
+- new permissions exist for at least:
+  - view_goal_workspace
+  - manage_goal_templates
+  - manage_patient_goals
+  - manage_goal_interventions
+  - add_goal_progress_notes
+  - manage_goal_state_transitions
+  - manage_careplan_sync
+- permissions map cleanly to likely roles such as:
+  - clinician or caregiver optional for limited progress-note entry
+  - QA / clinical reviewer
+  - branch admin optional
+  - agency owner optional
+- permission checks are used consistently in service and API layers
+- permission behavior is test-covered
+
+========================================================================
+BE13-12 — Build goal-template and patient-goal APIs
+Related Epic 13 features: goal templates, target dates, completed / unmet / not attained states
+Current status: NOT STARTED
+
+Story
+As the frontend and care teams, I need APIs for templates and patient goals so care progression can be created, listed, updated, and resolved reliably.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - goal-template list/create/read/update/deactivate
+  - patient-goal list/create/read/update/state-change
+- APIs support patient and branch-aware filtering where relevant
+- invalid lifecycle transitions return controlled errors
+- mutation APIs are auditable and test-covered
+
+========================================================================
+BE13-13 — Build intervention, progress-note, and version-history APIs
+Related Epic 13 features: interventions/tasks, progress notes, version history
+Current status: NOT STARTED
+
+Story
+As the frontend and reviewers, I need APIs for interventions, progress notes, and history so care progression can be managed and reviewed longitudinally.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - intervention list/create/update/deactivate
+  - progress-note list/create
+  - goal version-history list
+- responses are structured for UI timeline and detail use
+- authorization and audit behavior are enforced and test-covered
+
+========================================================================
+BE13-14 — Build care-plan sync and progression-summary APIs
+Related Epic 13 features: care-plan sync, target dates, completed / unmet / not attained states
+Current status: NOT STARTED
+
+Story
+As the frontend and leadership teams, I need progression-summary and care-plan-sync APIs so goal state can be summarized and linked back to broader care-plan context.
+
+Recommended acceptance criteria
+
+- public APIs exist for:
+  - progression summary per patient
+  - care-plan sync state list/update
+  - overdue or at-risk goal summary optional
+- responses are privacy-aware and do not expose internal-only implementation fields unnecessarily
+- summary and sync APIs are authorization-aware and test-covered
+
+========================================================================
+BE13-15 — Add Epic 13 regression coverage and CI entrypoint
+Related Epic 13 features: all
+Current status: NOT STARTED
+
+Story
+As engineering, I need automated regression coverage for Epic 13 so later revenue and analytics work does not destabilize goal and progression workflows.
+
+Recommended acceptance criteria
+
+- representative integration tests exist for:
+  - goal-template create/update
+  - patient-goal create/update/state change
+  - intervention create/update
+  - progress-note create
+  - version-history query
+  - care-plan sync update
+  - progression summary
+- authorization-denial coverage exists for protected Epic 13 actions
+- audit assertions exist for representative Epic 13 mutations
+- dedicated Gradle task exists for Epic 13 regression execution
+- CI runs the Epic 13 regression entrypoint
+
+========================================================================
+Implementation phases
+
+Phase A — care-progression domain foundation
+
+- `BE13-01`
+- `BE13-10`
+- `BE13-11`
+
+Phase B — core goal, intervention, and progression model
+
+- `BE13-02`
+- `BE13-03`
+- `BE13-04`
+- `BE13-05`
+- `BE13-06`
+- `BE13-07`
+- `BE13-08`
+- `BE13-09`
+
+Phase C — public API layer
+
+- `BE13-12`
+- `BE13-13`
+- `BE13-14`
+
+Phase D — hardening
+
+- `BE13-15`
+
+========================================================================
+Definition of done for Epic 13 backend
+
+Epic 13 backend is done only when:
+
+- goal-template, patient-goal, intervention, progress-note, version-history, care-plan-sync, and progression-projection domain models exist with clear lifecycle rules
+- goal, intervention, progress-note, and progression-summary APIs are available for real operational use
+- target-date, state-transition, and care-plan-sync actions are implemented through audited APIs
+- completed, unmet, not-attained, and overdue progression outcomes are available through structured backend contracts
+- role-based authorization and tenant or branch-aware privacy rules are enforced for patient care-goal data
+- longitudinal goal history and care-plan-sync state are queryable through backend APIs suitable for operational review
+- progression state is derived deterministically from source records rather than ad hoc frontend logic
+- core Epic 13 workflows are regression-covered

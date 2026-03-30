@@ -45,6 +45,12 @@ Use this pattern for:
 - note templates
 - form templates
 - task library items
+- communication threads
+- communication messages
+- thread participants
+- read receipts
+- staff groups
+- staff group members
 - EVV verification sessions
 - EVV clock events
 - device metadata snapshots
@@ -75,6 +81,7 @@ Use this pattern for:
 - visit documentation records
 - documentation field responses
 - task completion responses
+- branch broadcasts
 - branch alerts
 - branch-specific staffing data
 - branch-level dashboards

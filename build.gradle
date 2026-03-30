@@ -177,3 +177,17 @@ tasks.register('epic8ApiTest', Test) {
 		includeTestsMatching 'com.homehealthcare.documentation.api.DocumentationApiIntegrationTest'
 	}
 }
+
+tasks.register('epic9ApiTest', Test) {
+	group = 'verification'
+	description = 'Runs the Epic 9 messaging API regression suite.'
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	filter {
+		includeTestsMatching 'com.homehealthcare.messaging.foundation.MessagingAuditServiceTest'
+		includeTestsMatching 'com.homehealthcare.messaging.foundation.PhaseBMessagingCoordinationServiceTest'
+		includeTestsMatching 'com.homehealthcare.messaging.api.MessagingApiIntegrationTest'
+	}
+}

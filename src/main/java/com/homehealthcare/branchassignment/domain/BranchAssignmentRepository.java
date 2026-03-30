@@ -10,10 +10,19 @@ public interface BranchAssignmentRepository extends JpaRepository<BranchAssignme
 
     boolean existsByAgencyMembership_IdAndBranch_Id(UUID agencyMembershipId, UUID branchId);
 
+    boolean existsByAgencyMembership_IdAndBranch_IdAndStatus(
+            UUID agencyMembershipId,
+            UUID branchId,
+            BranchAssignmentStatus status);
+
     Optional<BranchAssignment> findByAgencyMembership_IdAndBranch_Id(UUID agencyMembershipId, UUID branchId);
 
     List<BranchAssignment> findAllByAgencyMembership_IdAndStatusOrderByBranch_NameAsc(
             UUID agencyMembershipId,
+            BranchAssignmentStatus status);
+
+    List<BranchAssignment> findAllByBranch_IdAndStatusOrderByAgencyMembership_IdAsc(
+            UUID branchId,
             BranchAssignmentStatus status);
 
     List<BranchAssignment> findAllByAgencyMembership_IdInAndStatusOrderByBranch_NameAsc(
