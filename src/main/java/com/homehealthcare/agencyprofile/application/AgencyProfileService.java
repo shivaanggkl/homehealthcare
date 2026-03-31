@@ -1,6 +1,7 @@
 package com.homehealthcare.agencyprofile.application;
 
 import com.homehealthcare.agency.domain.Agency;
+import com.homehealthcare.agency.domain.AgencyRepository;
 import com.homehealthcare.agencyprofile.domain.AgencyProfile;
 import com.homehealthcare.agencyprofile.domain.AgencyProfileRepository;
 import com.homehealthcare.configuration.foundation.ConfigurationAuditService;
@@ -22,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class AgencyProfileService {
 
+    private final AgencyRepository agencyRepository;
     private final AgencyProfileRepository agencyProfileRepository;
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
     private final ConfigurationAuditService configurationAuditService;
@@ -33,16 +35,17 @@ public class AgencyProfileService {
                 AgencyPermission.MANAGE_AGENCY_CONFIGURATION,
                 UnauthorizedConfigurationActorException::new);
 
-        Agency agency = actorMembership.getAgency();
+        Agency agency = agencyRepository.findById(actorMembership.getAgencyId())
+                .orElseThrow(() -> new IllegalStateException("Agency was not found"));
         AgencyProfile profile = agencyProfileRepository.findByAgency_Id(actorMembership.getAgencyId())
                 .orElseGet(() -> AgencyProfile.create(
                         agency,
-                        command.displayName(),
+                        fallback(command.displayName(), agency.getName()),
                         command.legalName(),
                         command.primaryPhone(),
                         command.primaryAddress(),
-                        command.operationsContactName(),
-                        command.operationsContactEmail(),
+                        fallback(command.operationsContactName(), agency.getName()),
+                        fallback(command.operationsContactEmail(), agency.getContactEmail()),
                         command.supportContactName(),
                         command.supportContactEmail(),
                         command.defaultTimezone(),
@@ -96,5 +99,12 @@ public class AgencyProfileService {
             String supportContactEmail,
             @NotNull String defaultTimezone,
             @NotNull String defaultLocale) {
+    }
+
+    private static String fallback(String preferred, String fallback) {
+        if (preferred != null && !preferred.isBlank()) {
+            return preferred;
+        }
+        return fallback;
     }
 }

@@ -1,5 +1,7 @@
 package com.homehealthcare.agencyprofile.api;
 
+import com.homehealthcare.agency.domain.Agency;
+import com.homehealthcare.agency.domain.AgencyRepository;
 import com.homehealthcare.agencyprofile.application.AgencyProfileService;
 import com.homehealthcare.agencyprofile.domain.AgencyProfile;
 import com.homehealthcare.agencyprofile.domain.AgencyProfileRepository;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/agency/profile")
 class AgencyProfileController {
 
+    private final AgencyRepository agencyRepository;
     private final AgencyProfileRepository agencyProfileRepository;
     private final AgencyProfileService agencyProfileService;
     private final CurrentTenant currentTenant;
@@ -29,11 +32,13 @@ class AgencyProfileController {
     private final AgencyAuthorizationGuard agencyAuthorizationGuard;
 
     AgencyProfileController(
+            AgencyRepository agencyRepository,
             AgencyProfileRepository agencyProfileRepository,
             AgencyProfileService agencyProfileService,
             CurrentTenant currentTenant,
             ConfigurationActorResolver configurationActorResolver,
             AgencyAuthorizationGuard agencyAuthorizationGuard) {
+        this.agencyRepository = agencyRepository;
         this.agencyProfileRepository = agencyProfileRepository;
         this.agencyProfileService = agencyProfileService;
         this.currentTenant = currentTenant;
@@ -48,18 +53,20 @@ class AgencyProfileController {
                 actorMembership,
                 AgencyPermission.VIEW_AGENCY_CONFIGURATION,
                 UnauthorizedConfigurationActorException::new);
+        Agency agency = agencyRepository.findById(currentTenant.requireAgencyId())
+                .orElseThrow(() -> new IllegalStateException("Agency was not found"));
         AgencyProfile profile = agencyProfileRepository.findByAgency_Id(currentTenant.requireAgencyId())
                 .orElseGet(() -> AgencyProfile.create(
-                        actorMembership.getAgency(),
+                        agency,
+                        agency.getName(),
                         null,
                         null,
                         null,
+                        agency.getName(),
+                        agency.getContactEmail(),
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        actorMembership.getAgency().getTimezone(),
+                        agency.getTimezone(),
                         "en-US"));
         return toResponse(profile);
     }

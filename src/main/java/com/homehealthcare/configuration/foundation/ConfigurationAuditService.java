@@ -3,6 +3,7 @@ package com.homehealthcare.configuration.foundation;
 import com.homehealthcare.membership.domain.AgencyMembership;
 import com.homehealthcare.platform.audit.domain.AuditEvent;
 import com.homehealthcare.platform.audit.domain.AuditEventRepository;
+import com.homehealthcare.user.domain.UserRepository;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class ConfigurationAuditService {
     private static final String ACTOR_TYPE = "AGENCY_MEMBERSHIP";
 
     private final AuditEventRepository auditEventRepository;
+    private final UserRepository userRepository;
 
     public void recordCreated(
             AgencyMembership actorMembership,
@@ -63,11 +65,14 @@ public class ConfigurationAuditService {
         Objects.requireNonNull(action, "action must not be null");
         Objects.requireNonNull(targetType, "targetType must not be null");
         Objects.requireNonNull(targetId, "targetId must not be null");
+        String actorEmail = userRepository.findById(actorMembership.getUserId())
+                .map(user -> user.getEmail())
+                .orElse("unknown@local");
 
         auditEventRepository.save(AuditEvent.createSuccess(
                 ACTOR_TYPE,
                 actorMembership.getId(),
-                actorMembership.getUser().getEmail(),
+                actorEmail,
                 action.actionType(),
                 targetType.name(),
                 targetId,
